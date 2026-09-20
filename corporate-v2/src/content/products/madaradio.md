@@ -17,9 +17,9 @@ capabilities:
   - sociedad-y-participacion
 primaryFamily: sociedad-y-participacion
 problem: "Ciudadanía en territorios rurales dispersos con limitada capacidad de hacer visibles problemas y necesidades."
-purpose: "La radio es canal, no el problema central. Radio + aplicación + participación + georreferenciación + información."
+purpose: "Integra radio en vivo, participación ciudadana, reportes georreferenciados, mapa de incidencias e información territorial en una experiencia móvil."
 origin: "2021, cliente histórico Oreja Multimedia. Evolución de la aplicación en 2025."
-gostRelation: "Fundamento ontológico GOST. No es GOST-software."
+gostRelation: "GOST como fundamento para relacionar ciudadanía, información y territorio."
 assetStatus: missing
 urlStatus: none
 visual: radio
