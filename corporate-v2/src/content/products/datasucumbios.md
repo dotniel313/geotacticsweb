@@ -3,7 +3,7 @@ id: P-DS
 slug: datasucumbios
 name: DataSucumbíos
 shortName: DataSucumbíos
-summary: "Plataforma de inteligencia territorial que transforma información del territorio en conocimiento estructurado para observarlo, analizar indicadores y apoyar gestión y decisión. Integra GIS, BI y OLAP. Entre otros contextos, se aplica al caso PDOT Sucumbíos."
+summary: "Plataforma de inteligencia territorial para observar el territorio, explorar indicadores y convertir información dispersa en conocimiento útil para la gestión y la decisión. Integra GIS, BI y análisis multidimensional."
 status: en_operacion
 group: operation
 type: Producto / plataforma de inteligencia territorial
@@ -15,7 +15,7 @@ capabilities:
   - inteligencia-territorial
 primaryFamily: inteligencia-territorial
 problem: "Información territorial no integrada para observarla, analizar indicadores y apoyar decisión."
-purpose: "Producto GeoTactics de inteligencia territorial. Integra GIS, BI y OLAP en el caso documentado de DataSucumbíos."
+purpose: "Integra información territorial, GIS, Business Intelligence y análisis multidimensional en una superficie orientada a comprender el territorio y apoyar decisiones."
 gostRelation: "GOST → SIGDR → CAPTURE → base territorial → DataSucumbíos."
 disciplines:
   - BI
