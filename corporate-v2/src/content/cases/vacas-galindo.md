@@ -23,8 +23,8 @@ period:
   display: "2018"
   dateStatus: publish
 summary: "Experiencia SIGDR en la parroquia rural Vacas Galindo, cantón Cotacachi."
-context: "GAD parroquial rural de Vacas Galindo, Imbabura. Año documentado: 2018."
-intervention: "Aplicación de SIGDR en un contexto parroquial rural. Las descripciones históricas varían entre censo y fortalecimiento institucional; no se unifican aquí."
+context: "GAD parroquial rural de Vacas Galindo, cantón Cotacachi, Imbabura. La experiencia continúa en 2018 la línea territorial iniciada con SIGDR."
+intervention: "Aplicación de SIGDR en un contexto parroquial rural para organizar información del territorio y fortalecer su capacidad de caracterización y gestión."
 products:
   - sigdr
 methodologies:
