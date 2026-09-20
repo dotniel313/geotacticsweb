@@ -34,6 +34,7 @@ export const navItems = [
 	{ href: '/productos', label: 'Productos' },
 	{ href: '/casos', label: 'Casos' },
 	{ href: '/archivo', label: 'Archivo' },
+	{ href: '/territorio', label: 'Operación territorial' },
 	{ href: '/tecnologia', label: 'Tecnología' },
 	{ href: '/nosotros', label: 'Nosotros' },
 ] as const;
