@@ -33,24 +33,23 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 	const map = L.map(canvas, { scrollWheelZoom: false, attributionControl: false });
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
-	const group = L.featureGroup();
 	const familyLayers = new Map<FamilyId, L.LayerGroup>();
-	for (const p of pins) {
-		if (!familyLayers.has(p.family)) familyLayers.set(p.family, L.layerGroup());
-	}
+	const bounds = L.latLngBounds([[hq.lat, hq.lng]]);
 	const hqIcon = L.divIcon({
 		className: 'gt-pin gt-pin--hq',
 		html: '<span></span>',
 		iconSize: [14, 14],
 		iconAnchor: [7, 7],
 	});
+
 	L.marker([hq.lat, hq.lng], { icon: hqIcon })
-		.bindPopup(`<div class="gt-tpop"><p class="gt-tpop__k">Cuartel general</p><p>${hq.label}</p></div>`, {
+		.bindPopup(`<div class="gt-tpop"><p class="gt-tpop__k">Base actual</p><p>${hq.label}</p></div>`, {
 			className: 'gt-tpopwrap',
 		})
-		.addTo(group);
+		.addTo(map);
 
 	for (const p of pins) {
+		if (!familyLayers.has(p.family)) familyLayers.set(p.family, L.layerGroup());
 		const icon = L.divIcon({
 			className: 'gt-pin',
 			html: `<span style="--gt-pin-family:${p.color}"></span>`,
@@ -69,19 +68,18 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 			<p class="gt-tpop__n">${p.note}</p>
 			<p class="gt-tpop__acts"><a class="gt-tpop__a" href="${archive}">Ver en archivo</a>${detail}</p>
 		</div>`;
-		const marker = L.marker([p.lat, p.lng], { icon })
-			.bindPopup(html, { className: 'gt-tpopwrap' });
-		marker.addTo(group);
-		marker.addTo(familyLayers.get(p.family)!);
+		L.marker([p.lat, p.lng], { icon })
+			.bindPopup(html, { className: 'gt-tpopwrap' })
+			.addTo(familyLayers.get(p.family)!);
+		bounds.extend([p.lat, p.lng]);
 	}
-
-	group.addTo(map);
-	map.fitBounds(group.getBounds().pad(0.45), { maxZoom: 9 });
 
 	const root = canvas.closest<HTMLElement>('.gt-tm');
 	const buttons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-territory-family]') ?? [])];
 	const allButton = root?.querySelector<HTMLButtonElement>('[data-territory-all]') ?? null;
-	const active = new Set<FamilyId>(buttons.filter((b) => !b.disabled).map((b) => b.dataset.territoryFamily as FamilyId));
+	const active = new Set<FamilyId>(
+		buttons.filter((button) => !button.disabled).map((button) => button.dataset.territoryFamily as FamilyId),
+	);
 
 	const redraw = () => {
 		for (const [family, layer] of familyLayers) {
@@ -97,19 +95,14 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 			button.classList.toggle('is-active', on);
 			button.setAttribute('aria-pressed', String(on));
 		});
-		const enabled = buttons.filter((b) => !b.disabled);
-		const allOn = enabled.length > 0 && enabled.every((b) => active.has(b.dataset.territoryFamily as FamilyId));
+		const enabled = buttons.filter((button) => !button.disabled);
+		const allOn = enabled.length > 0 && enabled.every((button) => active.has(button.dataset.territoryFamily as FamilyId));
 		allButton?.classList.toggle('is-active', allOn);
 		allButton?.setAttribute('aria-pressed', String(allOn));
 	};
 
-	// Replace the original aggregate marker group with family layers; HQ remains independent.
-	map.removeLayer(group);
 	for (const family of active) familyLayers.get(family)?.addTo(map);
-	// HQ is intentionally always visible.
-	const hqMarker = L.marker([hq.lat, hq.lng], { icon: hqIcon })
-		.bindPopup(`<div class="gt-tpop"><p class="gt-tpop__k">Base actual</p><p>${hq.label}</p></div>`, { className: 'gt-tpopwrap' })
-		.addTo(map);
+	map.fitBounds(bounds.pad(0.45), { maxZoom: 9 });
 
 	buttons.forEach((button) => {
 		button.addEventListener('click', () => {
@@ -119,10 +112,10 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 		});
 	});
 	allButton?.addEventListener('click', () => {
-		const enabled = buttons.filter((b) => !b.disabled);
-		const allOn = enabled.every((b) => active.has(b.dataset.territoryFamily as FamilyId));
+		const enabled = buttons.filter((button) => !button.disabled);
+		const allOn = enabled.every((button) => active.has(button.dataset.territoryFamily as FamilyId));
 		active.clear();
-		if (!allOn) enabled.forEach((b) => active.add(b.dataset.territoryFamily as FamilyId));
+		if (!allOn) enabled.forEach((button) => active.add(button.dataset.territoryFamily as FamilyId));
 		redraw();
 	});
 	redraw();
