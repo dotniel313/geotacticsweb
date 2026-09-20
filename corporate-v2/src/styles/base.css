@@ -213,6 +213,15 @@ button {
 	max-width: 44rem;
 }
 
+.gt-page-close__kicker {
+	margin: 0 0 var(--gt-space-3);
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--gt-coral);
+}
+
 .gt-page-close__text {
 	font-size: var(--gt-fs-lg);
 	font-weight: 600;
