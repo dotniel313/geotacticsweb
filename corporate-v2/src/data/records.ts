@@ -479,7 +479,7 @@ export const records: GeoTacticsRecord[] = [
 		facets: ['bi', 'plan'],
 		status: 'implementacion_historica',
 		year: 2023,
-		yearLabel: '2023–2038',
+		yearLabel: '2023',
 		territory: 'Sucumbíos / Ecuador',
 		coordinates: {
 			lat: 0.091,
