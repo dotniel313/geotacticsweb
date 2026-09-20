@@ -99,11 +99,6 @@ const ctaFor = (kind: RecordKind) => {
 									hidden
 									aria-label={`${r.title}, ${r.yearLabel}`}
 								>
-									<p class="gt-hit__year">{r.yearLabel}</p>
-									<div class="gt-hit__axis" aria-hidden="true">
-										<span class="gt-hit__node" />
-										<span class="gt-hit__wire" />
-									</div>
 									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan>
 										{
 											fan.length === 0 ? (
@@ -119,6 +114,11 @@ const ctaFor = (kind: RecordKind) => {
 											)
 										}
 									</div>
+									<div class="gt-hit__axis" aria-hidden="true">
+										<span class="gt-hit__node" />
+										<span class="gt-hit__wire" />
+									</div>
+									<p class="gt-hit__year">{r.yearLabel}</p>
 									<p class="gt-hit__kind">{kindLabel[r.kind]}</p>
 									<h3>{r.title}</h3>
 									<p class="gt-hit__st">{statusLabels[r.status]}</p>
@@ -545,14 +545,15 @@ const ctaFor = (kind: RecordKind) => {
 		color: var(--gt-coral);
 		letter-spacing: 0.16em;
 		margin: 0 0 0.35rem;
-		font-size: 0.72rem;
+		font-size: 0.82rem;
+		font-weight: 800;
 	}
 
 	.gt-hit__axis {
 		position: relative;
 		width: 100%;
 		height: 1.15rem;
-		margin: 0 0 1.1rem;
+		margin: 0 0 0.85rem;
 		overflow: visible;
 	}
 
@@ -591,7 +592,7 @@ const ctaFor = (kind: RecordKind) => {
 		position: relative;
 		width: min(20rem, 100%);
 		height: 15rem;
-		margin: 0 0 1rem;
+		margin: 0 0 0.25rem;
 	}
 
 	.gt-fan__empty,
