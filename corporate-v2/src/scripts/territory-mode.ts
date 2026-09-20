@@ -61,11 +61,11 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 		const detail = p.detailHref
 			? `<a class="gt-tpop__a" href="${p.detailHref}">${kindCta[p.kind]}</a>`
 			: '';
-		const html = `<div class="gt-tpop">
+		const html = `<div class="gt-tpop" style="--gt-popup-family:${p.color}">
 			<p class="gt-tpop__k">${p.kindLabel} · ${p.yearLabel}</p>
 			<p class="gt-tpop__t">${p.title}</p>
-			<p>${p.familyTitle}</p>
-			<p>${p.territory}</p>
+			<p class="gt-tpop__family">${p.familyTitle}</p>
+			<p class="gt-tpop__territory">${p.territory}</p>
 			<p class="gt-tpop__n">${p.note}</p>
 			<p class="gt-tpop__acts"><a class="gt-tpop__a" href="${archive}">Ver en archivo</a>${detail}</p>
 		</div>`;
