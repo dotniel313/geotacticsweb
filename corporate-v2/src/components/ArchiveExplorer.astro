@@ -447,7 +447,7 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-ax__stage {
 		display: grid;
-		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+		grid-template-columns: minmax(20rem, 25rem) minmax(0, 1fr);
 		min-height: calc(100dvh - var(--gt-header-h));
 	}
 
@@ -461,8 +461,11 @@ const ctaFor = (kind: RecordKind) => {
 		align-self: stretch;
 		min-height: calc(100dvh - var(--gt-header-h));
 		overflow: auto;
-		padding: var(--gt-space-6) var(--gt-space-5);
+		padding: clamp(3.5rem, 9vh, 7rem) clamp(2rem, 4vw, 3.5rem);
 		border-right: 1px solid var(--gt-border);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		background: var(--gt-white);
 	}
 
@@ -506,11 +509,12 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-ax__rail {
 		display: flex;
-		align-items: stretch;
+		align-items: center;
 		overflow-x: auto;
 		overflow-y: hidden;
 		scroll-snap-type: x proximity;
-		padding: var(--gt-space-10) var(--gt-space-6) calc(var(--gt-space-10) + env(safe-area-inset-bottom, 0px));
+		gap: clamp(4.5rem, 7vw, 7rem);
+		padding: clamp(4.5rem, 9vh, 7rem) clamp(3rem, 5vw, 5rem) calc(clamp(4.5rem, 9vh, 7rem) + env(safe-area-inset-bottom, 0px));
 		overscroll-behavior-x: contain;
 		position: relative;
 		min-height: 100%;
@@ -520,9 +524,9 @@ const ctaFor = (kind: RecordKind) => {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		flex: 0 0 min(19rem, 78vw);
-		scroll-snap-align: start;
-		padding: 0 2.75rem 0 0;
+		flex: 0 0 min(25rem, 78vw);
+		scroll-snap-align: center;
+		padding: 0;
 		position: relative;
 		background: transparent;
 		border: 0;
@@ -568,7 +572,7 @@ const ctaFor = (kind: RecordKind) => {
 	.gt-hit__wire {
 		position: absolute;
 		left: 0.36rem;
-		right: -2.75rem;
+		right: calc(-1 * clamp(4.5rem, 7vw, 7rem));
 		top: 50%;
 		height: 2px;
 		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
@@ -585,16 +589,16 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-fan {
 		position: relative;
-		width: min(12.5rem, 100%);
-		height: 8.6rem;
+		width: min(20rem, 100%);
+		height: 15rem;
 		margin: 0 0 1rem;
 	}
 
 	.gt-fan__empty,
 	.gt-fan__shot,
 	.gt-fan__shot img {
-		width: 88%;
-		height: 8.4rem;
+		width: 90%;
+		height: 14rem;
 		object-fit: cover;
 	}
 
@@ -664,7 +668,7 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-hit h3 {
-		font-size: 1.05rem;
+		font-size: 1.3rem;
 		margin: 0 0 0.3rem;
 		text-transform: uppercase;
 		letter-spacing: 0.02em;
@@ -676,10 +680,11 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-hit__sum {
-		font-size: 0.82rem;
+		font-size: 0.9rem;
+		line-height: 1.6;
 		color: var(--gt-text-muted);
 		display: -webkit-box;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		margin: 0 0 0.55rem;
@@ -790,6 +795,9 @@ const ctaFor = (kind: RecordKind) => {
 		}
 
 		.gt-ax__ctx {
+			display: block;
+			min-height: 0;
+			padding: var(--gt-space-6) var(--gt-space-5);
 			border-right: 0;
 			border-bottom: 1px solid var(--gt-border);
 		}
