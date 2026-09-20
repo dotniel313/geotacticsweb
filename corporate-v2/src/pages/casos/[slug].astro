@@ -266,7 +266,7 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 		display: grid;
 		grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
 		gap: var(--gt-space-8);
-		align-items: end;
+		align-items: center;
 	}
 
 	.gt-cd__micro,
@@ -300,11 +300,12 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 
 	.gt-cd__fan {
 		display: grid;
+		grid-template-rows: repeat(3, clamp(7.25rem, 9vw, 9.5rem));
 	}
 
 	.gt-cd__fan img {
 		width: 100%;
-		aspect-ratio: 16 / 9;
+		height: 100%;
 		object-fit: cover;
 		object-position: center;
 		display: block;
