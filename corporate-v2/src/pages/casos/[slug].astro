@@ -291,8 +291,8 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 		display: grid;
 		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: var(--gt-space-6);
-		margin: 0;
-		padding: var(--gt-space-8) 0;
+		margin: 0 auto;
+		padding: var(--gt-space-8) var(--gt-gutter-x);
 		border-bottom: 1px solid var(--gt-border);
 	}
 
@@ -310,7 +310,7 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 	}
 
 	.gt-cd__block {
-		padding: var(--gt-space-8) 0;
+		padding: var(--gt-space-8) var(--gt-gutter-x);
 		border-bottom: 1px solid var(--gt-border);
 	}
 
@@ -374,7 +374,7 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 	}
 
 	.gt-cd__cta {
-		padding-top: var(--gt-space-10);
+		padding: var(--gt-space-10) var(--gt-gutter-x) 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--gt-space-5);
