@@ -12,6 +12,8 @@ const offices = (await getCollection('offices'))
 	.filter((e) => e.data.public)
 	.sort((a, b) => a.data.order - b.data.order);
 
+const originCoordinates = '0.351731, −78.118524';
+
 const seoTitle = 'Nosotros | GeoTactics';
 const seoDescription =
 	'Empresa ecuatoriana de tecnología. Origen en Ibarra. Base en Nueva Loja, Sucumbíos. Sistemas alrededor de problemas reales.';
@@ -184,15 +186,15 @@ const seoDescription =
 								<span> · {office.data.region}</span>
 							</h3>
 							<p>{office.data.note}</p>
-							{office.data.coordinates && (
-								<p class="gt-ns__coord gt-ns__coord--inline">{office.data.coordinates}</p>
-							)}
+							<p class="gt-ns__coord gt-ns__coord--inline">
+								{office.data.kind === 'origin' ? originCoordinates : office.data.coordinates}
+							</p>
 						</article>
 					))
 				}
 			</div>
 			<p class="gt-ns__teaser">
-				<a href="/archivo">{identity.presenceTeaser}</a>
+				<a class="gt-cta gt-cta--ghost" href="/territorio">Ver operación territorial</a>
 			</p>
 		</section>
 
@@ -205,7 +207,7 @@ const seoDescription =
 		</section>
 
 		<footer class="gt-page-close">
-	\t\t<div class="gt-page-close__inner">
+			<div class="gt-page-close__inner">
 			<p class="gt-ns__micro">K · CIERRE</p>
 			<p class="gt-page-close__text">{identity.cta}</p>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
