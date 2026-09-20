@@ -24,11 +24,11 @@ period:
   end: "2038"
   display: "2023–2038"
   dateStatus: publish
-summary: "Caso de planificación territorial. CAPTURE, base territorial, analítica y DataSucumbíos en una rama; experiencia de gestión institucional en otra. No son el mismo producto."
+summary: "Experiencia de planificación e inteligencia territorial que articula levantamiento de campo, base territorial, análisis y herramientas de gestión para el PDOT de Sucumbíos."
 problem: "Estructurar información territorial y de gestión para un plan de desarrollo y ordenamiento territorial provincial."
-context: "GAD Provincial de Sucumbíos. Horizonte documentado 2023–2038. DataSucumbíos no es el PDOT ni SIGDR v2."
-intervention: "Dos ramas relacionadas. A · Inteligencia territorial: GOST → SIGDR → CAPTURE → base territorial → BI / análisis → DataSucumbíos. B · Gestión del plan: experiencia YAKU → O/T → planificación / seguimiento / control. CAPTURE es componente del caso, no un producto de catálogo."
-outcome: "27.539 habitantes registrados · 31 parroquias rurales. Base territorial construida mediante levantamiento de información en campo. No es censo oficial ni población total de Sucumbíos."
+context: "GAD Provincial de Sucumbíos. El trabajo articula dos líneas complementarias: construcción y análisis de información territorial, y herramientas para planificación, seguimiento y gestión institucional."
+intervention: "La línea territorial conecta la experiencia SIGDR con CAPTURE, la construcción de una base de información, Business Intelligence y DataSucumbíos. En paralelo, la experiencia YAKU–O/T aporta herramientas de planificación, seguimiento y control para la gestión del plan."
+outcome: "27.539 habitantes registrados en la base territorial construida mediante levantamiento de información en campo en 31 parroquias rurales de Sucumbíos."
 products:
   - datasucumbios
   - ot
@@ -43,17 +43,17 @@ capabilities:
 phases:
   - id: preparacion
     title: Preparación
-    summary: "Fase candidata con respaldo de corpus PDOT."
+    summary: "Organización inicial del trabajo, fuentes y alcance territorial."
   - id: levantamiento
     title: Levantamiento
-    summary: "Trabajo territorial y captura. CAPTURE en contexto real."
+    summary: "Trabajo de campo y captura de información territorial mediante CAPTURE."
   - id: diagnostico
     title: Diagnóstico territorial
   - id: propuesta
     title: Propuesta
   - id: modelo-gestion
     title: Modelo de gestión
-    summary: "Planificación, seguimiento y control (rama O/T). Distinta de DataSucumbíos."
+    summary: "Planificación, seguimiento y control mediante la experiencia desarrollada con O/T."
   - id: inteligencia
     title: Inteligencia territorial
     summary: "Base territorial → BI / análisis → DataSucumbíos."
