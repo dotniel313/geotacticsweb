@@ -16,7 +16,7 @@ capabilities:
   - sociedad-y-participacion
 primaryFamily: sociedad-y-participacion
 problem: "Levantamientos de opinión y campo sin instrumento georreferenciado reutilizable."
-purpose: "Producto propio: encuestas georreferenciadas, roles, configuración, seguimiento de campo y análisis territorial. Modelo de arrendamiento. Un movimiento político usó la herramienta; no es propietario ni identidad del producto."
+purpose: "Encuestas georreferenciadas, configuración de instrumentos, roles de trabajo, seguimiento del levantamiento y análisis territorial de resultados. Producto propio bajo modelo de arrendamiento."
 gostRelation: "Spin-off funcional de Predicción."
 assetStatus: missing
 urlStatus: none
