@@ -255,7 +255,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'La Victoria · Antonio Ante, Imbabura',
 		problem: 'Gestión de cartera en junta de aguas (JALV).',
 		solution:
-			'Experiencia SIGC interrumpida por la pandemia. Hubo conversaciones y capacitación. No se presenta al mismo nivel que Pimampiro.',
+			'Experiencia SIGC con conversaciones y capacitación para gestión de cartera. El proceso quedó interrumpido durante la pandemia.',
 		gostRelation: 'Aplicación parcial de SIGC.',
 		technologies: ['SIGC'],
 		disciplines: ['gestión'],
@@ -350,7 +350,7 @@ export const records: GeoTacticsRecord[] = [
 			'Ciudadanía en territorios rurales dispersos con limitada capacidad de hacer visibles problemas y necesidades.',
 		solution:
 			'La radio es canal, no el problema central. Radio + aplicación + participación + georreferenciación + información para conectar ciudadanía, territorio y comunicación. Cliente histórico: Oreja Multimedia. Evolución de app en 2025.',
-		gostRelation: 'Fundamento ontológico GOST. No es GOST-software.',
+		gostRelation: 'GOST como fundamento para relacionar ciudadanía, información y territorio.',
 		technologies: ['web', 'mobile', 'radio'],
 		disciplines: ['GIS', 'participación'],
 		products: ['madaradio'],
@@ -488,7 +488,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Ciudadanía e institución sin un canal móvil para trámites, noticias y seguimiento de proyectos.',
 		solution:
-			'Aplicación móvil histórica: trámites, noticias, actualizaciones, localización e información de progreso. Integración/extensión de O/T, no sucesor tecnológico. Continuidad actual en el GADP: desconocida. Se usa pasado.',
+			'Aplicación móvil implementada como extensión funcional de O/T para acercar trámites, noticias, localización e información sobre proyectos a la ciudadanía.',
 		gostRelation: 'Relacionado funcionalmente con O/T.',
 		technologies: ['mobile'],
 		disciplines: ['gestión'],
@@ -590,7 +590,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Información territorial no integrada para observarla, analizar indicadores y apoyar decisión.',
 		solution:
-			'Producto GeoTactics de inteligencia territorial (GIS, BI, OLAP). No es GeoTactics. No es SIGDR v2. Consume la base territorial de CAPTURE. BI confirmado aquí y en monitoreo PDOT.',
+			'Plataforma GeoTactics de inteligencia territorial que integra GIS, BI y OLAP para observar información, explorar indicadores y apoyar la gestión y la decisión.',
 		gostRelation: 'Descendiente conceptual: GOST → SIGDR → CAPTURE → base → DataSucumbíos.',
 		technologies: ['web'],
 		disciplines: ['BI', 'GIS', 'OLAP', 'indicadores'],
@@ -619,7 +619,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Observar opinión y territorio en un contexto electoral sin tratar resultados preliminares como oficiales.',
 		solution:
-			'I+D+i de origen electoral: georreferenciación, investigación de opinión, territorialización, observación/reportes. No es herramienta de persuasión partidista. Padre conceptual de Termómetro Social.',
+			'Exploración I+D+i orientada al análisis territorial de información electoral, investigación de opinión y observación de reportes. Antecedente conceptual de Termómetro Social.',
 		gostRelation: 'GOST → Predicción → Termómetro Social (I+D+i / spin-off).',
 		technologies: ['mobile', 'GIS'],
 		disciplines: ['GIS', 'encuestas'],
@@ -646,7 +646,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Levantamientos de opinión y campo sin instrumento georreferenciado reutilizable.',
 		solution:
-			'Producto propio: encuestas, respuestas georreferenciadas, roles, configuración, seguimiento de campo y análisis territorial. Modelo de arrendamiento. ES AHORA usó la herramienta; no es propietario ni identidad del producto.',
+			'Producto propio para encuestas georreferenciadas, configuración de instrumentos, roles de trabajo, seguimiento de campo y análisis territorial. Disponible bajo modelo de arrendamiento.',
 		gostRelation: 'Spin-off funcional de Predicción.',
 		technologies: ['mobile', 'web'],
 		disciplines: ['GIS', 'encuestas'],
@@ -674,7 +674,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Saber dónde existe un producto o servicio cercano (origen: búsqueda de cartulina de noche).',
 		solution:
-			'Mapa, comercios, productos, autoregistro, búsqueda y direccionamiento al negocio. No reemplaza un catastro.',
+			'Registro de comercios y productos, búsqueda territorial y direccionamiento hacia el negocio donde puede encontrarse la oferta.',
 		gostRelation: 'Fundamento ontológico GOST. Vertical hacia ExploraSucumbíos.',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -703,7 +703,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Destinos y operadores turísticos sin una superficie de descubrimiento territorial.',
 		solution:
-			'Producto propio, web y móvil, derivado conceptualmente de OrangeMap. El GADP de Sucumbíos es interlocutor potencial.',
+			'Producto propio web y móvil que traslada al turismo la lógica de descubrimiento territorial explorada previamente en OrangeMap.',
 		gostRelation: 'GOST → OrangeMap → ExploraSucumbíos (vertical lógica).',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -815,9 +815,9 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: 'Prelanzamiento',
 		territory: 'Ecuador (origen conceptual: Quito periurbano)',
 		problem:
-			'Oferta de oficios visible en espera (Valle de los Chillos, Carapungo, Chillogallo) sin información estructurada para conectarla con demanda. Quito es origen conceptual, no pin de implementación.',
+			'Oferta de profesionales y oficios que necesita una forma estructurada de encontrarse con personas que requieren sus servicios.',
 		solution:
-			'Base organizada de profesionales/oficios y matching. Fixis / Fixis PRO según arquitectura. Superficie en desarrollo en fixis.geotactics.com.ec.',
+			'Ecosistema para organizar profesionales y oficios y conectar solicitudes de servicio con quienes pueden atenderlas, mediante experiencias complementarias para cliente y profesional.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['web'],
 		disciplines: [],
@@ -845,7 +845,7 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: 'Desarrollado',
 		territory: 'Ecuador',
 		problem: 'Administrar inmuebles en arriendo: mantenimiento, pagos, atrasos, cambios de arrendatarios.',
-		solution: 'Aplicación de administración de arriendos. Desarrollo propio inicial para un amigo. Desarrollado. No comercializado.',
+		solution: 'Aplicación desarrollada para organizar inmuebles, mantenimiento, pagos, atrasos y cambios de arrendatarios. Proyecto experimental no comercializado.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['mobile'],
 		disciplines: [],
