@@ -1,4 +1,26 @@
 import { type FamilyId, families } from './taxonomy';
+import p10Url from '../assets/history/pdyot-sucumbios/p10.jpg?url';
+import p19Url from '../assets/history/pdyot-sucumbios/p19.jpg?url';
+import p24Url from '../assets/history/pdyot-sucumbios/p24.jpg?url';
+import d01Url from '../assets/history/dayuma-ines-arango/d01.jpeg?url';
+import d19Url from '../assets/history/dayuma-ines-arango/d19.jpeg?url';
+import d24Url from '../assets/history/dayuma-ines-arango/d24.jpeg?url';
+import e14Url from '../assets/history/emapai-yaku/e14.jpeg?url';
+import e35Url from '../assets/history/emapai-yaku/e35.jpeg?url';
+import e58Url from '../assets/history/emapai-yaku/e58.jpeg?url';
+import pi02Url from '../assets/history/pimampiro-sigc/pi02.jpg?url';
+import pi13Url from '../assets/history/pimampiro-sigc/pi13.jpg?url';
+import pi18Url from '../assets/history/pimampiro-sigc/pi18.jpg?url';
+import g06Url from '../assets/history/gualsaqui-sigdr/g06.jpg?url';
+import g11Url from '../assets/history/gualsaqui-sigdr/g11.jpg?url';
+import g14Url from '../assets/history/gualsaqui-sigdr/g14.jpg?url';
+import v02Url from '../assets/history/vacas-galindo-sigdr/v02.jpg?url';
+import v06Url from '../assets/history/vacas-galindo-sigdr/v06.jpg?url';
+import v14Url from '../assets/history/vacas-galindo-sigdr/v14.jpg?url';
+import ot05Url from '../assets/history/ot-gadps/ot05.jpg?url';
+import ot14Url from '../assets/history/ot-gadps/ot14.jpg?url';
+import ot19Url from '../assets/history/ot-gadps/ot19.jpeg?url';
+
 
 /** Shared knowledge graph for Archive, Territory, and detail pages. */
 
@@ -134,7 +156,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['GIS'],
 		products: ['sigdr'],
 		cases: ['gualsaqui'],
-		assets: [],
+		assets: [
+			{ id: 'G06', src: g06Url, alt: 'Trabajo de planificación territorial en Gualsaquí.' },
+			{ id: 'G11', src: g11Url, alt: 'Levantamiento de información en territorio durante la implementación de SIGDR en Gualsaquí.' },
+			{ id: 'G14', src: g14Url, alt: 'Trabajo de campo con población durante la implementación de SIGDR en Gualsaquí.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -167,7 +193,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['GIS'],
 		products: ['sigdr'],
 		cases: ['vacas-galindo'],
-		assets: [],
+		assets: [
+			{ id: 'V02', src: v02Url, alt: 'Socialización de la implementación de SIGDR en Vacas Galindo.' },
+			{ id: 'V06', src: v06Url, alt: 'Planificación territorial durante la experiencia SIGDR en Vacas Galindo.' },
+			{ id: 'V14', src: v14Url, alt: 'Levantamiento de información en campo en Vacas Galindo.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -227,7 +257,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['gestión'],
 		products: ['sigc'],
 		cases: ['pimampiro'],
-		assets: [],
+		assets: [
+			{ id: 'PI02', src: pi02Url, alt: 'Levantamiento de información para la implementación de SIGC en Pimampiro.' },
+			{ id: 'PI13', src: pi13Url, alt: 'Planificación del trabajo institucional para SIGC en Pimampiro.' },
+			{ id: 'PI18', src: pi18Url, alt: 'Capacitación vinculada a la implementación de SIGC en Pimampiro.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -320,7 +354,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['OLAP', 'gestión'],
 		products: ['sigc', 'yaku'],
 		cases: ['emapai-yaku'],
-		assets: [],
+		assets: [
+			{ id: 'E14', src: e14Url, alt: 'Trabajo institucional durante la trayectoria SIGC y YAKU en EMAPAI.' },
+			{ id: 'E35', src: e35Url, alt: 'Evidencia tecnológica del proceso de modernización desarrollado con EMAPAI.' },
+			{ id: 'E58', src: e58Url, alt: 'Trabajo técnico vinculado a la implementación de YAKU en EMAPAI.' },
+		],
 		documents: [{ title: 'Informes EMAPAI 0–9 (Wix)', year: '2018–19' }],
 		surfaceStatus: 'restricted',
 		surfaceCta: 'none',
@@ -400,7 +438,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['GIS', 'captura'],
 		products: ['sigdr'],
 		cases: ['dayuma-ines-arango'],
-		assets: [],
+		assets: [
+			{ id: 'D01', src: d01Url, alt: 'Socialización del levantamiento territorial en Dayuma e Inés Arango.' },
+			{ id: 'D19', src: d19Url, alt: 'Levantamiento de información territorial en Dayuma e Inés Arango.' },
+			{ id: 'D24', src: d24Url, alt: 'Trabajo de campo para el proyecto técnico Dayuma e Inés Arango.' },
+		],
 		documents: [{ title: 'Informes Dayuma 2–5 (Wix)', year: '2022' }],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -460,7 +502,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['gestión'],
 		products: ['ot'],
 		cases: ['ot-gad-sucumbios'],
-		assets: [],
+		assets: [
+			{ id: 'OT05', src: ot05Url, alt: 'Capacitación durante la implementación de O/T en el GAD Provincial de Sucumbíos.' },
+			{ id: 'OT14', src: ot14Url, alt: 'Trabajo institucional de planificación y seguimiento con O/T.' },
+			{ id: 'OT19', src: ot19Url, alt: 'Implementación y socialización de O/T en Sucumbíos.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -561,7 +607,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['BI', 'GIS', 'gestión'],
 		products: ['datasucumbios', 'ot'],
 		cases: ['pdot-sucumbios'],
-		assets: [],
+		assets: [
+			{ id: 'P10', src: p10Url, alt: 'Trabajo técnico de planificación territorial para el PDOT de Sucumbíos.' },
+			{ id: 'P19', src: p19Url, alt: 'Levantamiento de información en territorio para el PDOT de Sucumbíos.' },
+			{ id: 'P24', src: p24Url, alt: 'Trabajo comunitario durante el proceso territorial del PDOT de Sucumbíos.' },
+		],
 		documents: [{ title: 'Informes PDyOT 0–6 (Wix)', year: '2024' }],
 		surfaceUrl: 'https://www.datasucumbios.tech',
 		surfaceStatus: 'live',
