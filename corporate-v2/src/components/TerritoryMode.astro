@@ -13,21 +13,24 @@ const kindLabel: Record<RecordKind, string> = {
 	experience: 'Experiencia',
 };
 
-const pins: TerritoryPin[] = mappableRecords().map((r) => ({
-	slug: r.slug,
-	title: r.title,
-	yearLabel: r.yearLabel,
-	kind: r.kind,
-	kindLabel: kindLabel[r.kind],
-	family: r.primaryFamily,
-	familyTitle: familyById(r.primaryFamily).title,
-	color: familyById(r.primaryFamily).color,
-	territory: r.territory,
-	note: r.coordinates!.note,
-	lat: r.coordinates!.lat,
-	lng: r.coordinates!.lng,
-	detailHref: r.detailHref,
-}));
+const pins: TerritoryPin[] = mappableRecords().flatMap((r) =>
+	(r.coordinates ?? []).map((coordinate, index) => ({
+		slug: index === 0 ? r.slug : `${r.slug}-${index + 1}`,
+		recordSlug: r.slug,
+		title: r.title,
+		yearLabel: r.yearLabel,
+		kind: r.kind,
+		kindLabel: kindLabel[r.kind],
+		family: r.primaryFamily,
+		familyTitle: familyById(r.primaryFamily).title,
+		color: familyById(r.primaryFamily).color,
+		territory: coordinate.label ?? r.territory,
+		note: coordinate.note,
+		lat: coordinate.lat,
+		lng: coordinate.lng,
+		detailHref: r.detailHref,
+	}))
+);
 
 const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` };
 ---
@@ -72,7 +75,7 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 			{
 				pins.map((p) => (
 					<li>
-						<a href={`/archivo?familia=${p.family}&hito=${p.slug}`}>
+						<a href={`/archivo?familia=${p.family}&hito=${p.recordSlug}`}>
 							<span>{p.territory}</span>
 							<strong>{p.title}</strong>
 							<em>{p.yearLabel}</em>
