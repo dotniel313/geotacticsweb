@@ -157,6 +157,9 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 		height: 54px;
 		width: auto;
 		max-width: 100%;
+		/* The recovered historical lockup is a flattened raster with a white matte.
+		   Blend that matte into the header surface without altering the logo artwork. */
+		mix-blend-mode: multiply;
 	}
 
 	.gt-nav {
