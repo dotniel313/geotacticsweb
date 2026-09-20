@@ -12,6 +12,6 @@ cue: Ciudadanía + territorio
 visual: society
 ---
 
-La radio, la encuesta o el mapa no son el problema: son canales. El problema es hacer visibles necesidades, opiniones o incidencias desde el territorio.
+Esta familia aborda la relación entre ciudadanía, opinión, información y territorio. El objetivo es crear mecanismos para registrar lo que ocurre, comprender patrones y acercar esa información a quienes necesitan interpretarla.
 
-Materializaciones: MadaRadio, Termómetro Social. Predicción permanece como I+D+i histórico, sin copy partidista.
+MadaRadio y Termómetro Social materializan esta línea desde contextos distintos. Predicción forma parte de la exploración histórica que antecedió algunos de estos desarrollos.
