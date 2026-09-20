@@ -42,7 +42,7 @@ export type GeoTacticsRecord = {
 	coordinates?: {
 		lat: number;
 		lng: number;
-		status: 'confirmed' | 'verified_source';
+		status: 'confirmed' | 'verified_source' | 'historical_reference';
 		note: string;
 	};
 	problem: string;
@@ -111,6 +111,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-GUAL',
 		slug: 'gualsaqui',
+		coordinates: {
+			lat: 0.2546,
+			lng: -78.2631,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		},
 		title: 'Gualsaquí',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -138,6 +144,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-VG',
 		slug: 'vacas-galindo',
+		coordinates: {
+			lat: 0.2285,
+			lng: -78.6042,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		},
 		title: 'Vacas Galindo',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -192,6 +204,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-PIMA',
 		slug: 'pimampiro',
+		coordinates: {
+			lat: 0.3923,
+			lng: -77.9405,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		},
 		title: 'Pimampiro (JAAPP)',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
@@ -219,6 +237,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-LV',
 		slug: 'la-victoria',
+		coordinates: {
+			lat: 0.3315,
+			lng: -78.2148,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		},
 		title: 'La Victoria (JALV)',
 		kind: 'experience',
 		primaryFamily: 'gobierno-y-gestion',
@@ -273,6 +297,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EMAPAI',
 		slug: 'emapai-yaku',
+		coordinates: {
+			lat: 0.351,
+			lng: -78.1215,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica de Ibarra usada en el mapa corporativo histórico.',
+		},
 		title: 'EMAPAI',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
