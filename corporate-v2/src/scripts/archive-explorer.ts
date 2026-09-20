@@ -32,6 +32,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const ctxTitle = root.querySelector('[data-ctx-title]');
 	const ctxDesc = root.querySelector('[data-ctx-desc]');
 	const back = root.querySelector<HTMLButtonElement>('[data-back]');
+	const continuousAxis = root.querySelector<HTMLElement>('.gt-ax__continuous-axis');
 
 	let selected: FamilyId | null = null;
 	let openFamily: FamilyId | null = null;
@@ -42,6 +43,16 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const rec = (slug: string) => payload.records.find((r) => r.slug === slug);
 	const fam = (id: FamilyId) => payload.families.find((f) => f.id === id);
 	const finePointer = () => window.matchMedia('(pointer: fine) and (hover: hover) and (min-width: 1025px)').matches;
+
+	const syncContinuousAxis = () => {
+		if (!rail || !continuousAxis || window.matchMedia('(max-width: 720px)').matches) return;
+		const node = milestones.find((el) => !el.hidden)?.querySelector<HTMLElement>('.gt-hit__node');
+		if (!node) return;
+		const railRect = rail.getBoundingClientRect();
+		const nodeRect = node.getBoundingClientRect();
+		const y = nodeRect.top - railRect.top + rail.scrollTop + nodeRect.height / 2;
+		rail.style.setProperty('--gt-axis-y', `${y}px`);
+	};
 
 	const showHint = (text: string) => {
 		if (!hint) return;
@@ -101,6 +112,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		milestones.forEach((el) => el.classList.remove('is-last'));
 		const visible = milestones.filter((el) => !el.hidden);
 		visible.at(-1)?.classList.add('is-last');
+		requestAnimationFrame(() => requestAnimationFrame(syncContinuousAxis));
 	};
 
 	const highlightHit = (slug: string | null) => {
@@ -142,6 +154,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		writeUrl(id, hit);
 		highlightHit(hit);
 		back?.focus();
+		requestAnimationFrame(() => requestAnimationFrame(syncContinuousAxis));
 	};
 
 	const leaveFamily = () => {
@@ -279,6 +292,8 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 			rail.scrollBy({ left: e.key === 'ArrowRight' ? 280 : -280, behavior: 'smooth' });
 		});
 	}
+
+	window.addEventListener('resize', syncContinuousAxis);
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && openFamily && lightbox && !lightbox.open) leaveFamily();
