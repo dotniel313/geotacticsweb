@@ -20,10 +20,10 @@ period:
   start: "2018"
   display: "2018"
   dateStatus: publish
-summary: "Primera instancia documentada de SIGC. Gestión de cartera e información de una junta de agua."
+summary: "Experiencia de gestión de cartera para una junta de agua mediante SIGC, iniciada en Pimampiro en 2018."
 problem: "Organizar información nominal y financiera para seguimiento, recaudación e información de gestión."
-context: "Junta de Aguas del Pueblo de Pimampiro (JAAPP). Año documentado: 2018."
-intervention: "Aplicación de SIGC para estructurar cartera e información de gestión."
+context: "Junta de Aguas del Pueblo de Pimampiro (JAAPP), Imbabura. En 2018 SIGC se aplica a un problema concreto de organización de cartera e información de usuarios."
+intervention: "Aplicación de SIGC para integrar información nominal y financiera, apoyar el seguimiento de cartera y convertir registros operativos en información de gestión."
 products:
   - sigc
 methodologies:
