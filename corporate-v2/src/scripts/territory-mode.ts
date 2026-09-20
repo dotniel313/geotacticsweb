@@ -4,6 +4,7 @@ import type { RecordKind } from '../data/records';
 
 export type TerritoryPin = {
 	slug: string;
+	recordSlug: string;
 	title: string;
 	yearLabel: string;
 	kind: RecordKind;
@@ -56,7 +57,7 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 			iconSize: [12, 12],
 			iconAnchor: [6, 6],
 		});
-		const archive = `/archivo?familia=${p.family}&hito=${p.slug}`;
+		const archive = `/archivo?familia=${p.family}&hito=${p.recordSlug}`;
 		const detail = p.detailHref
 			? `<a class="gt-tpop__a" href="${p.detailHref}">${kindCta[p.kind]}</a>`
 			: '';
