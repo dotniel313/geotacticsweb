@@ -233,3 +233,9 @@ button {
 		padding-top: var(--gt-space-8);
 	}
 }
+
+
+/* Semantic editorial emphasis. Apply sparingly during content reconciliation. */
+.gt-accent {
+	color: var(--gt-coral);
+}
