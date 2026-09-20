@@ -32,7 +32,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const ctxTitle = root.querySelector('[data-ctx-title]');
 	const ctxDesc = root.querySelector('[data-ctx-desc]');
 	const back = root.querySelector<HTMLButtonElement>('[data-back]');
-	const continuousAxis = root.querySelector<HTMLElement>('.gt-ax__continuous-axis');
+	const segmentLayer = root.querySelector<HTMLElement>('[data-timeline-segments]');
 
 	let selected: FamilyId | null = null;
 	let openFamily: FamilyId | null = null;
@@ -44,14 +44,35 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const fam = (id: FamilyId) => payload.families.find((f) => f.id === id);
 	const finePointer = () => window.matchMedia('(pointer: fine) and (hover: hover) and (min-width: 1025px)').matches;
 
-	const syncContinuousAxis = () => {
-		if (!rail || !continuousAxis || window.matchMedia('(max-width: 720px)').matches) return;
-		const node = milestones.find((el) => !el.hidden)?.querySelector<HTMLElement>('.gt-hit__node');
-		if (!node) return;
+	const syncTimelineSegments = () => {
+		if (!rail || !segmentLayer || window.matchMedia('(max-width: 720px)').matches) return;
+		segmentLayer.replaceChildren();
+		const visible = milestones.filter((el) => !el.hidden);
+		if (visible.length < 2) return;
 		const railRect = rail.getBoundingClientRect();
-		const nodeRect = node.getBoundingClientRect();
-		const y = nodeRect.top - railRect.top + rail.scrollTop + nodeRect.height / 2;
-		rail.style.setProperty('--gt-axis-y', `${y}px`);
+		const points = visible
+			.map((el) => el.querySelector<HTMLElement>('.gt-hit__node'))
+			.filter((node): node is HTMLElement => Boolean(node))
+			.map((node) => {
+				const rect = node.getBoundingClientRect();
+				return {
+					x: rect.left - railRect.left + rail.scrollLeft + rect.width / 2,
+					y: rect.top - railRect.top + rail.scrollTop + rect.height / 2,
+				};
+			});
+		for (let i = 0; i < points.length - 1; i += 1) {
+			const a = points[i];
+			const b = points[i + 1];
+			const dx = b.x - a.x;
+			const dy = b.y - a.y;
+			const segment = document.createElement('span');
+			segment.className = 'gt-ax__segment';
+			segment.style.left = `${a.x}px`;
+			segment.style.top = `${a.y - 1}px`;
+			segment.style.width = `${Math.hypot(dx, dy)}px`;
+			segment.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+			segmentLayer.append(segment);
+		}
 	};
 
 	const showHint = (text: string) => {
@@ -112,7 +133,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		milestones.forEach((el) => el.classList.remove('is-last'));
 		const visible = milestones.filter((el) => !el.hidden);
 		visible.at(-1)?.classList.add('is-last');
-		requestAnimationFrame(() => requestAnimationFrame(syncContinuousAxis));
+		requestAnimationFrame(() => requestAnimationFrame(syncTimelineSegments));
 	};
 
 	const highlightHit = (slug: string | null) => {
@@ -154,7 +175,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		writeUrl(id, hit);
 		highlightHit(hit);
 		back?.focus();
-		requestAnimationFrame(() => requestAnimationFrame(syncContinuousAxis));
+		requestAnimationFrame(() => requestAnimationFrame(syncTimelineSegments));
 	};
 
 	const leaveFamily = () => {
@@ -293,7 +314,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		});
 	}
 
-	window.addEventListener('resize', syncContinuousAxis);
+	window.addEventListener('resize', syncTimelineSegments);
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && openFamily && lightbox && !lightbox.open) leaveFamily();
