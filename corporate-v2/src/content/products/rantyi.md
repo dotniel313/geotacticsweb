@@ -14,7 +14,7 @@ homeOrder: 2
 capabilities:
   - mercados-y-servicios
 primaryFamily: mercados-y-servicios
-problem: "Personas que desean vender objetos en desuso desconfían de marketplaces existentes. El origen conceptual es una observación en Quito — no una implementación operacional en esa ciudad."
+problem: "Personas que desean ofrecer objetos en desuso necesitan una forma más territorial de encontrarse con potenciales interesados."
 purpose: "Marketplace georreferenciado entre personas: publicación, ficha territorial y desbloqueo de contacto."
 gostRelation: "Fundamento ontológico GOST."
 assetStatus: missing
