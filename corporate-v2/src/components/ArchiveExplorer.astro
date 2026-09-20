@@ -88,7 +88,7 @@ const ctaFor = (kind: RecordKind) => {
 			</aside>
 			<div class="gt-ax__rail-wrap">
 				<div class="gt-ax__rail" data-rail tabindex="0" aria-label="Cronología de la familia">
-					<div class="gt-ax__continuous-axis" aria-hidden="true"></div>
+					<div class="gt-ax__segments" data-timeline-segments aria-hidden="true"></div>
 					{
 						records.map((r) => {
 							const fan = r.assets.slice(0, 3);
@@ -515,21 +515,24 @@ const ctaFor = (kind: RecordKind) => {
 		overflow-y: hidden;
 		scroll-snap-type: x proximity;
 		gap: clamp(4.5rem, 7vw, 7rem);
-		padding: clamp(4.5rem, 9vh, 7rem) clamp(3rem, 5vw, 5rem) calc(clamp(4.5rem, 9vh, 7rem) + env(safe-area-inset-bottom, 0px));
+		padding: clamp(5rem, 10vh, 8rem) clamp(3rem, 5vw, 5rem) calc(clamp(5rem, 10vh, 8rem) + env(safe-area-inset-bottom, 0px));
 		overscroll-behavior-x: contain;
 		position: relative;
 		min-height: 100%;
 	}
 
-	.gt-ax__continuous-axis {
+	.gt-ax__segments {
 		position: absolute;
-		left: clamp(3rem, 5vw, 5rem);
-		right: 0;
-		top: var(--gt-axis-y);
-		height: 2px;
-		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		inset: 0;
 		z-index: 0;
 		pointer-events: none;
+	}
+
+	:global(.gt-ax__segment) {
+		position: absolute;
+		height: 2px;
+		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		transform-origin: 0 50%;
 	}
 
 	.gt-hit {
@@ -845,7 +848,7 @@ const ctaFor = (kind: RecordKind) => {
 			padding: 0 0 2.75rem 1.6rem;
 		}
 
-		.gt-ax__continuous-axis {
+		.gt-ax__segments {
 			display: none;
 		}
 
