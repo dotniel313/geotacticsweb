@@ -15,7 +15,7 @@ const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lin
 		<p class="gt-lin__micro">GT / LINEAGE</p>
 		<h2 id="gt-lin-h">Genealogía</h2>
 		<p class="gt-lin__lead">
-			Genealogía conceptual: qué experiencia abrió camino a otra. Distinta de la cronología del Archivo.
+			Cómo una experiencia abrió camino a otra y amplió las capacidades de GeoTactics.
 		</p>
 		<ul class="gt-lin__legend">
 			{
@@ -59,8 +59,7 @@ const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lin
 	<section class="gt-lin__leaves gt-container--wide" aria-labelledby="gt-lin-leaves">
 		<h3 id="gt-lin-leaves">Ramas independientes desde GOST</h3>
 		<p>
-			MadaRadio, GUANTA, RANTYI y el resto no forman una secuencia. Cada uno parte del fundamento ontológico.
-			Nurse GO no se publica.
+			Desarrollos que nacen del mismo fundamento metodológico y responden a problemas distintos.
 		</p>
 		<ul>
 			{
@@ -72,7 +71,7 @@ const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lin
 								Fundamento ontológico
 							</span>
 							{node.href ? <a href={node.href}>{node.label}</a> : <span>{node.label}</span>}
-							{id === 'sigmd' ? <span class="gt-lin__meta">I+D+i · no implementado</span> : null}
+							
 						</li>
 					);
 				})
@@ -192,7 +191,7 @@ const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lin
 
 	.gt-lin__branch li,
 	.gt-lin__leaves li {
-		padding: 0.35rem 0 0.35rem var(--gt-space-4);
+		padding: 0.5rem 0 0.5rem var(--gt-space-4);
 		position: relative;
 	}
 
@@ -221,7 +220,14 @@ const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lin
 
 	.gt-lin__leaves li {
 		border-left: 1px solid var(--gt-border);
+		display: grid;
+		grid-template-columns: minmax(8.75rem, auto) minmax(0, 1fr);
+		column-gap: 0.9rem;
+		align-items: baseline;
 	}
+	.gt-lin__leaves li > a,
+	.gt-lin__leaves li > span:not(.gt-lin__edge) { min-width: 0; }
+
 
 	.gt-lin__meta {
 		display: block;
