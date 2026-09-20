@@ -12,8 +12,6 @@ cue: Oferta + demanda
 visual: market
 ---
 
-Conectar quien busca con quien ofrece. A veces el mapa es central (OrangeMap, RANTYI). A veces el oficio o el arriendo (Fixis, Inqui).
+Esta familia explora cómo reducir la distancia entre quien necesita algo y quien puede ofrecerlo. El territorio puede ser parte del encuentro, pero también lo son la confianza, la disponibilidad, la información y el flujo del servicio.
 
-Quito aparece como origen conceptual de RANTYI y Fixis: observación, no pin de implementación operacional.
-
-Inqui es desarrollo propio no comercializado. Permanece en archivo.
+OrangeMap trabaja sobre descubrimiento de comercios y productos; RANTYI sobre intercambio entre personas; Fixis sobre servicios y oficios. Inqui forma parte de esta trayectoria como desarrollo experimental de gestión de arriendos.
