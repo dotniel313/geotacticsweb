@@ -17,7 +17,7 @@ capabilities:
   - gobierno-y-gestion
 primaryFamily: gobierno-y-gestion
 problem: "Datos comerciales y operativos de un prestador de agua no explotables para gestión."
-purpose: "Evolución operacional para EMAPAI. OLAP documentado."
+purpose: "Evolución de la experiencia SIGC aplicada a la gestión institucional en EMAPAI, incorporando análisis multidimensional para explotar información operativa y comercial."
 gostRelation: "GOST → SIGC → YAKU → O/T."
 disciplines:
   - OLAP
