@@ -88,6 +88,7 @@ const ctaFor = (kind: RecordKind) => {
 			</aside>
 			<div class="gt-ax__rail-wrap">
 				<div class="gt-ax__rail" data-rail tabindex="0" aria-label="Cronología de la familia">
+					<div class="gt-ax__continuous-axis" aria-hidden="true"></div>
 					{
 						records.map((r) => {
 							const fan = r.assets.slice(0, 3);
@@ -116,7 +117,6 @@ const ctaFor = (kind: RecordKind) => {
 									</div>
 									<div class="gt-hit__axis" aria-hidden="true">
 										<span class="gt-hit__node" />
-										<span class="gt-hit__wire" />
 									</div>
 									<p class="gt-hit__year">{r.yearLabel}</p>
 									<p class="gt-hit__kind">{kindLabel[r.kind]}</p>
@@ -508,6 +508,7 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-ax__rail {
+		--gt-axis-y: calc(clamp(4.5rem, 9vh, 7rem) + 15rem + 0.575rem);
 		display: flex;
 		align-items: center;
 		overflow-x: auto;
@@ -518,6 +519,17 @@ const ctaFor = (kind: RecordKind) => {
 		overscroll-behavior-x: contain;
 		position: relative;
 		min-height: 100%;
+	}
+
+	.gt-ax__continuous-axis {
+		position: absolute;
+		left: clamp(3rem, 5vw, 5rem);
+		right: 0;
+		top: var(--gt-axis-y);
+		height: 2px;
+		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		z-index: 0;
+		pointer-events: none;
 	}
 
 	.gt-hit {
@@ -551,7 +563,7 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-hit__axis {
 		position: relative;
-		width: calc(100% + clamp(4.5rem, 7vw, 7rem));
+		width: 100%;
 		height: 1.15rem;
 		margin: 0 0 0.85rem;
 		overflow: visible;
@@ -559,6 +571,7 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-hit__node {
 		position: absolute;
+		box-sizing: border-box;
 		top: 50%;
 		left: 0;
 		width: 0.72rem;
@@ -570,21 +583,6 @@ const ctaFor = (kind: RecordKind) => {
 		transform: translateY(-50%);
 	}
 
-	.gt-hit__wire {
-		position: absolute;
-		left: 0.36rem;
-		right: 0;
-		top: 50%;
-		height: 2px;
-		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
-		transform: translateY(-50%);
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.gt-hit.is-last .gt-hit__wire {
-		right: clamp(4.5rem, 7vw, 7rem);
-	}
 
 	.gt-fan {
 		position: relative;
@@ -823,6 +821,10 @@ const ctaFor = (kind: RecordKind) => {
 			padding: 0 0 2.75rem 1.6rem;
 		}
 
+		.gt-ax__continuous-axis {
+			display: none;
+		}
+
 		.gt-hit__axis {
 			position: absolute;
 			left: 0;
@@ -833,20 +835,21 @@ const ctaFor = (kind: RecordKind) => {
 			margin: 0;
 		}
 
+		.gt-hit__axis::after {
+			content: '';
+			position: absolute;
+			left: 0.3rem;
+			top: 0.36rem;
+			bottom: -2.75rem;
+			width: 2px;
+			background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		}
+
 		.gt-hit__node {
 			top: 0;
 			left: 0;
 			transform: none;
 		}
 
-		.gt-hit__wire {
-			left: 0.3rem;
-			right: auto;
-			top: 0.36rem;
-			bottom: -2.75rem;
-			width: 2px;
-			height: auto;
-			transform: none;
-		}
 	}
 </style>
