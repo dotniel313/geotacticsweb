@@ -508,7 +508,7 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-ax__rail {
-		--gt-axis-y: calc(clamp(4.5rem, 9vh, 7rem) + 15rem + 1.575rem);
+		--gt-axis-y: 0px;
 		display: flex;
 		align-items: center;
 		overflow-x: auto;
@@ -536,6 +536,7 @@ const ctaFor = (kind: RecordKind) => {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
+		align-self: stretch;
 		flex: 0 0 min(25rem, 78vw);
 		scroll-snap-align: center;
 		padding: 0;
