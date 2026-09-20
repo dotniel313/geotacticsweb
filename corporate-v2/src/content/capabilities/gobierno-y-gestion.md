@@ -12,6 +12,6 @@ cue: Institución + proceso
 visual: gov
 ---
 
-Sistemas para que una institución comprenda, planifique y controle.
+Cuando una organización necesita ordenar procesos, planificar, hacer seguimiento o convertir información en gestión, diseñamos sistemas alrededor de ese flujo institucional.
 
-Materializaciones: SIGC, YAKU, O/T, E-GPS (histórico), Observatorio (I+D+i). Casos: Pimampiro, EMAPAI, O/T GAD Provincial de Sucumbíos. La Victoria es una experiencia histórica parcial.
+SIGC, YAKU y O/T representan distintas etapas de esta línea de trabajo. E-GPS extendió esa experiencia hacia la interacción ciudadana, mientras Observatorio explora nuevas formas de organizar y presentar información pública. La trayectoria incluye experiencias con Pimampiro, EMAPAI y el GAD Provincial de Sucumbíos.
