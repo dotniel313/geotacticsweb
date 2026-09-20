@@ -330,6 +330,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-MADA',
 		slug: 'madaradio',
+		coordinates: {
+			lat: 0.095,
+			lng: -76.888,
+			status: 'historical_reference',
+			note: 'Referencia de Nueva Loja usada en el mapa corporativo histórico.'
+		},
 		title: 'MadaRadio',
 		kind: 'product',
 		primaryFamily: 'sociedad-y-participacion',
@@ -448,6 +454,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EGPS',
 		slug: 'e-gps',
+		coordinates: {
+			lat: 0.06,
+			lng: -77.1,
+			status: 'historical_reference',
+			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
+		},
 		title: 'E-GPS',
 		kind: 'product',
 		primaryFamily: 'gobierno-y-gestion',
@@ -475,6 +487,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-CAPTURE',
 		slug: 'capture',
+		coordinates: {
+			lat: 0.091,
+			lng: -76.885,
+			status: 'historical_reference',
+			note: 'Referencia provincial usada en el mapa corporativo histórico para CAPTURE.'
+		},
 		title: 'CAPTURE',
 		kind: 'component',
 		primaryFamily: 'inteligencia-territorial',
@@ -538,6 +556,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-DS',
 		slug: 'datasucumbios',
+		coordinates: {
+			lat: 0.05,
+			lng: -77.0,
+			status: 'historical_reference',
+			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
+		},
 		title: 'DataSucumbíos',
 		kind: 'product',
 		primaryFamily: 'inteligencia-territorial',
@@ -607,7 +631,7 @@ export const records: GeoTacticsRecord[] = [
 			'Producto propio: encuestas, respuestas georreferenciadas, roles, configuración, seguimiento de campo y análisis territorial. Modelo de arrendamiento. ES AHORA usó la herramienta; no es propietario ni identidad del producto.',
 		gostRelation: 'Spin-off funcional de Predicción.',
 		technologies: ['mobile', 'web'],
-		disciplines: ['GIS', 'BI', 'encuestas'],
+		disciplines: ['GIS', 'encuestas'],
 		products: ['termometro-social'],
 		cases: [],
 		assets: [],
