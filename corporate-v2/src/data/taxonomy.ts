@@ -42,7 +42,7 @@ export const families: Family[] = [
 		cue: 'Institución + proceso',
 		shortDescription:
 			'Problemas de planificación, seguimiento, control e información institucional pública o de gestión.',
-		color: '#2E3238',
+		color: '#3498DB',
 		visual: 'gov',
 	},
 	{
@@ -53,7 +53,7 @@ export const families: Family[] = [
 		cue: 'Ciudadanía + territorio',
 		shortDescription:
 			'Problemas de participación, opinión y visibilidad ciudadana desde el territorio.',
-		color: '#4A3E3D',
+		color: '#9B59B6',
 		visual: 'society',
 	},
 	{
@@ -64,7 +64,7 @@ export const families: Family[] = [
 		cue: 'Flujo + registro',
 		shortDescription:
 			'Problemas de operación física o administrativa que requieren trazar un flujo de punta a punta.',
-		color: '#5A6169',
+		color: '#27AE60',
 		visual: 'ops',
 	},
 	{
@@ -75,7 +75,7 @@ export const families: Family[] = [
 		cue: 'Oferta + demanda',
 		shortDescription:
 			'Problemas de encuentro entre oferta, demanda e información, con o sin dimensión territorial.',
-		color: '#16181B',
+		color: '#4A3E3D',
 		visual: 'market',
 	},
 	{
@@ -86,7 +86,7 @@ export const families: Family[] = [
 		cue: 'Lugar + experiencia',
 		shortDescription:
 			'Problemas de descubrimiento turístico, operadores y ventanas digitales sobre el territorio.',
-		color: '#DA3B26',
+		color: '#F39C12',
 		visual: 'tour',
 	},
 ];
