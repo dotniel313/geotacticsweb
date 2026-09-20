@@ -21,6 +21,7 @@ const pins: TerritoryPin[] = mappableRecords().map((r) => ({
 	kindLabel: kindLabel[r.kind],
 	family: r.primaryFamily,
 	familyTitle: familyById(r.primaryFamily).title,
+	color: familyById(r.primaryFamily).color,
 	territory: r.territory,
 	note: r.coordinates!.note,
 	lat: r.coordinates!.lat,
