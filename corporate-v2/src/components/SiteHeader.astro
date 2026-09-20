@@ -1,0 +1,288 @@
+---
+import headerLogo from '../assets/brand/derived/geotactics-header.png';
+import { conversarHref, conversarLabel, navItems } from '../config/site';
+
+interface Props {
+	pathname: string;
+}
+
+const { pathname } = Astro.props;
+
+const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header class="gt-header">
+	<div class="gt-header__bar gt-container--wide">
+		<a class="gt-brand" href="/" aria-label="GeoTactics, inicio">
+			<img
+				src={headerLogo.src}
+				width={headerLogo.width}
+				height={headerLogo.height}
+				alt="GeoTactics"
+			/>
+		</a>
+
+		<nav class="gt-nav" aria-label="Principal">
+			<ul class="gt-nav__list">
+				{
+					navItems.map((item) => (
+						<li>
+							<a
+								class:list={['gt-nav-link', isActive(item.href) && 'is-active']}
+								href={item.href}
+								aria-current={isActive(item.href) ? 'page' : undefined}
+							>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<a class="gt-cta gt-header__cta" href={conversarHref}>{conversarLabel}</a>
+
+		<button
+			class="gt-nav-toggle"
+			type="button"
+			aria-expanded="false"
+			aria-controls="gt-mobile-nav"
+			data-nav-toggle
+		>
+			<span class="visually-hidden">Abrir menú</span>
+			<span class="gt-nav-toggle__bars" aria-hidden="true"></span>
+		</button>
+	</div>
+</header>
+
+<div class="gt-mobile" id="gt-mobile-nav" hidden>
+	<div class="gt-mobile__panel" role="dialog" aria-modal="true" aria-label="Menú">
+		<nav aria-label="Principal móvil">
+			<ul class="gt-mobile__list">
+				{
+					navItems.map((item) => (
+						<li>
+							<a class="gt-mobile__link" href={item.href}>
+								{item.label}
+							</a>
+						</li>
+					))
+				}
+				<li>
+					<a class="gt-cta gt-mobile__cta" href={conversarHref}>{conversarLabel}</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+
+<script>
+	const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+	const panel = document.getElementById('gt-mobile-nav');
+	if (toggle && panel) {
+		const label = toggle.querySelector('.visually-hidden');
+		let last: HTMLElement | null = null;
+
+		const setOpen = (open: boolean) => {
+			toggle.setAttribute('aria-expanded', String(open));
+			panel.hidden = !open;
+			document.body.style.overflow = open ? 'hidden' : '';
+			if (label) label.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+			if (open) {
+				last = document.activeElement as HTMLElement;
+				const first = panel.querySelector<HTMLElement>('a, button');
+				first?.focus();
+			} else {
+				last?.focus();
+			}
+		};
+
+		toggle.addEventListener('click', () => {
+			setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+				setOpen(false);
+			}
+		});
+
+		panel.addEventListener('keydown', (e) => {
+			if (e.key !== 'Tab' || panel.hidden) return;
+			const focusable = [...panel.querySelectorAll<HTMLElement>('a, button')];
+			if (!focusable.length) return;
+			const first = focusable[0];
+			const lastEl = focusable[focusable.length - 1];
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault();
+				lastEl.focus();
+			} else if (!e.shiftKey && document.activeElement === lastEl) {
+				e.preventDefault();
+				first.focus();
+			}
+		});
+	}
+</script>
+
+<style>
+	.gt-header {
+		position: sticky;
+		top: 0;
+		z-index: var(--gt-z-header);
+		background: color-mix(in srgb, var(--gt-off-white) 92%, transparent);
+		backdrop-filter: blur(8px);
+		border-bottom: var(--gt-border-w) solid var(--gt-border);
+	}
+
+	.gt-header__bar {
+		display: flex;
+		align-items: center;
+		gap: var(--gt-space-5);
+		min-height: var(--gt-header-h);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-brand {
+		flex-shrink: 1;
+		min-width: 0;
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		max-width: min(252px, 42vw);
+	}
+
+	.gt-brand img {
+		display: block;
+		height: 41px;
+		width: auto;
+		max-width: 100%;
+	}
+
+	.gt-nav {
+		margin-left: auto;
+		min-width: 0;
+	}
+
+	.gt-nav__list {
+		display: flex;
+		gap: 0.15rem 1.1rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.gt-nav-link {
+		text-decoration: none;
+		font-size: 0.82rem;
+		font-weight: var(--gt-fw-medium);
+		color: var(--gt-gray-800);
+		padding: 0.4rem 0;
+		border-bottom: 2px solid transparent;
+	}
+
+	.gt-nav-link:hover,
+	.gt-nav-link.is-active {
+		color: var(--gt-gray-950);
+		border-bottom-color: var(--gt-coral);
+	}
+
+	.gt-header__cta {
+		flex-shrink: 0;
+	}
+
+	.gt-nav-toggle {
+		display: none;
+		width: var(--gt-touch);
+		height: var(--gt-touch);
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		border-radius: var(--gt-radius-sm);
+		position: relative;
+	}
+
+	.gt-nav-toggle__bars,
+	.gt-nav-toggle__bars::before,
+	.gt-nav-toggle__bars::after {
+		display: block;
+		width: 18px;
+		height: 2px;
+		background: var(--gt-gray-950);
+		position: absolute;
+		left: 12px;
+	}
+
+	.gt-nav-toggle__bars {
+		top: 21px;
+	}
+
+	.gt-nav-toggle__bars::before,
+	.gt-nav-toggle__bars::after {
+		content: '';
+	}
+
+	.gt-nav-toggle__bars::before {
+		top: -6px;
+	}
+
+	.gt-nav-toggle__bars::after {
+		top: 6px;
+	}
+
+	.gt-mobile {
+		position: fixed;
+		inset: var(--gt-header-h) 0 0 0;
+		z-index: var(--gt-z-nav);
+		background: color-mix(in srgb, var(--gt-gray-950) 40%, transparent);
+	}
+
+	.gt-mobile__panel {
+		background: var(--gt-off-white);
+		min-height: 100%;
+		padding: var(--gt-space-6) var(--gt-space-5);
+		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-mobile__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.25rem;
+	}
+
+	.gt-mobile__link {
+		display: flex;
+		align-items: center;
+		min-height: var(--gt-touch);
+		text-decoration: none;
+		font-weight: var(--gt-fw-medium);
+		font-size: 1.05rem;
+	}
+
+	.gt-mobile__cta {
+		margin-top: var(--gt-space-4);
+		width: 100%;
+	}
+
+	@media (max-width: 1024px) {
+		.gt-nav,
+		.gt-header__cta {
+			display: none;
+		}
+
+		.gt-nav-toggle {
+			display: inline-block;
+			margin-left: auto;
+			flex-shrink: 0;
+		}
+
+		.gt-brand {
+			max-width: calc(100% - 3.75rem);
+		}
+
+		.gt-brand img {
+			height: 32px;
+		}
+	}
+</style>

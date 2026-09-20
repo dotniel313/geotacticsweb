@@ -1,0 +1,52 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { copy, site } from '../config/site';
+import '../styles/base.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	noindex?: boolean;
+}
+
+const {
+	title = `${site.name} — Sistemas de territorio, datos y operación`,
+	description = copy.description,
+	noindex = !site.indexable,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.url).toString().replace(/\/$/, '') || site.url;
+const robots = noindex ? 'noindex, nofollow' : 'index, follow';
+---
+
+<!doctype html>
+<html lang={site.lang}>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
+		<meta name="robots" content={robots} />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content={site.locale} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<!-- og:image omitted — OG_IMAGE_PENDING (no authorized asset; do not use production placeholder) -->
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<meta name="theme-color" content="#E84C3D" />
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<a class="skip-link" href="#contenido">Saltar al contenido</a>
+		<SiteHeader pathname={Astro.url.pathname} />
+		<slot name="signals" />
+		<main id="contenido">
+			<slot />
+		</main>
+		<SiteFooter />
+	</body>
+</html>

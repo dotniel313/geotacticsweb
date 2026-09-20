@@ -1,0 +1,24 @@
+---
+import EvidenceStrip from '../components/EvidenceStrip.astro';
+import Hero from '../components/Hero.astro';
+import IdentityBridge from '../components/IdentityBridge.astro';
+import CapabilityGrid from '../components/CapabilityGrid.astro';
+import CaseHomeStrip from '../components/CaseHomeStrip.astro';
+import ProductShowcase from '../components/ProductShowcase.astro';
+import MethodHomeStrip from '../components/MethodHomeStrip.astro';
+import ArchiveTeaser from '../components/ArchiveTeaser.astro';
+import SignalsStrip from '../components/SignalsStrip.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+	<SignalsStrip slot="signals" />
+	<Hero />
+	<EvidenceStrip />
+	<CapabilityGrid />
+	<MethodHomeStrip />
+	<IdentityBridge />
+	<ProductShowcase mode="home" />
+	<CaseHomeStrip />
+	<ArchiveTeaser />
+</BaseLayout>

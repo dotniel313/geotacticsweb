@@ -1,0 +1,118 @@
+---
+import ProductShowcase from '../components/ProductShowcase.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { conversarHref, copy, productsIntro, site } from '../config/site';
+
+const seoTitle = 'Productos | GeoTactics';
+const seoDescription =
+	'Productos desarrollados por GeoTactics para territorio, gestión, operación, mercado y trabajo de campo.';
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} noindex={false}>
+	<article class="gt-pp">
+		<header class="gt-pp__intro gt-container--wide">
+			<p class="gt-pp__micro">{productsIntro.microcode}</p>
+			<h1 id="gt-prod-title">Productos</h1>
+			<p class="gt-pp__lead">{productsIntro.headline}</p>
+			<p class="gt-pp__support">{productsIntro.supporting}</p>
+			<p class="gt-pp__support">{productsIntro.catalogSupporting}</p>
+		</header>
+
+		<ProductShowcase mode="catalog" />
+
+		<footer class="gt-pp__cta gt-container--wide">
+			<p>
+				Si el problema está en territorio, gestión, operación, mercado o campo, conversemos.
+			</p>
+			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+			<p class="gt-pp__colophon">
+				{site.originLine}
+				<span aria-hidden="true"> · </span>
+				{site.coordinates}
+			</p>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-pp {
+		padding-bottom: var(--gt-space-12);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-pp__intro {
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-pp__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		font-size: 0.62rem;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-pp h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-pp__lead {
+		font-size: var(--gt-fs-lg);
+		font-weight: 600;
+		max-width: 28ch;
+		margin-bottom: var(--gt-space-4);
+		overflow-wrap: anywhere;
+		word-break: break-word;
+	}
+
+	.gt-pp__support {
+		max-width: 40rem;
+		color: var(--gt-text-muted);
+		overflow-wrap: anywhere;
+	}
+
+	.gt-pp__support + .gt-pp__support {
+		margin-top: var(--gt-space-4);
+	}
+
+	.gt-pp__cta {
+		padding-top: var(--gt-space-8);
+		max-width: 40rem;
+	}
+
+	.gt-pp__cta p {
+		margin-bottom: var(--gt-space-5);
+		color: var(--gt-gray-800);
+	}
+
+	.gt-pp__colophon {
+		margin-top: var(--gt-space-8);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gt-gray-600);
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		.gt-pp__lead,
+		.gt-pp__support,
+		.gt-pp__cta {
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-pp__lead {
+			max-width: none;
+		}
+
+		.gt-pp__cta {
+			padding-inline: 0;
+		}
+	}
+</style>

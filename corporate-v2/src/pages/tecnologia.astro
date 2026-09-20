@@ -1,0 +1,544 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TerritorialGrid from '../components/TerritorialGrid.astro';
+import LineageGraph from '../components/LineageGraph.astro';
+import EvolutionTimeline from '../components/EvolutionTimeline.astro';
+import { conversarHref, copy } from '../config/site';
+import { adn, gost, methodFlow, rdFlow } from '../data/method';
+import { disciplines } from '../data/disciplines';
+
+const relatedCases = [
+	{ href: '/casos/gualsaqui', label: 'SIGDR → Gualsaquí' },
+	{ href: '/casos/pimampiro', label: 'SIGC → Pimampiro' },
+	{ href: '/casos/emapai-yaku', label: 'YAKU → EMAPAI' },
+	{ href: '/casos/ot-gad-sucumbios', label: 'O/T → GAD Provincial de Sucumbíos' },
+	{ href: '/casos/pdot-sucumbios', label: 'Data / BI → PDOT Sucumbíos' },
+	{ href: '/casos/dayuma-ines-arango', label: 'SIGDR → Dayuma–Inés Arango' },
+];
+
+const relatedProducts = [
+	{ href: '/productos/sigdr', label: 'SIGDR' },
+	{ href: '/productos/sigc', label: 'SIGC' },
+	{ href: '/productos/yaku', label: 'YAKU' },
+	{ href: '/productos/ot', label: 'O/T' },
+	{ href: '/productos/datasucumbios', label: 'DataSucumbíos' },
+	{ href: '/productos/madaradio', label: 'MadaRadio' },
+];
+
+const seoTitle = 'Tecnología | GeoTactics';
+const seoDescription =
+	'Cómo piensa GeoTactics: GOST, disciplinas (BI, GIS, datos, OLAP) y evolución. No es una página de stack.';
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} noindex={false}>
+	<article class="gt-tec">
+		<header class="gt-tec__hero">
+			<TerritorialGrid intensity="hero" />
+			<div class="gt-tec__hero-inner gt-container--wide">
+				<p class="gt-tec__micro">GT / TECHNOLOGY · METHOD · EVOLUTION</p>
+				<h1>Cómo estructuramos problemas.</h1>
+				<p class="gt-tec__lead">
+					Cómo piensa y construye GeoTactics: un problema real, un marco para estructurarlo, las
+					disciplinas que el caso requiere y un sistema que se pone a prueba.
+				</p>
+			</div>
+		</header>
+
+		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-flow">
+			<p class="gt-tec__micro">A · ABORDAJE</p>
+			<h2 id="gt-tec-flow">Cómo abordamos un problema</h2>
+			<p class="gt-tec__support">
+				Un recorrido frecuente. No todos los desarrollos recorren cada etapa de la misma manera.
+			</p>
+			<ol class="gt-tec__flow">
+				{
+					methodFlow.map((step, i) => (
+						<li>
+							<span>{String(i + 1).padStart(2, '0')}</span>
+							{step.title}
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-rd">
+			<p class="gt-tec__micro">A2 · I+D+i</p>
+			<h2 id="gt-tec-rd">Cuando el problema es exploración</h2>
+			<p class="gt-tec__support">
+				I+D+i es una capa transversal, no una séptima familia. Predicción, Observatorio, Inqui y Ecuador Ancestral pueden llevar este facet.
+			</p>
+			<ol class="gt-tec__flow">
+				{
+					rdFlow.map((step, i) => (
+						<li>
+							<span>{String(i + 1).padStart(2, '0')}</span>
+							{step.title}
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="gt-tec__gost" id="gost" aria-labelledby="gt-tec-gost">
+			<div class="gt-container--wide">
+				<p class="gt-tec__micro">B · MARCO</p>
+				<p class="gt-tec__gost-acro">{gost.acronym}</p>
+				<h2 id="gt-tec-gost">{gost.name}</h2>
+				<p class="gt-tec__gost-lead">{gost.lead}</p>
+				<div class="gt-tec__gost-grid">
+					{gost.body.map((p) => <p>{p}</p>)}
+				</div>
+				<dl class="gt-tec__gost-meta">
+					<div>
+						<dt>Concepción</dt>
+						<dd>
+							{gost.conception.year} · {gost.conception.publicNote}
+						</dd>
+					</div>
+					<div>
+						<dt>Primera materialización documentada</dt>
+						<dd>
+							{gost.firstMaterialization.year} · {gost.firstMaterialization.note}
+						</dd>
+					</div>
+				</dl>
+			</div>
+		</section>
+
+		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-layers">
+			<p class="gt-tec__micro">C · CAPAS</p>
+			<h2 id="gt-tec-layers">Disciplinas</h2>
+			<p class="gt-tec__support">
+				Herramientas y capas utilizadas cuando el problema lo requiere. No son un checklist universal.
+			</p>
+			<ul class="gt-tec__layers">
+				{
+					disciplines
+						.filter((d) => !('public' in d && d.public === false))
+						.map((d) => (
+						<li class:list={['featured' in d && d.featured && 'is-featured', 'muted' in d && d.muted && 'is-muted']}>
+							<h3>{d.title}</h3>
+							<p>{d.role}</p>
+							{d.confirmed.length > 0 ? (
+								<p class="gt-tec__ev">Ejemplos documentados: {d.confirmed.join(' · ')}</p>
+							) : null}
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="gt-tec__band" id="bi" aria-labelledby="gt-tec-bi">
+			<div class="gt-container--wide">
+				<p class="gt-tec__micro">D · BUSINESS INTELLIGENCE</p>
+				<h2 id="gt-tec-bi">BI tiene función propia</h2>
+				<ol class="gt-tec__chain">
+					<li>Datos</li>
+					<li>Análisis</li>
+					<li>Indicadores</li>
+					<li>Visualización</li>
+					<li>Seguimiento</li>
+					<li>Decisión</li>
+				</ol>
+				<p class="gt-tec__support">
+					Fundamento histórico de la empresa y disciplina vigente donde está documentada —por ejemplo en
+					DataSucumbíos y el monitoreo del PDOT.
+				</p>
+			</div>
+		</section>
+
+		<section class="gt-tec__split gt-container--wide" aria-labelledby="gt-tec-gis">
+			<div>
+				<p class="gt-tec__micro">E · TERRITORIO</p>
+				<h2 id="gt-tec-gis">GIS cuando hay dimensión espacial</h2>
+				<p>
+					Cuando el problema tiene una dimensión espacial, integramos herramientas geográficas para
+					capturar, analizar y comprender el territorio.
+				</p>
+				<p class="gt-tec__ev">Ejemplos documentados: CAPTURE · DataSucumbíos · Termómetro Social · MadaRadio.</p>
+			</div>
+			<div>
+				<p class="gt-tec__micro">F · DATOS</p>
+				<h2 id="gt-tec-dw">Data / Warehouse - Mart</h2>
+				<p>
+					Forma parte de la identidad histórica de GeoTactics. Es una herencia intelectual, no una
+					afirmación de que cada sistema implemente un almacén de datos.
+				</p>
+				<p class="gt-tec__ev">OLAP aparece documentado en YAKU y DataSucumbíos.</p>
+			</div>
+		</section>
+
+		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-ind">
+			<p class="gt-tec__micro">G · INDICADORES</p>
+			<h2 id="gt-tec-ind">Dato → indicador → gestión</h2>
+			<p class="gt-tec__support">
+				Un patrón frecuente: el dato se vuelve indicador, y el indicador sostiene la gestión.
+			</p>
+		</section>
+
+		<section class="gt-tec__adn gt-container--wide" aria-labelledby="gt-tec-adn">
+			<p class="gt-tec__micro">H · PATRONES</p>
+			<h2 id="gt-tec-adn">{adn.headline}</h2>
+			<p class="gt-tec__support">{adn.lead}</p>
+			<ol class="gt-tec__adn-list">
+				{
+					adn.items.map((item) => (
+						<li>
+							<p class="gt-tec__code">{item.code}</p>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<LineageGraph />
+		<EvolutionTimeline mode="method" heading="Evolución conceptual" />
+
+		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-rel">
+			<p class="gt-tec__micro">I · TRAYECTORIA</p>
+			<h2 id="gt-tec-rel">Casos y productos relacionados</h2>
+			<p class="gt-tec__support">Algunas materializaciones donde esta forma de pensar se volvió sistema.</p>
+			<div class="gt-tec__rel">
+				<div>
+					<h3>Casos</h3>
+					<ul>
+						{relatedCases.map((item) => (
+							<li>
+								<a href={item.href}>{item.label}</a>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div>
+					<h3>Productos</h3>
+					<ul>
+						{relatedProducts.map((item) => (
+							<li>
+								<a href={item.href}>{item.label}</a>
+							</li>
+						))}
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<footer class="gt-tec__cta gt-container--wide">
+			<p>Si el problema está en territorio, gestión u operación, conversemos.</p>
+			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-tec {
+		padding-bottom: var(--gt-space-12);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-tec__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-tec__hero {
+		position: relative;
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+		overflow: hidden;
+	}
+
+	.gt-tec__hero-inner {
+		position: relative;
+	}
+
+	.gt-tec h1 {
+		font-size: var(--gt-fs-2xl);
+		max-width: 14ch;
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-tec__lead {
+		font-size: var(--gt-fs-lg);
+		max-width: 40rem;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-tec__not {
+		max-width: 36rem;
+		color: var(--gt-text-muted);
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-tec__block {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-tec h2 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+		max-width: 22rem;
+	}
+
+	.gt-tec__support {
+		max-width: 42rem;
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-tec__flow {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	.gt-tec__flow li {
+		background: var(--gt-white);
+		border: 1px solid var(--gt-border);
+		padding: var(--gt-space-4);
+		min-width: 0;
+	}
+
+	.gt-tec__flow span {
+		display: block;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		color: var(--gt-coral);
+		margin-bottom: 0.4rem;
+	}
+
+	.gt-tec__gost {
+		padding: var(--gt-space-10) 0;
+		background: var(--gt-gray-950);
+		color: var(--gt-off-white);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-tec__gost .gt-tec__micro,
+	.gt-tec__gost h2 {
+		color: var(--gt-off-white);
+	}
+
+	.gt-tec__gost-acro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+		letter-spacing: 0.14em;
+		color: var(--gt-coral);
+		line-height: 1;
+		margin: var(--gt-space-4) 0 var(--gt-space-4);
+	}
+
+	.gt-tec__gost h2 {
+		max-width: 18ch;
+	}
+
+	.gt-tec__gost-lead {
+		font-size: var(--gt-fs-lg);
+		max-width: 40rem;
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-tec__gost-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+		margin-bottom: var(--gt-space-8);
+		max-width: 56rem;
+	}
+
+	.gt-tec__gost-meta {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+		margin: 0;
+	}
+
+	.gt-tec__gost-meta dt {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.4rem;
+	}
+
+	.gt-tec__gost-meta dd {
+		margin: 0;
+		max-width: 36rem;
+		color: var(--gt-gray-200);
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-tec__layers {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	.gt-tec__layers li {
+		padding: var(--gt-space-5);
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		min-width: 0;
+	}
+
+	.gt-tec__layers .is-featured {
+		grid-column: 1 / -1;
+		border-left: 3px solid var(--gt-coral);
+	}
+
+	.gt-tec__layers .is-muted {
+		opacity: 0.72;
+	}
+
+	.gt-tec__layers h3 {
+		font-size: var(--gt-fs-md);
+		margin-bottom: var(--gt-space-2);
+	}
+
+	.gt-tec__ev {
+		margin-top: var(--gt-space-3);
+		font-size: var(--gt-fs-xs);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		color: var(--gt-gray-400);
+		letter-spacing: 0.04em;
+	}
+
+	.gt-tec__band {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+		background: var(--gt-white);
+	}
+
+	.gt-tec__chain {
+		list-style: none;
+		margin: 0 0 var(--gt-space-6);
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.gt-tec__chain li {
+		padding: 0.45rem 0.75rem;
+		border: 1px solid var(--gt-border);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.gt-tec__split {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-8);
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-tec__split p {
+		max-width: 36rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-tec__adn-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+	}
+
+	.gt-tec__code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		color: var(--gt-coral);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-tec__adn-list h3 {
+		font-size: var(--gt-fs-md);
+		margin-bottom: var(--gt-space-2);
+	}
+
+	.gt-tec__adn-list p:last-child {
+		color: var(--gt-gray-800);
+		max-width: 36rem;
+	}
+
+	.gt-tec__rel {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+	}
+
+	.gt-tec__rel h3 {
+		font-size: var(--gt-fs-md);
+		margin-bottom: var(--gt-space-3);
+	}
+
+	.gt-tec__rel ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.gt-tec__rel li {
+		padding: 0.4rem 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-tec__cta {
+		padding-top: var(--gt-space-10);
+		max-width: 40rem;
+	}
+
+	.gt-tec__cta p {
+		margin-bottom: var(--gt-space-5);
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		.gt-tec__flow {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-tec h1,
+		.gt-tec h2 {
+			max-width: none;
+		}
+
+		.gt-tec__flow,
+		.gt-tec__layers,
+		.gt-tec__gost-grid,
+		.gt-tec__gost-meta,
+		.gt-tec__split,
+		.gt-tec__adn-list,
+		.gt-tec__rel {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-tec__chain {
+			flex-direction: column;
+			align-items: stretch;
+		}
+	}
+</style>

@@ -1,0 +1,616 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TerritorialGrid from '../components/TerritorialGrid.astro';
+import { conversarHref, copy, site } from '../config/site';
+import { identity } from '../config/identity';
+
+const people = (await getCollection('people'))
+	.filter((e) => e.data.public)
+	.sort((a, b) => a.data.order - b.data.order);
+const offices = (await getCollection('offices'))
+	.filter((e) => e.data.public)
+	.sort((a, b) => a.data.order - b.data.order);
+
+const seoTitle = 'Nosotros | GeoTactics';
+const seoDescription =
+	'Empresa ecuatoriana de tecnología. Origen en Ibarra. Base en Nueva Loja, Sucumbíos. Sistemas alrededor de problemas reales.';
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} noindex={false}>
+	<article class="gt-ns">
+		<header class="gt-ns__hero">
+			<TerritorialGrid intensity="hero" />
+			<div class="gt-ns__hero-inner gt-container--wide">
+				<div>
+					<p class="gt-ns__micro">{identity.microcode}</p>
+					<h1 id="gt-ns-title">{identity.heroHeadline}</h1>
+					<p class="gt-ns__lead">{identity.heroSupport}</p>
+				</div>
+				<aside class="gt-ns__hero-aside" aria-label="Origen y base">
+					<p class="gt-ns__coord">{site.coordinates}</p>
+					<p>
+						<span class="gt-ns__k">ORIGEN</span>
+						Ibarra, Ecuador
+					</p>
+					<p>
+						<span class="gt-ns__k">BASE</span>
+						Nueva Loja, Sucumbíos
+					</p>
+				</aside>
+			</div>
+		</header>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-who">
+			<p class="gt-ns__micro">A · EMPRESA</p>
+			<h2 id="gt-ns-who">{identity.whoHeadline}</h2>
+			<div class="gt-ns__prose">
+				{identity.whoBody.map((p) => <p>{p}</p>)}
+			</div>
+		</section>
+
+		<section class="gt-ns__purpose" aria-labelledby="gt-ns-purpose">
+			<div class="gt-container--wide">
+				<p class="gt-ns__micro">B · {identity.purposeLabel}</p>
+				<h2 id="gt-ns-purpose">{identity.purposeLabel}</h2>
+				<blockquote>
+					<p>{identity.purpose}</p>
+				</blockquote>
+			</div>
+		</section>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-hist">
+			<p class="gt-ns__micro">C · TRAYECTORIA</p>
+			<h2 id="gt-ns-hist">{identity.historyHeadline}</h2>
+			<p class="gt-ns__support">{identity.historyLead}</p>
+			<ol class="gt-ns__spine">
+				{
+					identity.historyStages.map((stage) => (
+						<li>
+							<p class="gt-ns__code">{stage.code}</p>
+							<div>
+								<h3>{stage.title}</h3>
+								<p>{stage.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="gt-ns__mv" aria-labelledby="gt-ns-mission">
+			<div class="gt-ns__mv-grid gt-container--wide">
+				<div>
+					<p class="gt-ns__micro">D · {identity.missionLabel}</p>
+					<h2 id="gt-ns-mission">{identity.missionLabel}</h2>
+					{identity.mission.split('\n\n').map((para) => <p>{para}</p>)}
+				</div>
+				<div>
+					<p class="gt-ns__micro">E · {identity.visionLabel}</p>
+					<h2 id="gt-ns-vision">{identity.visionLabel}</h2>
+					{identity.vision.split('\n\n').map((para) => <p>{para}</p>)}
+				</div>
+			</div>
+		</section>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-pr">
+			<p class="gt-ns__micro">F · OFICIO</p>
+			<h2 id="gt-ns-pr">{identity.principlesHeadline}</h2>
+			<p class="gt-ns__support">{identity.principlesLead}</p>
+			<ol class="gt-ns__pr">
+				{
+					identity.principles.map((item) => (
+						<li>
+							<p class="gt-ns__code">{item.code}</p>
+							<div>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</section>
+
+		<section class="gt-ns__gost" aria-labelledby="gt-ns-gost">
+			<div class="gt-container--wide">
+				<p class="gt-ns__micro">G · ADN</p>
+				<h2 id="gt-ns-gost">{identity.gostHeadline}</h2>
+				<p class="gt-ns__gost-name">{identity.gostName}</p>
+				<div class="gt-ns__prose">
+					{identity.gostBody.map((p) => <p>{p}</p>)}
+				</div>
+				<a class="gt-cta gt-cta--ghost" href="/tecnologia">{identity.gostCta}</a>
+			</div>
+		</section>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-team">
+			<p class="gt-ns__micro">H · PERSONAS</p>
+			<h2 id="gt-ns-team">{identity.teamHeadline}</h2>
+			<p class="gt-ns__support">{identity.teamLead}</p>
+			<h3 class="gt-ns__sub">Dirección actual</h3>
+			{
+				people
+					.filter((e) => e.data.currentActive)
+					.map((entry) => (
+						<article class="gt-ns__person" id={entry.data.slug}>
+							<div class="gt-ns__photo" aria-hidden="true">
+								<span />
+							</div>
+							<div>
+								<p class="gt-ns__code">{entry.data.id}</p>
+								<h4>{entry.data.publicName}</h4>
+								<p class="gt-ns__role">{entry.data.rolePublic}</p>
+								<p class="gt-ns__bio">{entry.data.bio}</p>
+							</div>
+						</article>
+					))
+			}
+			<h3 class="gt-ns__sub">Fundadores</h3>
+			<ul class="gt-ns__founders">
+				{
+					people
+						.filter((e) => e.data.founder)
+						.map((entry) => (
+							<li class:list={['gt-ns__founder', entry.data.currentActive && 'is-active']}>
+								<div class="gt-ns__photo" aria-hidden="true">
+									<span />
+								</div>
+								<div>
+									<p class="gt-ns__code">
+										{entry.data.currentActive ? 'ACTIVO / DIRECCIÓN ACTUAL' : 'FUNDADOR HISTÓRICO'}
+									</p>
+									<h4>{entry.data.publicName}</h4>
+									<p class="gt-ns__role">{entry.data.rolePublic}</p>
+									{entry.data.currentActive ? null : <p class="gt-ns__bio">{entry.data.bio}</p>}
+								</div>
+							</li>
+						))
+				}
+			</ul>
+		</section>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-place">
+			<p class="gt-ns__micro">I · TERRITORIO</p>
+			<h2 id="gt-ns-place">{identity.presenceHeadline}</h2>
+			<p class="gt-ns__support">{identity.presenceLead}</p>
+			<div class="gt-ns__places">
+				{
+					offices.map((office) => (
+						<article>
+							<p class="gt-ns__code">{office.data.kind === 'origin' ? 'ORIGEN' : 'BASE ACTUAL'}</p>
+							<h3>
+								{office.data.place}
+								<span> · {office.data.region}</span>
+							</h3>
+							<p>{office.data.note}</p>
+							{office.data.coordinates && (
+								<p class="gt-ns__coord gt-ns__coord--inline">{office.data.coordinates}</p>
+							)}
+						</article>
+					))
+				}
+			</div>
+			<p class="gt-ns__teaser">
+				<a href="/archivo">{identity.presenceTeaser}</a>
+			</p>
+		</section>
+
+		<section class="gt-ns__block gt-container--wide" aria-labelledby="gt-ns-div">
+			<p class="gt-ns__micro">J · RUMBO</p>
+			<h2 id="gt-ns-div">{identity.diversificationHeadline}</h2>
+			<div class="gt-ns__prose">
+				<p>{identity.diversification}</p>
+			</div>
+		</section>
+
+		<footer class="gt-ns__cta gt-container--wide">
+			<p class="gt-ns__micro">K · CIERRE</p>
+			<p class="gt-ns__cta-text">{identity.cta}</p>
+			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+			<p class="gt-ns__colophon">
+				{site.originLine}
+				<span aria-hidden="true"> · </span>
+				{site.coordinates}
+			</p>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-ns {
+		padding-bottom: var(--gt-space-12);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-ns__hero {
+		position: relative;
+		padding: clamp(2.5rem, 6vw, 5rem) 0 var(--gt-space-10);
+		border-bottom: 1px solid var(--gt-border);
+		overflow: hidden;
+	}
+
+	.gt-ns__hero-inner {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: minmax(0, 1.6fr) minmax(12rem, 0.8fr);
+		gap: var(--gt-space-8);
+		align-items: end;
+	}
+
+	.gt-ns__micro,
+	.gt-ns__code,
+	.gt-ns__k {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		font-size: 0.62rem;
+	}
+
+	.gt-ns__micro {
+		color: var(--gt-gray-400);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-ns h1 {
+		font-size: var(--gt-fs-2xl);
+		max-width: 40rem;
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-ns__lead {
+		font-size: var(--gt-fs-lg);
+		max-width: 40rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-ns__hero-aside {
+		border-left: 3px solid var(--gt-coral);
+		padding: 0.25rem 0 0.25rem 1.15rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.85rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-ns__k {
+		display: block;
+		color: var(--gt-coral);
+		margin-bottom: 0.25rem;
+	}
+
+	.gt-ns__coord {
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.14em;
+		color: var(--gt-coral);
+		font-weight: 700;
+		font-size: 0.78rem;
+	}
+
+	.gt-ns__coord--inline {
+		margin-top: 0.65rem;
+	}
+
+	.gt-ns__block {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ns h2 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+		max-width: 40rem;
+	}
+
+	.gt-ns__support {
+		max-width: 46rem;
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-ns__prose {
+		max-width: 42rem;
+	}
+
+	.gt-ns__prose p + p {
+		margin-top: var(--gt-space-4);
+	}
+
+	.gt-ns__purpose {
+		padding: var(--gt-space-10) 0;
+		background: color-mix(in srgb, var(--gt-white) 70%, var(--gt-off-white));
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ns__purpose h2 {
+		font-size: var(--gt-fs-sm);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		max-width: none;
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-ns__purpose blockquote {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		max-width: 36rem;
+	}
+
+	.gt-ns__purpose blockquote p {
+		font-size: var(--gt-fs-xl);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: var(--gt-lh-tight);
+		color: var(--gt-gray-950);
+	}
+
+	.gt-ns__spine {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: var(--gt-space-6);
+		max-width: 52rem;
+		width: 100%;
+	}
+
+	.gt-ns__spine li {
+		display: grid;
+		grid-template-columns: 3.25rem minmax(12rem, 1fr);
+		gap: var(--gt-space-4);
+		align-items: start;
+	}
+
+	.gt-ns__spine li > div,
+	.gt-ns__pr li > div {
+		min-width: 0;
+	}
+
+	.gt-ns__spine h3,
+	.gt-ns__pr h3,
+	.gt-ns__person h3,
+	.gt-ns__person h4,
+	.gt-ns__sub,
+	.gt-ns__places h3,
+	.gt-ns__mv h2 {
+		font-size: var(--gt-fs-lg);
+		margin-bottom: 0.4rem;
+		max-width: none;
+	}
+
+	.gt-ns__spine p:last-child,
+	.gt-ns__pr p:last-child,
+	.gt-ns__places p,
+	.gt-ns__mv p:last-child {
+		color: var(--gt-text-muted);
+		overflow-wrap: break-word;
+		hyphens: manual;
+	}
+
+	.gt-ns__support,
+	.gt-ns__prose p {
+		overflow-wrap: break-word;
+		hyphens: manual;
+	}
+
+	.gt-ns__code {
+		color: var(--gt-coral);
+		margin: 0.2rem 0 0;
+	}
+
+	.gt-ns__mv {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ns__mv-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-8);
+	}
+
+	.gt-ns__mv-grid > div {
+		min-width: 0;
+	}
+
+	.gt-ns__pr {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0;
+		max-width: 52rem;
+		width: 100%;
+	}
+
+	.gt-ns__pr li {
+		display: grid;
+		grid-template-columns: 3.25rem minmax(12rem, 1fr);
+		gap: var(--gt-space-4);
+		padding: var(--gt-space-5) 0;
+		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-ns__pr li:last-child {
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ns__gost {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+		background: color-mix(in srgb, var(--gt-coffee) 6%, var(--gt-off-white));
+	}
+
+	.gt-ns__gost-name {
+		font-weight: 700;
+		margin: -0.5rem 0 var(--gt-space-5);
+		color: var(--gt-gray-950);
+	}
+
+	.gt-ns__gost .gt-cta {
+		margin-top: var(--gt-space-6);
+	}
+
+	.gt-ns__person,
+	.gt-ns__founder {
+		display: grid;
+		grid-template-columns: 7.5rem minmax(0, 1fr);
+		gap: var(--gt-space-6);
+		align-items: start;
+		max-width: 46rem;
+	}
+
+	.gt-ns__founders {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--gt-space-6);
+	}
+
+	.gt-ns__founder.is-active {
+		opacity: 0.92;
+	}
+
+	.gt-ns__founder h4,
+	.gt-ns__person h4 {
+		overflow-wrap: break-word;
+		hyphens: manual;
+	}
+
+	.gt-ns__photo {
+		aspect-ratio: 1;
+		border: 1px solid var(--gt-border);
+		background:
+			linear-gradient(to right, color-mix(in srgb, var(--gt-coffee) 10%, transparent) 1px, transparent 1px),
+			linear-gradient(to bottom, color-mix(in srgb, var(--gt-coffee) 10%, transparent) 1px, transparent 1px);
+		background-size: 16px 16px;
+		background-color: var(--gt-white);
+		position: relative;
+	}
+
+	.gt-ns__photo span {
+		position: absolute;
+		width: 0.55rem;
+		height: 0.55rem;
+		background: var(--gt-coral);
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		border-radius: 1px;
+	}
+
+	.gt-ns__role {
+		font-weight: 600;
+		margin: 0 0 var(--gt-space-4);
+	}
+
+	.gt-ns__bio {
+		color: var(--gt-text-muted);
+		max-width: 40rem;
+	}
+
+	.gt-ns__places {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-8);
+	}
+
+	.gt-ns__places h3 span {
+		font-weight: 400;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-ns__teaser {
+		margin-top: var(--gt-space-8);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-ns__cta {
+		padding-top: var(--gt-space-10);
+		max-width: 40rem;
+	}
+
+	.gt-ns__cta-text {
+		font-size: var(--gt-fs-lg);
+		font-weight: 600;
+		margin-bottom: var(--gt-space-5);
+		max-width: 36rem;
+	}
+
+	.gt-ns__colophon {
+		margin-top: var(--gt-space-8);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.72rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gt-gray-600);
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		.gt-ns__hero-inner,
+		.gt-ns__mv-grid,
+		.gt-ns__places {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-ns h1,
+		.gt-ns h2,
+		.gt-ns__purpose blockquote,
+		.gt-ns__cta-text {
+			max-width: none;
+		}
+
+		.gt-ns__prose,
+		.gt-ns__support,
+		.gt-ns__spine,
+		.gt-ns__pr,
+		.gt-ns__person,
+		.gt-ns__founder,
+		.gt-ns__cta {
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-ns__hero-inner,
+		.gt-ns__mv-grid,
+		.gt-ns__places,
+		.gt-ns__person,
+		.gt-ns__founder {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-ns h1,
+		.gt-ns h2,
+		.gt-ns__purpose blockquote,
+		.gt-ns__cta-text {
+			max-width: none;
+		}
+
+		.gt-ns__hero-aside {
+			border-left: none;
+			border-top: 3px solid var(--gt-coral);
+			padding: 1rem 0 0;
+		}
+
+		.gt-ns__photo {
+			width: 5.5rem;
+		}
+
+		.gt-ns__spine li,
+		.gt-ns__pr li {
+			grid-template-columns: 3rem minmax(0, 1fr);
+			gap: var(--gt-space-3);
+		}
+	}
+</style>

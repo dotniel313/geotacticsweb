@@ -1,0 +1,60 @@
+---
+import { statusLabels } from '../lib/products';
+
+interface Props {
+	status: keyof typeof statusLabels;
+	yearLabel?: string;
+	yearStatus?: 'publish' | 'omit' | 'conflict';
+}
+
+const { status, yearLabel, yearStatus } = Astro.props;
+const label = statusLabels[status];
+const year = yearStatus === 'publish' && yearLabel ? yearLabel : null;
+---
+
+<p class="gt-prod-status">
+	<span class="gt-prod-status__mark" data-status={status} aria-hidden="true"></span>
+	<span class="gt-prod-status__text">{label}</span>
+	{year && <span class="gt-prod-status__year">{year}</span>}
+</p>
+
+<style>
+	.gt-prod-status {
+		display: inline-flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.4rem 0.65rem;
+		margin: 0;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		font-size: 0.62rem;
+		color: var(--gt-gray-800);
+		font-weight: 700;
+	}
+
+	.gt-prod-status__mark {
+		width: 0.45rem;
+		height: 0.45rem;
+		border-radius: 1px;
+		background: var(--gt-coral);
+		flex-shrink: 0;
+	}
+
+	.gt-prod-status__mark[data-status='en_desarrollo'],
+	.gt-prod-status__mark[data-status='prelanzamiento'] {
+		background: transparent;
+		box-shadow: inset 0 0 0 1.5px var(--gt-coral);
+	}
+
+	.gt-prod-status__mark[data-status='trayectoria'],
+	.gt-prod-status__mark[data-status='desarrollado'] {
+		background: var(--gt-coffee);
+	}
+
+	.gt-prod-status__year {
+		color: var(--gt-gray-600);
+		font-weight: 400;
+		letter-spacing: 0.08em;
+	}
+</style>

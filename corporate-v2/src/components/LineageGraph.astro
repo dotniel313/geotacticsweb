@@ -1,0 +1,239 @@
+---
+import {
+	lineageBranches,
+	lineageKinds,
+	lineageNodes,
+	ontologicalLeaves,
+	type LineageKind,
+} from '../data/lineage';
+
+const kindNote = (kind: LineageKind, index: number) => (index === 0 ? null : lineageKinds[kind]);
+---
+
+<section class="gt-lin" aria-labelledby="gt-lin-h">
+	<div class="gt-lin__head gt-container--wide">
+		<p class="gt-lin__micro">GT / LINEAGE</p>
+		<h2 id="gt-lin-h">Genealogía</h2>
+		<p class="gt-lin__lead">
+			Genealogía conceptual: qué experiencia abrió camino a otra. Distinta de la cronología del Archivo.
+		</p>
+		<ul class="gt-lin__legend">
+			{
+				(Object.entries(lineageKinds) as [LineageKind, string][]).map(([id, label]) => (
+					<li>
+						<span data-kind={id}></span>
+						{label}
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<div class="gt-lin__branches gt-container--wide">
+		{
+			lineageBranches.map((branch) => (
+				<section class="gt-lin__branch" aria-labelledby={`gt-lin-${branch.id}`}>
+					<h3 id={`gt-lin-${branch.id}`}>{branch.title}</h3>
+					<p>{branch.note}</p>
+					<ol>
+						{branch.steps.map((step, i) => {
+							const node = lineageNodes[step.id];
+							const edge = kindNote(step.kind, i);
+							return (
+								<li>
+									{edge ? (
+										<p class="gt-lin__edge" data-kind={step.kind}>
+											{edge}
+										</p>
+									) : null}
+									{node.href ? <a href={node.href}>{node.label}</a> : <span>{node.label}</span>}
+								</li>
+							);
+						})}
+					</ol>
+				</section>
+			))
+		}
+	</div>
+
+	<section class="gt-lin__leaves gt-container--wide" aria-labelledby="gt-lin-leaves">
+		<h3 id="gt-lin-leaves">Ramas independientes desde GOST</h3>
+		<p>
+			MadaRadio, GUANTA, RANTYI y el resto no forman una secuencia. Cada uno parte del fundamento ontológico.
+			Nurse GO no se publica.
+		</p>
+		<ul>
+			{
+				ontologicalLeaves.map((id) => {
+					const node = lineageNodes[id];
+					return (
+						<li>
+							<span class="gt-lin__edge" data-kind="ontological_foundation">
+								Fundamento ontológico
+							</span>
+							{node.href ? <a href={node.href}>{node.label}</a> : <span>{node.label}</span>}
+							{id === 'sigmd' ? <span class="gt-lin__meta">I+D+i · no implementado</span> : null}
+						</li>
+					);
+				})
+			}
+		</ul>
+	</section>
+</section>
+
+<style>
+	.gt-lin {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+		min-width: 0;
+	}
+
+	.gt-lin__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-lin h2 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-lin__lead {
+		max-width: 42rem;
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-lin__legend {
+		list-style: none;
+		margin: 0 0 var(--gt-space-8);
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem 1.25rem;
+		font-size: var(--gt-fs-xs);
+		color: var(--gt-gray-600);
+	}
+
+	.gt-lin__legend span,
+	.gt-lin__edge {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+	}
+
+	.gt-lin__legend span {
+		display: inline-block;
+		width: 0.7rem;
+		height: 0.7rem;
+		margin-right: 0.4rem;
+		vertical-align: middle;
+		background: var(--gt-gray-400);
+	}
+
+	.gt-lin__legend span[data-kind='ontological_foundation'],
+	.gt-lin__edge[data-kind='ontological_foundation'] {
+		color: var(--gt-coral);
+	}
+
+	.gt-lin__legend span[data-kind='ontological_foundation'] {
+		background: var(--gt-coral);
+	}
+
+	.gt-lin__legend span[data-kind='product_evolution'] {
+		background: var(--gt-gray-950);
+	}
+
+	.gt-lin__legend span[data-kind='component_flow'] {
+		background: var(--gt-coffee);
+	}
+
+	.gt-lin__legend span[data-kind='data_flow'] {
+		background: var(--gt-gray-600);
+	}
+
+	.gt-lin__legend span[data-kind='conceptual_influence'] {
+		background: var(--gt-gray-400);
+	}
+
+	.gt-lin__branches {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+	}
+
+	.gt-lin__branch h3,
+	.gt-lin__leaves h3 {
+		font-size: var(--gt-fs-md);
+		margin-bottom: var(--gt-space-2);
+	}
+
+	.gt-lin__branch > p,
+	.gt-lin__leaves > p {
+		font-size: var(--gt-fs-sm);
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-4);
+		max-width: 36rem;
+	}
+
+	.gt-lin__branch ol,
+	.gt-lin__leaves ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border-left: 1px solid var(--gt-border);
+	}
+
+	.gt-lin__branch li,
+	.gt-lin__leaves li {
+		padding: 0.35rem 0 0.35rem var(--gt-space-4);
+		position: relative;
+	}
+
+	.gt-lin__branch li::before,
+	.gt-lin__leaves li::before {
+		content: '';
+		position: absolute;
+		left: -0.28rem;
+		top: 1.1rem;
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background: var(--gt-gray-950);
+	}
+
+	.gt-lin__leaves {
+		margin-top: var(--gt-space-8);
+	}
+
+	.gt-lin__leaves ul {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-3) var(--gt-space-6);
+		border-left: none;
+	}
+
+	.gt-lin__leaves li {
+		border-left: 1px solid var(--gt-border);
+	}
+
+	.gt-lin__meta {
+		display: block;
+		font-size: var(--gt-fs-xs);
+		color: var(--gt-gray-400);
+		margin-top: 0.15rem;
+	}
+
+	@media (max-width: 720px) {
+		.gt-lin__branches,
+		.gt-lin__leaves ul {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

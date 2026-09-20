@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+	heading: string;
+}
+
+const { heading } = Astro.props;
+---
+
+<BaseLayout title={`${heading} | GeoTactics`} noindex>
+	<section class="gt-shell gt-container">
+		<h1>{heading}</h1>
+		<p>Contenido programado para siguiente bloque de implementación.</p>
+	</section>
+</BaseLayout>

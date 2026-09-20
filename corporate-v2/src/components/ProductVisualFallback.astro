@@ -1,0 +1,216 @@
+---
+interface Props {
+	id: string;
+	statusLabel: string;
+	kind: string;
+}
+
+const { id, statusLabel, kind } = Astro.props;
+---
+
+<div class="gt-pvf" data-kind={kind} aria-hidden="true">
+	<svg class="gt-pvf__grid" viewBox="0 0 320 180" width="320" height="180" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<rect width="320" height="180" fill="currentColor" fill-opacity="0.04" />
+		{
+			Array.from({ length: 9 }, (_, i) => (
+				<line x1={(i + 1) * 32} y1="0" x2={(i + 1) * 32} y2="180" stroke="currentColor" stroke-opacity="0.12" />
+			))
+		}
+		{
+			Array.from({ length: 5 }, (_, i) => (
+				<line x1="0" y1={(i + 1) * 30} x2="320" y2={(i + 1) * 30} stroke="currentColor" stroke-opacity="0.12" />
+			))
+		}
+		{
+			kind === 'intel' && (
+				<>
+					<circle cx="118" cy="92" r="42" stroke="currentColor" stroke-opacity="0.35" />
+					<circle cx="118" cy="92" r="4" fill="#e84c3d" />
+					<line x1="118" y1="92" x2="236" y2="48" stroke="#e84c3d" stroke-opacity="0.85" />
+					<circle cx="236" cy="48" r="6" stroke="#e84c3d" />
+					<rect x="210" y="118" width="64" height="28" stroke="currentColor" stroke-opacity="0.4" />
+				</>
+			)
+		}
+		{
+			kind === 'geo' && (
+				<>
+					<circle cx="88" cy="96" r="10" stroke="currentColor" stroke-opacity="0.45" />
+					<circle cx="160" cy="64" r="10" stroke="currentColor" stroke-opacity="0.45" />
+					<circle cx="232" cy="108" r="10" stroke="#e84c3d" />
+					<line x1="96" y1="90" x2="152" y2="70" stroke="currentColor" stroke-opacity="0.4" />
+					<line x1="168" y1="72" x2="222" y2="102" stroke="#e84c3d" stroke-opacity="0.8" />
+				</>
+			)
+		}
+		{
+			kind === 'tour' && (
+				<>
+					<polyline
+						points="48,128 96,72 148,96 204,52 272,88"
+						stroke="currentColor"
+						stroke-opacity="0.4"
+					/>
+					<circle cx="204" cy="52" r="5" fill="#e84c3d" />
+					<circle cx="96" cy="72" r="3" fill="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'ops' && (
+				<>
+					<rect x="52" y="48" width="48" height="84" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="136" y="64" width="48" height="68" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="220" y="40" width="48" height="92" stroke="#e84c3d" stroke-opacity="0.85" />
+					<line x1="100" y1="90" x2="136" y2="90" stroke="#e84c3d" />
+					<line x1="184" y1="90" x2="220" y2="90" stroke="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'c2c' && (
+				<>
+					<circle cx="96" cy="90" r="22" stroke="currentColor" stroke-opacity="0.4" />
+					<circle cx="224" cy="90" r="22" stroke="currentColor" stroke-opacity="0.4" />
+					<line x1="118" y1="90" x2="202" y2="90" stroke="#e84c3d" />
+					<circle cx="160" cy="90" r="4" fill="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'craft' && (
+				<>
+					<rect x="70" y="50" width="70" height="80" rx="2" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="180" y="50" width="70" height="80" rx="2" stroke="currentColor" stroke-opacity="0.4" />
+					<circle cx="160" cy="90" r="5" fill="#e84c3d" />
+					<line x1="140" y1="90" x2="180" y2="90" stroke="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'radio' && (
+				<>
+					<circle cx="160" cy="92" r="8" fill="#e84c3d" />
+					<circle cx="160" cy="92" r="28" stroke="currentColor" stroke-opacity="0.35" />
+					<circle cx="160" cy="92" r="48" stroke="currentColor" stroke-opacity="0.22" />
+					<line x1="160" y1="44" x2="160" y2="24" stroke="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'invest' && (
+				<>
+					<rect x="60" y="110" width="28" height="30" fill="#e84c3d" fill-opacity="0.85" />
+					<rect x="104" y="86" width="28" height="54" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="148" y="64" width="28" height="76" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="192" y="78" width="28" height="62" stroke="currentColor" stroke-opacity="0.4" />
+					<rect x="236" y="50" width="28" height="90" stroke="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'rural' && (
+				<>
+					<polygon points="160,36 252,148 68,148" stroke="currentColor" stroke-opacity="0.4" />
+					<circle cx="160" cy="108" r="5" fill="#e84c3d" />
+					<line x1="40" y1="148" x2="280" y2="148" stroke="currentColor" stroke-opacity="0.25" />
+				</>
+			)
+		}
+		{
+			kind === 'water' && (
+				<>
+					<path d="M70 70 C110 40, 150 100, 190 70 S270 100, 280 80" stroke="#e84c3d" stroke-opacity="0.9" />
+					<path d="M70 100 C110 70, 150 130, 190 100 S270 130, 280 110" stroke="currentColor" stroke-opacity="0.3" />
+					<circle cx="190" cy="70" r="4" fill="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'inst' && (
+				<>
+					<rect x="72" y="44" width="176" height="96" stroke="currentColor" stroke-opacity="0.35" />
+					<line x1="72" y1="76" x2="248" y2="76" stroke="currentColor" stroke-opacity="0.25" />
+					<line x1="72" y1="108" x2="248" y2="108" stroke="currentColor" stroke-opacity="0.25" />
+					<rect x="88" y="88" width="48" height="12" fill="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'plan' && (
+				<>
+					<line x1="56" y1="40" x2="56" y2="148" stroke="currentColor" stroke-opacity="0.25" />
+					<line x1="56" y1="148" x2="280" y2="148" stroke="currentColor" stroke-opacity="0.25" />
+					<polyline points="56,128 112,96 168,108 224,64 272,80" stroke="#e84c3d" />
+					<circle cx="224" cy="64" r="4" fill="#e84c3d" />
+				</>
+			)
+		}
+		{
+			kind === 'survey' && (
+				<>
+					<rect x="88" y="40" width="88" height="108" rx="4" stroke="currentColor" stroke-opacity="0.4" />
+					<circle cx="220" cy="72" r="6" fill="#e84c3d" />
+					<circle cx="248" cy="108" r="6" stroke="#e84c3d" />
+					<circle cx="212" cy="136" r="6" stroke="currentColor" stroke-opacity="0.4" />
+					<line x1="176" y1="72" x2="214" y2="72" stroke="#e84c3d" />
+				</>
+			)
+		}
+	</svg>
+	<p class="gt-pvf__id">{id}</p>
+	<p class="gt-pvf__st">{statusLabel}</p>
+</div>
+
+<style>
+	.gt-pvf {
+		position: relative;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		aspect-ratio: 16 / 9;
+		background: var(--gt-off-white);
+		color: var(--gt-gray-800);
+		overflow: hidden;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-pvf::before {
+		content: '';
+		position: absolute;
+		inset: 0 auto 0 0;
+		width: 2px;
+		background: var(--gt-coral);
+		z-index: 1;
+	}
+
+	.gt-pvf__grid {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		height: 100%;
+	}
+
+	.gt-pvf__id,
+	.gt-pvf__st {
+		position: absolute;
+		margin: 0;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		font-size: 0.58rem;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-pvf__id {
+		left: 0.75rem;
+		bottom: 0.55rem;
+		font-weight: 700;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-pvf__st {
+		right: 0.75rem;
+		bottom: 0.55rem;
+	}
+</style>

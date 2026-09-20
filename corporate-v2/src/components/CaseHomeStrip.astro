@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import CaseCard from './CaseCard.astro';
+import { isPublicCase, sortCases } from '../lib/cases';
+
+const all = sortCases((await getCollection('cases')).filter(isPublicCase));
+const featured = all.filter((e) => e.data.featuredHome);
+---
+
+<section class="gt-cases-home" aria-labelledby="gt-cases-home-title">
+	<div class="gt-container--wide">
+		<p class="gt-cases-home__micro">GT / CASES</p>
+		<div class="gt-cases-home__intro">
+			<h2 id="gt-cases-home-title">Aplicación real</h2>
+			<p>
+				Los productos se materializan en experiencias concretas. Territorio, institución, plan.
+			</p>
+			<a class="gt-cta gt-cta--ghost" href="/casos">Todos los casos</a>
+		</div>
+		<div class="gt-cases-home__grid">
+			{featured.map((entry) => <CaseCard entry={entry} />)}
+		</div>
+	</div>
+</section>
+
+<style>
+	.gt-cases-home {
+		padding-top: var(--gt-space-10);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-cases-home__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-cases-home__intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: var(--gt-space-5);
+		align-items: end;
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-cases-home h2 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-3);
+		max-width: 16rem;
+	}
+
+	.gt-cases-home__intro p {
+		max-width: 36rem;
+		color: var(--gt-text-muted);
+	}
+
+	.gt-cases-home__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.75rem;
+	}
+
+	@media (max-width: 1024px) {
+		.gt-cases-home__intro {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-cases-home__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-cases-home h2 {
+			max-width: none;
+		}
+	}
+</style>

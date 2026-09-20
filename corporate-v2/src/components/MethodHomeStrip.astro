@@ -1,0 +1,80 @@
+---
+import { gost } from '../data/method';
+---
+
+<section class="gt-mh" aria-labelledby="gt-mh-h">
+	<div class="gt-mh__inner gt-container--wide">
+		<p class="gt-mh__micro">GT / METHOD</p>
+		<div class="gt-mh__layout">
+			<div>
+				<p class="gt-mh__code">{gost.acronym}</p>
+				<h2 id="gt-mh-h">{gost.name}</h2>
+				<p class="gt-mh__lead">{gost.lead}</p>
+				<a class="gt-cta gt-cta--ghost" href="/tecnologia">Método, capas y evolución</a>
+			</div>
+			<p class="gt-mh__aside">{gost.body[0]}</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.gt-mh {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+		background: var(--gt-white);
+	}
+
+	.gt-mh__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-mh__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+		gap: var(--gt-space-8);
+		align-items: start;
+	}
+
+	.gt-mh__code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: clamp(1.75rem, 1rem + 2.4vw, 3rem);
+		letter-spacing: 0.12em;
+		color: var(--gt-coral);
+		margin-bottom: var(--gt-space-3);
+	}
+
+	.gt-mh h2 {
+		font-size: var(--gt-fs-xl);
+		max-width: 16ch;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-mh__lead {
+		max-width: 36rem;
+		margin-bottom: var(--gt-space-6);
+		color: var(--gt-gray-800);
+	}
+
+	.gt-mh__aside {
+		border-left: 3px solid var(--gt-coffee);
+		padding-left: var(--gt-space-5);
+		color: var(--gt-gray-800);
+		max-width: 32rem;
+	}
+
+	@media (max-width: 1024px) {
+		.gt-mh__layout {
+			grid-template-columns: 1fr;
+			gap: var(--gt-space-6);
+		}
+
+		.gt-mh h2 {
+			max-width: none;
+		}
+	}
+</style>

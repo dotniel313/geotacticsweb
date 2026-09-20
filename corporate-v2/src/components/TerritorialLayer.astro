@@ -1,0 +1,147 @@
+---
+/**
+ * Abstract territorial layer — NOT the logo.
+ * Primitives: center, coordinate, intersection, location.
+ */
+---
+
+<div class="gt-tl" aria-hidden="true">
+	<svg class="gt-tl__svg" viewBox="0 0 400 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<line x1="28" y1="210" x2="372" y2="210" stroke="currentColor" stroke-opacity="0.24" />
+		<line x1="200" y1="28" x2="200" y2="392" stroke="currentColor" stroke-opacity="0.24" />
+		<line x1="72" y1="86" x2="328" y2="334" stroke="currentColor" stroke-opacity="0.14" />
+		<circle cx="200" cy="210" r="118" stroke="currentColor" stroke-opacity="0.22" />
+		<circle cx="200" cy="210" r="72" stroke="currentColor" stroke-opacity="0.32" />
+		<circle cx="200" cy="210" r="36" stroke="currentColor" stroke-opacity="0.4" />
+		<circle cx="200" cy="210" r="5" fill="#e84c3d" />
+		<circle cx="200" cy="210" r="12" stroke="#e84c3d" stroke-opacity="0.62" />
+		<line x1="200" y1="210" x2="318" y2="92" stroke="currentColor" stroke-opacity="0.4" />
+		<circle cx="318" cy="92" r="3.5" fill="#e84c3d" />
+		<circle cx="86" cy="286" r="3" fill="currentColor" fill-opacity="0.55" />
+		<text x="330" y="86" fill="currentColor" fill-opacity="0.78" font-size="10" font-family="ui-monospace, Menlo, monospace">GT-NL</text>
+	</svg>
+	<p class="gt-tl__kicker">GT / ORIGIN</p>
+	<p class="gt-tl__place">Nueva Loja</p>
+	<p class="gt-tl__coord">0.091 · −76.89</p>
+	<ul class="gt-tl__tags">
+		<li>TERRITORIO</li>
+		<li>DATA</li>
+		<li>OPERATION</li>
+	</ul>
+	<span class="gt-tl__node"></span>
+</div>
+
+<style>
+	.gt-tl {
+		position: relative;
+		color: var(--gt-gray-800);
+		min-height: 20rem;
+		padding: 0.5rem 0 0.5rem 0.25rem;
+	}
+
+	.gt-tl__svg {
+		width: 100%;
+		max-width: 22rem;
+		height: auto;
+		display: block;
+		margin-inline: auto;
+	}
+
+	.gt-tl__kicker,
+	.gt-tl__coord,
+	.gt-tl__tags {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		font-size: 0.65rem;
+		text-transform: uppercase;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-tl__kicker {
+		margin: 0.75rem 0 0.2rem;
+	}
+
+	.gt-tl__place {
+		margin: 0;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		font-size: 0.82rem;
+	}
+
+	.gt-tl__coord {
+		margin: 0.25rem 0 0.75rem;
+		color: var(--gt-coral);
+		font-weight: 600;
+	}
+
+	.gt-tl__tags {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1rem;
+		margin: 0;
+		padding: 0;
+	}
+
+	.gt-tl__node {
+		display: none;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--gt-coral);
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 1024px) {
+		.gt-tl {
+			min-height: 0;
+			padding: 0.35rem 0 0;
+			display: grid;
+			grid-template-columns: auto 1fr;
+			gap: 0.35rem 1rem;
+			align-items: center;
+		}
+
+		.gt-tl__svg {
+			max-width: 9.5rem;
+			margin-inline: 0;
+			grid-row: 1 / span 4;
+		}
+
+		.gt-tl__tags {
+			display: none;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.gt-tl {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 0.45rem 0.85rem;
+			padding: 0.15rem 0 0;
+		}
+
+		.gt-tl__svg {
+			display: none;
+		}
+
+		.gt-tl__node {
+			display: inline-block;
+		}
+
+		.gt-tl__tags {
+			display: none;
+		}
+
+		.gt-tl__place {
+			font-size: 0.75rem;
+		}
+
+		.gt-tl__kicker,
+		.gt-tl__coord {
+			margin: 0;
+		}
+	}
+</style>

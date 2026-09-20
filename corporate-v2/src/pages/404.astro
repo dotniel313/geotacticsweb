@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { conversarHref, copy } from '../config/site';
+---
+
+<BaseLayout title="Página no encontrada | GeoTactics" description="La ruta no existe en el sitio corporativo 2.0.">
+	<section class="gt-404 gt-container--wide">
+		<p class="gt-404__micro">GT / 404</p>
+		<h1>Esa ruta no forma parte del archivo.</h1>
+		<p>Puede haber cambiado o no existir aún. El resto del sitio sigue disponible.</p>
+		<p class="gt-404__actions">
+			<a class="gt-cta" href="/">Inicio</a>
+			<a class="gt-cta gt-cta--ghost" href={conversarHref}>{copy.ctaPrimary}</a>
+		</p>
+	</section>
+</BaseLayout>
+
+<style>
+	.gt-404 {
+		padding: var(--gt-space-12) 0;
+		max-width: 36rem;
+	}
+
+	.gt-404__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-404 h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-404__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--gt-space-4);
+		margin-top: var(--gt-space-6);
+	}
+</style>

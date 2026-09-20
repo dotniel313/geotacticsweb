@@ -1,0 +1,829 @@
+---
+import { families } from '../data/taxonomy';
+import { publicRecords, statusLabels, type RecordKind } from '../data/records';
+import type { ArchivePayload } from '../scripts/archive-explorer';
+import CapabilityVisual from './CapabilityVisual.astro';
+
+const records = publicRecords();
+const payload: ArchivePayload = {
+	families: families.map((f) => ({
+		id: f.id,
+		code: f.code,
+		title: f.title,
+		shortDescription: f.shortDescription,
+		color: f.color,
+		count: records.filter((r) => r.primaryFamily === f.id).length,
+	})),
+	records,
+	statusLabels,
+};
+
+const kindLabel: Record<RecordKind, string> = {
+	product: 'Producto',
+	case: 'Caso',
+	component: 'Componente',
+	prototype: 'Prototipo',
+	experience: 'Experiencia',
+};
+
+const ctaFor = (kind: RecordKind) => {
+	if (kind === 'case') return 'Ver caso →';
+	if (kind === 'product') return 'Ver producto →';
+	return 'Ver →';
+};
+---
+
+<section class="gt-ax" data-archive data-mode="entry" aria-label="Archivo GeoTactics">
+	<p class="gt-ax__live" data-hint aria-live="polite"></p>
+
+	<div class="gt-ax__entry" data-scene="entry">
+		<div class="gt-ax__entry-head">
+			<p class="gt-ax__micro">GT / ARCHIVO</p>
+			<h1>Archivo</h1>
+			<p class="gt-ax__lead">Seis familias de problema. El umbral abre la cronología de cada una.</p>
+			<p class="gt-ax__terr">
+				<a href="/territorio">Territorio</a>
+			</p>
+		</div>
+
+		<div class="gt-ax__board">
+			<ul class="gt-ax__files">
+				{
+					families.map((f) => {
+						const count = records.filter((r) => r.primaryFamily === f.id).length;
+						return (
+							<li>
+							<button
+								type="button"
+								class="gt-file"
+								data-family-card={f.id}
+								draggable="true"
+								aria-pressed="false"
+								style={`--gt-file-accent:${f.color}`}
+							>
+								<span class="gt-file__viz" aria-hidden="true">
+									<CapabilityVisual kind={f.visual} />
+								</span>
+								<span class="gt-file__code">{f.code}</span>
+								<span class="gt-file__title">{f.title}</span>
+								<span class="gt-file__cue">{f.cue}</span>
+								<span class="gt-file__n">{String(count).padStart(2, '0')}</span>
+							</button>
+							</li>
+						);
+					})
+				}
+			</ul>
+
+			<button type="button" class="gt-zone" data-zone aria-label="Leer archivos">
+				<span class="gt-zone__k">Umbral</span>
+				<span class="gt-zone__t">Leer archivos</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="gt-ax__family" data-scene="family" hidden aria-hidden="true">
+		<div class="gt-ax__stage">
+			<aside class="gt-ax__ctx">
+				<button type="button" class="gt-ax__back" data-back>← Archivo</button>
+				<p class="gt-ax__kicker" data-ctx-code>01 / CATEGORÍA</p>
+				<h2 data-ctx-title>Familia</h2>
+				<p data-ctx-desc></p>
+			</aside>
+			<div class="gt-ax__rail-wrap">
+				<div class="gt-ax__rail" data-rail tabindex="0" aria-label="Cronología de la familia">
+					{
+						records.map((r) => {
+							const fan = r.assets.slice(0, 3);
+							return (
+								<article
+									class="gt-hit"
+									data-record={r.slug}
+									tabindex="0"
+									hidden
+									aria-label={`${r.title}, ${r.yearLabel}`}
+								>
+									<p class="gt-hit__year">{r.yearLabel}</p>
+									<div class="gt-hit__axis" aria-hidden="true">
+										<span class="gt-hit__node" />
+										<span class="gt-hit__wire" />
+									</div>
+									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan>
+										{
+											fan.length === 0 ? (
+												<div class="gt-fan__empty" aria-hidden="true">
+													<span>{r.title.slice(0, 2)}</span>
+												</div>
+											) : (
+												fan.map((a, i) => (
+													<button type="button" class="gt-fan__shot" data-fan-img data-i={i} aria-label={a.alt}>
+														<img src={a.thumb ?? a.src} alt="" width="320" height="200" loading="lazy" decoding="async" />
+													</button>
+												))
+											)
+										}
+									</div>
+									<p class="gt-hit__kind">{kindLabel[r.kind]}</p>
+									<h3>{r.title}</h3>
+									<p class="gt-hit__st">{statusLabels[r.status]}</p>
+									<p class="gt-hit__sum">{r.problem}</p>
+									<p class="gt-hit__meta">{r.territory}</p>
+									{
+										r.detailHref && (
+											<p class="gt-hit__cta">
+												<a href={r.detailHref}>
+													{ctaFor(r.kind)}
+												</a>
+											</p>
+										)
+									}
+								</article>
+							);
+						})
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<dialog class="gt-lb" data-lightbox aria-label="Fotografía">
+		<button type="button" class="gt-lb__close" data-lb-close onclick="this.closest('dialog').close()">
+			Cerrar
+		</button>
+		<button type="button" class="gt-lb__nav" data-lb-prev aria-label="Anterior">←</button>
+		<figure>
+			<img data-lb-img alt="" />
+			<figcaption data-lb-cap></figcaption>
+		</figure>
+		<button type="button" class="gt-lb__nav" data-lb-next aria-label="Siguiente">→</button>
+	</dialog>
+</section>
+
+<script type="application/json" data-gt-archive-payload set:html={JSON.stringify(payload)} />
+
+<script>
+	import { initArchive } from '../scripts/archive-explorer';
+
+	const root = document.querySelector<HTMLElement>('[data-archive]');
+	const payloadNode = document.querySelector<HTMLScriptElement>('[data-gt-archive-payload]');
+	if (root && payloadNode?.textContent) {
+		initArchive(root, JSON.parse(payloadNode.textContent));
+	}
+</script>
+
+<style>
+	.gt-ax {
+		position: relative;
+		min-height: calc(100dvh - var(--gt-header-h));
+		background:
+			linear-gradient(#e8eceb 1px, transparent 1px),
+			linear-gradient(90deg, #e8eceb 1px, transparent 1px);
+		background-size: var(--gt-grid-size) var(--gt-grid-size);
+		background-color: var(--gt-off-white);
+		padding-bottom: env(safe-area-inset-bottom, 0px);
+	}
+
+	.gt-ax__live {
+		position: fixed;
+		left: 50%;
+		bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+		transform: translateX(-50%) translateY(8px);
+		z-index: 50;
+		margin: 0;
+		padding: 0.55rem 1rem;
+		background: var(--gt-gray-950);
+		color: var(--gt-white);
+		font-size: 0.82rem;
+		pointer-events: none;
+		opacity: 0;
+		border-radius: var(--gt-radius-sm);
+	}
+
+	.gt-ax__live[data-visible='1'] {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+
+	.gt-ax__micro,
+	.gt-ax__kicker,
+	.gt-file__code,
+	.gt-file__n,
+	.gt-zone__k,
+	.gt-hit__year,
+	.gt-hit__kind,
+	.gt-hit__st {
+		font-family: ui-monospace, Menlo, monospace;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		font-size: 0.62rem;
+	}
+
+	.gt-ax__entry {
+		display: grid;
+		grid-template-rows: auto 1fr;
+		min-height: calc(100dvh - var(--gt-header-h));
+		padding: var(--gt-space-6) var(--gt-gutter-x) var(--gt-space-8);
+	}
+
+	.gt-ax__entry[hidden],
+	.gt-ax__family[hidden] {
+		display: none !important;
+	}
+
+	.gt-ax__entry-head {
+		max-width: var(--gt-container-wide);
+		margin: 0 auto;
+		width: 100%;
+	}
+
+	.gt-ax__micro {
+		color: var(--gt-gray-400);
+		margin: 0 0 0.35rem;
+	}
+
+	.gt-ax h1 {
+		font-size: var(--gt-fs-xl);
+		margin: 0 0 0.4rem;
+	}
+
+	.gt-ax__lead {
+		max-width: 34rem;
+		color: var(--gt-text-muted);
+		margin: 0;
+	}
+
+	.gt-ax__terr {
+		margin: 0.75rem 0 0;
+	}
+
+	.gt-ax__terr a {
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--gt-gray-800);
+		border-bottom: 1px solid var(--gt-coral);
+	}
+
+	.gt-ax__board {
+		display: grid;
+		grid-template-columns: minmax(0, 1.35fr) minmax(14rem, 20rem);
+		gap: var(--gt-space-6);
+		align-items: center;
+		max-width: var(--gt-container-wide);
+		margin: var(--gt-space-6) auto 0;
+		width: 100%;
+	}
+
+	.gt-ax__files {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.65rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.gt-ax__files li {
+		min-width: 0;
+	}
+
+	.gt-file {
+		display: grid;
+		width: 100%;
+		height: 100%;
+		grid-template-rows: auto auto 1fr auto auto;
+		text-align: left;
+		min-height: 10.5rem;
+		padding: 0.85rem 0.9rem;
+		border: 1px solid var(--gt-border);
+		background: color-mix(in srgb, var(--gt-white) 88%, transparent);
+		cursor: grab;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.gt-file:active {
+		cursor: grabbing;
+	}
+
+	.gt-file::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 3px;
+		background: var(--gt-file-accent, var(--gt-coral));
+	}
+
+	.gt-file.is-selected,
+	.gt-file:focus-visible {
+		border-color: var(--gt-coral);
+		outline: 2px solid color-mix(in srgb, var(--gt-coral) 35%, transparent);
+		outline-offset: 2px;
+	}
+
+	.gt-file.is-dragging {
+		opacity: 0.55;
+	}
+
+	.gt-file__viz {
+		color: var(--gt-gray-800);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-file__viz :global(.gt-cv) {
+		width: 4.5rem;
+		height: auto;
+	}
+
+	.gt-file__code {
+		color: var(--gt-coral);
+	}
+
+	.gt-file__title {
+		font-weight: 700;
+		font-size: 0.95rem;
+		line-height: 1.2;
+		margin: 0.25rem 0 0.2rem;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	.gt-file__cue {
+		font-size: 0.78rem;
+		color: var(--gt-text-muted);
+	}
+
+	.gt-file__n {
+		color: var(--gt-gray-400);
+		margin-top: 0.55rem;
+	}
+
+	.gt-zone {
+		min-height: 9.5rem;
+		border: 1px solid color-mix(in srgb, var(--gt-gray-400) 50%, var(--gt-border));
+		background: color-mix(in srgb, var(--gt-white) 70%, transparent);
+		display: grid;
+		place-content: center;
+		gap: 0.35rem;
+		text-align: center;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		position: relative;
+		box-shadow: 0 0 0 0 color-mix(in srgb, var(--gt-coral) 0%, transparent);
+	}
+
+	.gt-zone::before,
+	.gt-zone::after {
+		content: '';
+		position: absolute;
+		width: 14px;
+		height: 14px;
+	}
+
+	.gt-zone::before {
+		top: -1px;
+		left: -1px;
+		border-top: 2px solid var(--gt-coral);
+		border-left: 2px solid var(--gt-coral);
+	}
+
+	.gt-zone::after {
+		right: -1px;
+		bottom: -1px;
+		border-right: 2px solid var(--gt-coral);
+		border-bottom: 2px solid var(--gt-coral);
+	}
+
+	.gt-zone__k {
+		color: var(--gt-gray-400);
+	}
+
+	.gt-zone__t {
+		font-weight: 800;
+		font-size: 0.78rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-zone.is-hint,
+	.gt-zone.has-selection {
+		border-color: var(--gt-coral);
+		box-shadow: 0 0 0 6px color-mix(in srgb, var(--gt-coral) 12%, transparent);
+	}
+
+	.gt-zone.is-over,
+	.gt-zone.is-nudge {
+		background: var(--gt-gray-950);
+		border-color: var(--gt-coral);
+		color: var(--gt-white);
+	}
+
+	.gt-zone.is-over .gt-zone__t,
+	.gt-zone.is-nudge .gt-zone__t {
+		color: var(--gt-white);
+	}
+
+	.gt-ax__family {
+		min-height: calc(100dvh - var(--gt-header-h));
+	}
+
+	.gt-ax__stage {
+		display: grid;
+		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+		min-height: calc(100dvh - var(--gt-header-h));
+	}
+
+	.gt-ax__family[hidden] .gt-ax__stage {
+		display: none;
+	}
+
+	.gt-ax__ctx {
+		position: sticky;
+		top: var(--gt-header-h);
+		align-self: stretch;
+		min-height: calc(100dvh - var(--gt-header-h));
+		overflow: auto;
+		padding: var(--gt-space-6) var(--gt-space-5);
+		border-right: 1px solid var(--gt-border);
+		background: var(--gt-white);
+	}
+
+	.gt-ax__back {
+		border: 0;
+		background: none;
+		padding: 0;
+		min-height: var(--gt-touch);
+		font-size: 0.82rem;
+		color: var(--gt-gray-800);
+		cursor: pointer;
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-ax__kicker {
+		color: var(--gt-coral);
+		margin: 0 0 0.5rem;
+	}
+
+	.gt-ax__ctx h2 {
+		font-size: var(--gt-fs-lg);
+		text-transform: uppercase;
+		margin: 0 0 0.75rem;
+	}
+
+	.gt-ax__ctx p {
+		color: var(--gt-text-muted);
+		font-size: 0.92rem;
+		max-width: 18rem;
+	}
+
+	.gt-ax__rail-wrap {
+		min-width: 0;
+		overflow: hidden;
+		background:
+			linear-gradient(to right, color-mix(in srgb, var(--gt-coffee) 7%, transparent) 1px, transparent 1px),
+			linear-gradient(to bottom, color-mix(in srgb, var(--gt-coffee) 7%, transparent) 1px, transparent 1px);
+		background-size: 28px 28px;
+		background-color: var(--gt-off-white);
+	}
+
+	.gt-ax__rail {
+		display: flex;
+		align-items: stretch;
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x proximity;
+		padding: var(--gt-space-10) var(--gt-space-6) calc(var(--gt-space-10) + env(safe-area-inset-bottom, 0px));
+		overscroll-behavior-x: contain;
+		position: relative;
+		min-height: 100%;
+	}
+
+	.gt-hit {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		flex: 0 0 min(19rem, 78vw);
+		scroll-snap-align: start;
+		padding: 0 2.75rem 0 0;
+		position: relative;
+		background: transparent;
+		border: 0;
+		min-width: 0;
+	}
+
+	.gt-hit[hidden] {
+		display: none !important;
+	}
+
+	.gt-hit.is-lit .gt-hit__node {
+		box-shadow: 0 0 0 4px color-mix(in srgb, var(--gt-coral) 28%, transparent);
+	}
+
+	.gt-hit__year {
+		color: var(--gt-coral);
+		letter-spacing: 0.16em;
+		margin: 0 0 0.35rem;
+		font-size: 0.72rem;
+	}
+
+	.gt-hit__axis {
+		position: relative;
+		width: 100%;
+		height: 1.15rem;
+		margin: 0 0 1.1rem;
+		overflow: visible;
+	}
+
+	.gt-hit__node {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 0.72rem;
+		height: 0.72rem;
+		background: var(--gt-coral);
+		border: 2px solid var(--gt-white);
+		border-radius: 50%;
+		z-index: 2;
+		transform: translateY(-50%);
+	}
+
+	.gt-hit__wire {
+		position: absolute;
+		left: 0.36rem;
+		right: -2.75rem;
+		top: 50%;
+		height: 2px;
+		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		transform: translateY(-50%);
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.gt-hit.is-last .gt-hit__wire {
+		right: auto;
+		width: 0;
+		display: none;
+	}
+
+	.gt-fan {
+		position: relative;
+		width: min(12.5rem, 100%);
+		height: 8.6rem;
+		margin: 0 0 1rem;
+	}
+
+	.gt-fan__empty,
+	.gt-fan__shot,
+	.gt-fan__shot img {
+		width: 88%;
+		height: 8.4rem;
+		object-fit: cover;
+	}
+
+	.gt-fan__empty {
+		border: 1px solid var(--gt-border);
+		background: repeating-linear-gradient(
+			-12deg,
+			var(--gt-gray-100),
+			var(--gt-gray-100) 8px,
+			transparent 8px,
+			transparent 16px
+		);
+		display: grid;
+		place-items: center;
+		font-family: ui-monospace, Menlo, monospace;
+		color: var(--gt-coral);
+		letter-spacing: 0.14em;
+	}
+
+	.gt-fan__shot {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		padding: 0;
+		border: 3px solid var(--gt-white);
+		box-shadow: 0 8px 18px color-mix(in srgb, var(--gt-gray-950) 12%, transparent);
+		background: var(--gt-gray-100);
+		transform-origin: bottom center;
+		transition: transform var(--gt-motion) var(--gt-ease);
+	}
+
+	.gt-fan--n2 .gt-fan__shot:nth-child(1),
+	.gt-fan--n3 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-5deg) translateX(-8px) scale(0.92);
+		z-index: 1;
+	}
+
+	.gt-fan--n3 .gt-fan__shot:nth-child(2) {
+		transform: rotate(5deg) translateX(10px) scale(0.95);
+		z-index: 2;
+	}
+
+	.gt-fan--n2 .gt-fan__shot:nth-child(2),
+	.gt-fan--n3 .gt-fan__shot:nth-child(3) {
+		transform: none;
+		z-index: 3;
+	}
+
+	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(1),
+	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-14deg) translateX(-28px) scale(0.9);
+	}
+
+	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(2),
+	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(2) {
+		transform: rotate(14deg) translateX(28px) scale(0.9);
+	}
+
+	.gt-hit:hover .gt-fan--n2 .gt-fan__shot:nth-child(1),
+	.gt-hit:focus-within .gt-fan--n2 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-10deg) translateX(-18px);
+	}
+
+	.gt-hit__kind {
+		color: var(--gt-gray-400);
+		margin: 0 0 0.2rem;
+	}
+
+	.gt-hit h3 {
+		font-size: 1.05rem;
+		margin: 0 0 0.3rem;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	.gt-hit__st {
+		color: var(--gt-coffee);
+		margin: 0 0 0.5rem;
+	}
+
+	.gt-hit__sum {
+		font-size: 0.82rem;
+		color: var(--gt-text-muted);
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		margin: 0 0 0.55rem;
+	}
+
+	.gt-hit__meta {
+		font-size: 0.72rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--gt-gray-800);
+		margin: 0 0 0.65rem;
+	}
+
+	.gt-hit__cta a {
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--gt-coral);
+		border-bottom: 1px solid transparent;
+	}
+
+	.gt-hit__cta a:hover {
+		border-bottom-color: var(--gt-coral);
+	}
+
+	.gt-lb {
+		border: 1px solid var(--gt-border);
+		padding: 0;
+		max-width: min(92vw, 56rem);
+		background: var(--gt-gray-950);
+		color: var(--gt-white);
+	}
+
+	.gt-lb::backdrop {
+		background: color-mix(in srgb, var(--gt-gray-950) 72%, transparent);
+	}
+
+	.gt-lb figure {
+		margin: 0;
+		padding: 2.5rem 3rem 1.5rem;
+	}
+
+	.gt-lb img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.gt-lb__close,
+	.gt-lb__nav {
+		position: absolute;
+		border: 0;
+		background: transparent;
+		color: var(--gt-white);
+		min-height: var(--gt-touch);
+		min-width: var(--gt-touch);
+	}
+
+	.gt-lb__close {
+		top: 0.25rem;
+		right: 0.5rem;
+	}
+
+	.gt-lb__nav {
+		top: 50%;
+	}
+
+	.gt-lb__nav[data-lb-prev] {
+		left: 0;
+	}
+
+	.gt-lb__nav[data-lb-next] {
+		right: 0;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.gt-fan__shot,
+		.gt-hit:hover .gt-fan__shot,
+		.gt-hit:focus-within .gt-fan__shot,
+		.gt-ax__live {
+			transform: none !important;
+			transition: none;
+		}
+	}
+
+	@media (max-width: 1024px) {
+		.gt-ax__board {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-zone {
+			order: -1;
+			min-height: 5.5rem;
+		}
+
+		.gt-file {
+			cursor: pointer;
+		}
+
+		.gt-ax__files {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.gt-ax__stage {
+			grid-template-columns: 1fr;
+			min-height: 0;
+		}
+
+		.gt-ax__ctx {
+			border-right: 0;
+			border-bottom: 1px solid var(--gt-border);
+		}
+
+		.gt-ax__ctx p {
+			max-width: none;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-ax__files {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-ax__rail {
+			flex-direction: column;
+			overflow-x: hidden;
+			padding: var(--gt-space-6) var(--gt-space-5) calc(var(--gt-space-10) + env(safe-area-inset-bottom, 0px));
+		}
+
+		.gt-hit {
+			flex: none;
+			width: 100%;
+			padding: 0 0 2.75rem 1.6rem;
+		}
+
+		.gt-hit__axis {
+			position: absolute;
+			left: 0;
+			top: 1.35rem;
+			bottom: 0;
+			width: 0.72rem;
+			height: auto;
+			margin: 0;
+		}
+
+		.gt-hit__node {
+			top: 0;
+			left: 0;
+			transform: none;
+		}
+
+		.gt-hit__wire {
+			left: 0.3rem;
+			right: auto;
+			top: 0.36rem;
+			bottom: -2.75rem;
+			width: 2px;
+			height: auto;
+			transform: none;
+		}
+	}
+</style>

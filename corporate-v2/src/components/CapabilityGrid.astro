@@ -1,0 +1,152 @@
+---
+import { getCollection } from 'astro:content';
+import { capabilitiesIntro } from '../config/site';
+import CapabilityCard from './CapabilityCard.astro';
+import TerritorialGrid from './TerritorialGrid.astro';
+
+const entries = (await getCollection('capabilities')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section class="gt-cap" aria-labelledby="gt-cap-title">
+	<TerritorialGrid intensity="subtle" />
+	<div class="gt-cap__inner gt-container--wide">
+		<p class="gt-cap__micro">{capabilitiesIntro.microcode}</p>
+		<p class="gt-cap__eyebrow">{capabilitiesIntro.eyebrow}</p>
+		<h2 id="gt-cap-title">{capabilitiesIntro.headline}</h2>
+		<p class="gt-cap__support">{capabilitiesIntro.supporting}</p>
+		<div class="gt-cap-grid">
+			{entries.map((entry) => <CapabilityCard entry={entry} headingLevel="h3" />)}
+		</div>
+	</div>
+</section>
+
+<style>
+	.gt-cap {
+		position: relative;
+		padding: var(--gt-space-10) 0 var(--gt-space-12);
+		border-bottom: 1px solid var(--gt-border);
+		overflow: hidden;
+	}
+
+	.gt-cap__inner {
+		position: relative;
+		z-index: 1;
+	}
+
+	.gt-cap__micro,
+	.gt-cap__eyebrow {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		margin: 0;
+	}
+
+	.gt-cap__micro {
+		font-size: 0.62rem;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-cap__eyebrow {
+		font-size: 0.72rem;
+		color: var(--gt-coral);
+		font-weight: 700;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-cap h2 {
+		font-size: var(--gt-fs-xl);
+		max-width: 18ch;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-cap__support {
+		max-width: 40rem;
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-cap-grid {
+		display: grid;
+		width: 100%;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-areas:
+			'intel gov society'
+			'ops market tour';
+		gap: 1px;
+		background: var(--gt-border);
+		border: 1px solid var(--gt-border);
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='inteligencia-territorial']) {
+		grid-area: intel;
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='gobierno-y-gestion']) {
+		grid-area: gov;
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='sociedad-y-participacion']) {
+		grid-area: society;
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='operaciones-y-trazabilidad']) {
+		grid-area: ops;
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='mercados-y-servicios']) {
+		grid-area: market;
+	}
+
+	.gt-cap-grid :global(.gt-cap-card[data-slug='turismo-y-territorio']) {
+		grid-area: tour;
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		.gt-cap h2 {
+			max-width: 24ch;
+		}
+
+		.gt-cap__support {
+			max-width: 46rem;
+		}
+
+		.gt-cap-grid {
+			grid-template-columns: 1fr 1fr;
+			grid-template-areas:
+				'intel gov'
+				'society ops'
+				'market tour';
+		}
+
+		.gt-cap-grid :global(.gt-cap-card[data-slug='inteligencia-territorial']) {
+			min-height: 0;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-cap-grid {
+			grid-template-columns: 1fr;
+			grid-template-areas:
+				'intel'
+				'gov'
+				'society'
+				'ops'
+				'market'
+				'tour';
+			gap: 0;
+			background: transparent;
+			border: none;
+			border-top: 1px solid var(--gt-border);
+		}
+
+		.gt-cap-grid :global(.gt-cap-card) {
+			border-bottom: 1px solid var(--gt-border);
+			padding-inline: 0;
+		}
+
+		.gt-cap h2 {
+			max-width: none;
+		}
+	}
+</style>

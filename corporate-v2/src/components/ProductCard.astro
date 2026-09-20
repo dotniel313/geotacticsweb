@@ -1,0 +1,245 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { catalogHref, publicSurfaceFor, statusLabels } from '../lib/products';
+import { ctaLabels } from '../data/surfaces';
+import ProductStatus from './ProductStatus.astro';
+import ProductVisualFallback from './ProductVisualFallback.astro';
+
+interface Props {
+	entry: CollectionEntry<'products'>;
+	variant: 'operation' | 'next' | 'lineage' | 'catalog';
+	mode: 'home' | 'catalog';
+	projectHref?: string;
+}
+
+const { entry, variant, mode, projectHref } = Astro.props;
+const p = entry.data;
+const statusLabel = statusLabels[p.status];
+const ctaLabel = 'Ver producto';
+const href = catalogHref(p.slug);
+const surface = publicSurfaceFor(entry);
+const liveHref = surface?.url;
+const liveLabel = surface ? (ctaLabels[surface.ctaType as keyof typeof ctaLabels] ?? 'Abrir') : undefined;
+const yearLabel = p.yearLabel ?? (p.year != null ? String(p.year) : undefined);
+const showImage = p.assetStatus === 'approved' && Boolean(p.asset);
+---
+
+<article class={`gt-prod-card gt-prod-card--${variant}`} id={mode === 'catalog' ? p.slug : undefined} data-slug={p.slug}>
+	{
+		mode === 'home' ? (
+			<a class="gt-prod-card__hit" href={href}>
+				<div class="gt-prod-card__visual">
+					{showImage ? (
+						<img src={p.asset} alt={`Interfaz de ${p.name}`} width="640" height="360" loading="lazy" decoding="async" />
+					) : (
+						<ProductVisualFallback id={p.id} statusLabel={statusLabel} kind={p.visual} />
+					)}
+				</div>
+				<div class="gt-prod-card__body">
+					<p class="gt-prod-card__code">{p.id}</p>
+					<ProductStatus status={p.status} yearLabel={yearLabel} yearStatus={p.yearStatus} />
+					<h3 class="gt-prod-card__title">{p.name}</h3>
+					<p class="gt-prod-card__sum">{p.summary}</p>
+					<p class="gt-prod-card__meta">{p.type}</p>
+					<p class="gt-prod-card__cta">
+						{ctaLabel} <span aria-hidden="true">→</span>
+					</p>
+				</div>
+			</a>
+		) : (
+			<>
+				<div class="gt-prod-card__visual">
+					{showImage ? (
+						<img src={p.asset} alt={`Interfaz de ${p.name}`} width="640" height="360" loading="lazy" decoding="async" />
+					) : (
+						<ProductVisualFallback id={p.id} statusLabel={statusLabel} kind={p.visual} />
+					)}
+				</div>
+				<div class="gt-prod-card__body">
+					<p class="gt-prod-card__code">{p.id}</p>
+					<ProductStatus status={p.status} yearLabel={yearLabel} yearStatus={p.yearStatus} />
+					<h3 class="gt-prod-card__title">{p.name}</h3>
+					<p class="gt-prod-card__sum">{p.summary}</p>
+					<p class="gt-prod-card__meta">{p.type}</p>
+					{
+						liveHref && liveLabel ? (
+							<a class="gt-prod-card__cta gt-prod-card__cta--live" href={liveHref} target="_blank" rel="noopener noreferrer">
+								{liveLabel} <span class="visually-hidden">(se abre en una ventana nueva)</span>
+								<span aria-hidden="true">→</span>
+							</a>
+						) : null
+					}
+					<a class="gt-prod-card__cta" href={href}>
+						Ver producto <span aria-hidden="true">→</span>
+					</a>
+					{
+						projectHref ? (
+							<a class="gt-prod-card__cta" href={projectHref}>
+								Ver caso <span aria-hidden="true">→</span>
+							</a>
+						) : null
+					}
+				</div>
+			</>
+		)
+	}
+</article>
+
+<style>
+	.gt-prod-card {
+		background: var(--gt-white);
+		border: 1px solid var(--gt-border);
+		min-width: 0;
+		scroll-margin-top: calc(var(--gt-header-h) + 0.75rem);
+	}
+
+	.gt-prod-card__visual {
+		position: relative;
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-prod-card__hit {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		min-height: var(--gt-touch);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-prod-card__visual :global(.gt-pvf) {
+		border-bottom: 0;
+	}
+
+	.gt-prod-card__visual img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.gt-prod-card__body {
+		display: flex;
+		flex-direction: column;
+		padding: 1.1rem 1.15rem 1.2rem;
+		gap: 0.45rem;
+		position: relative;
+	}
+
+	.gt-prod-card__body::before {
+		content: '';
+		position: absolute;
+		inset: 0 auto auto 0;
+		width: 0;
+		height: 2px;
+		background: var(--gt-coral);
+		transition: width var(--gt-motion) var(--gt-ease);
+	}
+
+	.gt-prod-card:hover .gt-prod-card__body::before,
+	.gt-prod-card:focus-within .gt-prod-card__body::before {
+		width: 2.75rem;
+	}
+
+	.gt-prod-card__code,
+	.gt-prod-card__meta {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		font-size: 0.58rem;
+		margin: 0;
+		color: var(--gt-gray-400);
+	}
+
+	.gt-prod-card__meta {
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		transition:
+			max-height var(--gt-motion) var(--gt-ease),
+			opacity var(--gt-motion) var(--gt-ease);
+	}
+
+	.gt-prod-card:hover .gt-prod-card__meta,
+	.gt-prod-card:focus-within .gt-prod-card__meta {
+		max-height: 3rem;
+		opacity: 1;
+	}
+
+	.gt-prod-card__title {
+		font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.3rem);
+		margin: 0.15rem 0 0;
+		letter-spacing: -0.02em;
+	}
+
+	.gt-prod-card__title,
+	.gt-prod-card__sum {
+		overflow-wrap: break-word;
+	}
+
+	.gt-prod-card__sum {
+		margin: 0;
+		color: var(--gt-text-muted);
+		font-size: 0.92rem;
+		flex: 1;
+	}
+
+	.gt-prod-card__cta {
+		margin: 0.35rem 1rem 0 0;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--gt-gray-800);
+		text-decoration: none;
+		min-height: var(--gt-touch);
+		display: inline-flex;
+		align-items: center;
+		align-self: flex-start;
+	}
+
+	.gt-prod-card__cta--live {
+		color: var(--gt-coral);
+	}
+
+	.gt-prod-card:hover .gt-prod-card__cta,
+	.gt-prod-card:focus-within .gt-prod-card__cta {
+		color: var(--gt-coral);
+	}
+
+	.gt-prod-card--next .gt-prod-card__visual :global(.gt-pvf) {
+		aspect-ratio: 16 / 8;
+	}
+
+	.gt-prod-card--lineage {
+		background: color-mix(in srgb, var(--gt-off-white) 82%, var(--gt-coffee) 4%);
+		border-left: 3px solid var(--gt-coffee);
+	}
+
+	.gt-prod-card--lineage .gt-prod-card__title {
+		font-size: 1.05rem;
+	}
+
+	@media (max-width: 720px) {
+		.gt-prod-card__body {
+			padding: 1.1rem 0.15rem 1.35rem;
+		}
+
+		.gt-prod-card,
+		.gt-prod-card--lineage {
+			border-left: none;
+			border-right: none;
+			background: transparent;
+			border-top: none;
+			border-bottom: 1px solid var(--gt-border);
+		}
+
+		.gt-prod-card__meta {
+			max-height: 3rem;
+			opacity: 1;
+		}
+	}
+</style>

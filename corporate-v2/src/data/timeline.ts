@@ -1,0 +1,178 @@
+/** Timeline events — KEEP+REFACTOR. Dates not invented. */
+
+export type DateKind = 'exact' | 'approximate' | 'period' | 'memory' | 'unresolved';
+
+export type TimelineEvent = {
+	id: string;
+	order: number;
+	yearLabel: string;
+	dateKind: DateKind;
+	title: string;
+	summary: string;
+	home: boolean;
+	/** method = evolución conceptual; record = hito de archivo (no repetir en /tecnologia). */
+	track: 'method' | 'record';
+	products: string[];
+	cases: string[];
+	href?: string;
+};
+
+export const timelineEvents: TimelineEvent[] = [
+	{
+		id: 'tl-2007',
+		order: 1,
+		yearLabel: '2007',
+		dateKind: 'memory',
+		title: 'El problema',
+		summary:
+			'Dirección administrativa en el GADP de Sucumbíos. La idea nace de un problema de organización, no de un producto.',
+		home: true,
+		track: 'method',
+		products: [],
+		cases: [],
+		href: '/nosotros#gt-ns-hist',
+	},
+	{
+		id: 'tl-2008',
+		order: 2,
+		yearLabel: '2007–2008',
+		dateKind: 'memory',
+		title: 'Concepción GOST',
+		summary: 'Marco metodológico. El nombre se inspiró en ghost. No es software. Evidencia independiente del año: pendiente.',
+		home: true,
+		track: 'method',
+		products: [],
+		cases: [],
+		href: '/tecnologia#gost',
+	},
+	{
+		id: 'tl-2017',
+		order: 3,
+		yearLabel: '2017',
+		dateKind: 'exact',
+		title: 'SIGDR · Gualsaquí',
+		summary: 'Primera materialización localizada y documentada.',
+		home: true,
+		track: 'record',
+		products: ['sigdr'],
+		cases: ['gualsaqui'],
+		href: '/casos/gualsaqui',
+	},
+	{
+		id: 'tl-2018',
+		order: 4,
+		yearLabel: '2018',
+		dateKind: 'exact',
+		title: 'SIGC · Pimampiro',
+		summary: 'Primera instancia documentada de gestión de cartera.',
+		home: true,
+		track: 'record',
+		products: ['sigc'],
+		cases: ['pimampiro'],
+		href: '/casos/pimampiro',
+	},
+	{
+		id: 'tl-2019',
+		order: 5,
+		yearLabel: '~2019',
+		dateKind: 'approximate',
+		title: 'YAKU · EMAPAI',
+		summary: 'Gestión institucional. OLAP documentado. No se reduce a lectura de medidores.',
+		home: false,
+		track: 'record',
+		products: ['yaku'],
+		cases: ['emapai-yaku'],
+		href: '/casos/emapai-yaku',
+	},
+	{
+		id: 'tl-nl',
+		order: 6,
+		yearLabel: 'Después de 2020',
+		dateKind: 'period',
+		title: 'Base en Nueva Loja',
+		summary: 'Traslado desde Ibarra. Año exacto no documentado.',
+		home: true,
+		track: 'method',
+		products: [],
+		cases: [],
+		href: '/nosotros#gt-ns-place',
+	},
+	{
+		id: 'tl-2021',
+		order: 7,
+		yearLabel: '2021',
+		dateKind: 'exact',
+		title: 'Origen MadaRadio',
+		summary: 'Producto propio. Cliente de origen: Oreja Multimedia. Evolución de la app: 2025.',
+		home: false,
+		track: 'record',
+		products: ['madaradio'],
+		cases: [],
+		href: '/productos/madaradio',
+	},
+	{
+		id: 'tl-dayuma',
+		order: 8,
+		yearLabel: '2022',
+		dateKind: 'exact',
+		title: 'Dayuma + Inés Arango',
+		summary: 'Proyecto técnico de cantonización en Dayuma e Inés Arango.',
+		home: false,
+		track: 'record',
+		products: ['sigdr'],
+		cases: ['dayuma-ines-arango'],
+		href: '/casos/dayuma-ines-arango',
+	},
+	{
+		id: 'tl-2023-ot',
+		order: 9,
+		yearLabel: '2023',
+		dateKind: 'exact',
+		title: 'O/T · GAD Provincial de Sucumbíos',
+		summary: 'Planificación, seguimiento y control. Distinto del caso PDOT.',
+		home: true,
+		track: 'record',
+		products: ['ot'],
+		cases: ['ot-gad-sucumbios'],
+		href: '/casos/ot-gad-sucumbios',
+	},
+	{
+		id: 'tl-pdot',
+		order: 10,
+		yearLabel: '2023–2038',
+		dateKind: 'period',
+		title: 'PDOT Sucumbíos',
+		summary: 'CAPTURE, base territorial y DataSucumbíos en una rama; O/T en otra.',
+		home: true,
+		track: 'record',
+		products: ['datasucumbios'],
+		cases: ['pdot-sucumbios'],
+		href: '/casos/pdot-sucumbios',
+	},
+	{
+		id: 'tl-2025',
+		order: 11,
+		yearLabel: '2025',
+		dateKind: 'period',
+		title: 'Superficies en evolución',
+		summary: 'MadaRadio (app), Termómetro Social, ExploraSucumbíos, OrangeMap — según fichas públicas.',
+		home: false,
+		track: 'record',
+		products: ['madaradio', 'termometro-social', 'explorasucumbios', 'orangemap'],
+		cases: [],
+		href: '/archivo',
+	},
+	{
+		id: 'tl-next',
+		order: 12,
+		yearLabel: '2025–2026',
+		dateKind: 'period',
+		title: 'Diversificación',
+		summary: 'Productos propios y nuevos mercados. Ramas independientes desde GOST, no una secuencia.',
+		home: true,
+		track: 'method',
+		products: ['guanta', 'rantyi', 'fixis'],
+		cases: [],
+		href: '/archivo',
+	},
+];

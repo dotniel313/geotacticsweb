@@ -1,0 +1,290 @@
+---
+/**
+ * PRODUCTS = STABLE_FOR_ALPHA (3.3.0).
+ * No polish de ProductShowcase / ProductCard en este bloque.
+ */
+import { getCollection } from 'astro:content';
+import { productsIntro } from '../config/site';
+import { casesForProduct } from '../lib/cases';
+import { groupCopy, sortProducts } from '../lib/products';
+import ProductCard from './ProductCard.astro';
+
+interface Props {
+	mode?: 'home' | 'catalog';
+}
+
+const { mode = 'home' } = Astro.props;
+const all = (await getCollection('products')).filter((e) => e.data.public);
+const home = all.filter((e) => e.data.featuredHome);
+const source = mode === 'home' ? home : all;
+const cases = await getCollection('cases');
+
+const projectHrefFor = (slug: string) => {
+	if (mode !== 'catalog') return undefined;
+	const related = casesForProduct(cases, slug);
+	return related[0] ? `/casos/${related[0].data.slug}` : undefined;
+};
+
+const operation = sortProducts(source.filter((e) => e.data.group === 'operation'));
+const next = sortProducts(source.filter((e) => e.data.group === 'next'));
+const lineage = sortProducts(source.filter((e) => e.data.group === 'lineage'));
+const catalog = sortProducts(source.filter((e) => e.data.group === 'catalog'));
+
+---
+
+<section class={`gt-prod gt-prod--${mode}`} aria-labelledby="gt-prod-title">
+	{
+		mode === 'home' && (
+			<div class="gt-prod__intro gt-container--wide">
+				<p class="gt-prod__micro">{productsIntro.microcode}</p>
+				<p class="gt-prod__eyebrow">{productsIntro.eyebrow}</p>
+				<h2 id="gt-prod-title">{productsIntro.headline}</h2>
+				<p class="gt-prod__support">{productsIntro.supporting}</p>
+			</div>
+		)
+	}
+
+	<div class="gt-prod__band gt-prod__band--op gt-container--wide">
+		<p class="gt-prod__gcode">{groupCopy.operation.micro}</p>
+		{
+			mode === 'catalog' ? (
+				<h2 class="gt-prod__glabel" id={groupCopy.operation.id}>
+					{groupCopy.operation.label}
+				</h2>
+			) : (
+				<p class="gt-prod__glabel">{groupCopy.operation.label}</p>
+			)
+		}
+		<p class="gt-prod__glead">{groupCopy.operation.lead}</p>
+		<div class="gt-prod-grid gt-prod-grid--op">
+			{operation.map((entry) => (
+				<ProductCard entry={entry} variant="operation" mode={mode} projectHref={projectHrefFor(entry.data.slug)} />
+			))}
+		</div>
+	</div>
+
+	<div class="gt-prod__band gt-prod__band--nx gt-container--wide">
+		<p class="gt-prod__gcode">{groupCopy.next.micro}</p>
+		{
+			mode === 'catalog' ? (
+				<h2 class="gt-prod__glabel" id={groupCopy.next.id}>
+					{groupCopy.next.label}
+				</h2>
+			) : (
+				<p class="gt-prod__glabel">{groupCopy.next.label}</p>
+			)
+		}
+		<p class="gt-prod__glead">{groupCopy.next.lead}</p>
+		<div class="gt-prod-grid gt-prod-grid--nx">
+			{next.map((entry) => (
+				<ProductCard entry={entry} variant="next" mode={mode} projectHref={projectHrefFor(entry.data.slug)} />
+			))}
+		</div>
+	</div>
+
+	<div class="gt-prod__band gt-prod__band--ln gt-container--wide">
+		<p class="gt-prod__gcode">{groupCopy.lineage.micro}</p>
+		{
+			mode === 'catalog' ? (
+				<h2 class="gt-prod__glabel" id={groupCopy.lineage.id}>
+					{groupCopy.lineage.label}
+				</h2>
+			) : (
+				<p class="gt-prod__glabel">{groupCopy.lineage.label}</p>
+			)
+		}
+		<p class="gt-prod__glead">{groupCopy.lineage.lead}</p>
+		<div class="gt-prod-grid gt-prod-grid--ln">
+			{lineage.map((entry) => (
+				<ProductCard entry={entry} variant="lineage" mode={mode} projectHref={projectHrefFor(entry.data.slug)} />
+			))}
+		</div>
+	</div>
+
+	{
+		mode === 'catalog' && catalog.length > 0 && (
+			<div class="gt-prod__band gt-prod__band--cat gt-container--wide">
+				<p class="gt-prod__gcode">{groupCopy.catalog.micro}</p>
+				<h2 class="gt-prod__glabel" id={groupCopy.catalog.id}>
+					{groupCopy.catalog.label}
+				</h2>
+				<p class="gt-prod__glead">{groupCopy.catalog.lead}</p>
+				<div class="gt-prod-grid gt-prod-grid--cat">
+					{catalog.map((entry) => (
+						<ProductCard entry={entry} variant="catalog" mode={mode} projectHref={projectHrefFor(entry.data.slug)} />
+					))}
+				</div>
+			</div>
+		)
+	}
+</section>
+
+<style>
+	.gt-prod {
+		position: relative;
+		padding: var(--gt-space-10) 0 var(--gt-space-12);
+		border-bottom: 1px solid var(--gt-border);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-prod--catalog {
+		padding-top: 0;
+		border-bottom: none;
+	}
+
+	.gt-prod__micro,
+	.gt-prod__eyebrow,
+	.gt-prod__gcode {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		margin: 0;
+	}
+
+	.gt-prod__micro {
+		font-size: 0.62rem;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-prod__eyebrow {
+		font-size: 0.72rem;
+		color: var(--gt-coral);
+		font-weight: 700;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-prod__intro h2,
+	.gt-prod__glabel {
+		font-size: var(--gt-fs-xl);
+		max-width: 20ch;
+		margin: 0 0 var(--gt-space-4);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--gt-gray-950);
+		line-height: var(--gt-lh-tight);
+		overflow-wrap: break-word;
+	}
+
+	.gt-prod__glabel {
+		font-size: var(--gt-fs-lg);
+		max-width: none;
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-prod__support,
+	.gt-prod__glead {
+		max-width: 40rem;
+		color: var(--gt-text-muted);
+		margin: 0 0 var(--gt-space-8);
+	}
+
+	.gt-prod__glead {
+		margin-bottom: var(--gt-space-5);
+		font-size: 0.95rem;
+	}
+
+	.gt-prod__gcode {
+		font-size: 0.62rem;
+		color: var(--gt-coral);
+		font-weight: 700;
+		margin-bottom: 0.4rem;
+	}
+
+	.gt-prod__band {
+		margin-top: var(--gt-space-10);
+	}
+
+	.gt-prod__intro + .gt-prod__band {
+		margin-top: var(--gt-space-8);
+	}
+
+	.gt-prod-grid {
+		display: grid;
+		gap: 0.75rem;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.gt-prod-grid--op {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.25rem;
+	}
+
+	.gt-prod-grid--nx {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.gt-prod-grid--ln {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.gt-prod-grid--cat {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.gt-prod-grid :global(.gt-prod-card) {
+		min-width: 0;
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		/*
+		  Tablet: el mosaico debe recorrer el 94vw útil.
+		  .gt-container--wide hereda max-width: 80rem (tope desktop).
+		  A ≤1024 no recorta, pero deja el techo editorial activo.
+		  Solo ProductShowcase: anular ese tope; el token 94vw global se mantiene.
+		*/
+		.gt-prod__intro.gt-container--wide,
+		.gt-prod__band.gt-container--wide {
+			width: 94vw;
+			max-width: none;
+			margin-inline: auto;
+		}
+
+		.gt-prod-grid--op {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.gt-prod-grid--nx,
+		.gt-prod-grid--ln,
+		.gt-prod-grid--cat {
+			width: 100%;
+			max-width: none;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			justify-items: stretch;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-prod-grid,
+		.gt-prod-grid--op,
+		.gt-prod-grid--nx,
+		.gt-prod-grid--ln,
+		.gt-prod-grid--cat {
+			grid-template-columns: minmax(0, 1fr);
+			background: transparent;
+			border: none;
+			gap: 0;
+		}
+
+		.gt-prod__intro h2,
+		.gt-prod__support,
+		.gt-prod__glead,
+		.gt-prod__glabel {
+			max-width: none;
+			overflow-wrap: break-word;
+		}
+
+		.gt-prod__band,
+		.gt-prod__intro {
+			min-width: 0;
+		}
+
+		.gt-prod__band--ln :global(.gt-prod-card) {
+			border-left: none;
+			border-right: none;
+		}
+	}
+</style>

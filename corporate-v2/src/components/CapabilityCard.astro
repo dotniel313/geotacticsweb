@@ -1,0 +1,124 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import CapabilityVisual from './CapabilityVisual.astro';
+
+interface Props {
+	entry: CollectionEntry<'capabilities'>;
+	headingLevel?: 'h2' | 'h3';
+}
+
+const { entry, headingLevel = 'h3' } = Astro.props;
+const { slug, title, shortDescription, microcode, cue, visual, order } = entry.data;
+const href = `/que-hacemos#${slug}`;
+const n = String(order).padStart(2, '0');
+---
+
+<a class="gt-cap-card" href={href} data-slug={slug}>
+	<div class="gt-cap-card__top">
+		<p class="gt-cap-card__code">{microcode}</p>
+		<CapabilityVisual kind={visual} />
+	</div>
+	<p class="gt-cap-card__index">{n}</p>
+	{
+		headingLevel === 'h2' ? (
+			<h2 class="gt-cap-card__title">{title}</h2>
+		) : (
+			<h3 class="gt-cap-card__title">{title}</h3>
+		)
+	}
+	<p class="gt-cap-card__cue">{cue}</p>
+	<p class="gt-cap-card__text">{shortDescription}</p>
+	<p class="gt-cap-card__more">
+		Explorar familia <span aria-hidden="true">→</span>
+	</p>
+</a>
+
+<style>
+	.gt-cap-card {
+		display: flex;
+		flex-direction: column;
+		min-height: var(--gt-touch);
+		padding: clamp(1.1rem, 2vw, 1.75rem);
+		background: var(--gt-off-white);
+		text-decoration: none;
+		color: inherit;
+		position: relative;
+	}
+
+	.gt-cap-card::before {
+		content: '';
+		position: absolute;
+		inset: 0 auto auto 0;
+		width: 0;
+		height: 2px;
+		background: var(--gt-coral);
+		transition: width var(--gt-motion) var(--gt-ease);
+	}
+
+	.gt-cap-card:hover::before,
+	.gt-cap-card:focus-visible::before {
+		width: 2.5rem;
+	}
+
+	.gt-cap-card__top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.gt-cap-card__code,
+	.gt-cap-card__index,
+	.gt-cap-card__cue {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.gt-cap-card__code {
+		font-size: 0.62rem;
+		color: var(--gt-gray-400);
+		margin: 0;
+	}
+
+	.gt-cap-card__index {
+		font-size: 0.68rem;
+		color: var(--gt-coral);
+		margin: 0 0 0.35rem;
+		font-weight: 700;
+	}
+
+	.gt-cap-card__title {
+		font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);
+		letter-spacing: -0.02em;
+		margin: 0 0 0.4rem;
+	}
+
+	.gt-cap-card__cue {
+		font-size: 0.62rem;
+		color: var(--gt-gray-600);
+		margin: 0 0 0.75rem;
+	}
+
+	.gt-cap-card__text {
+		color: var(--gt-text-muted);
+		font-size: 0.92rem;
+		max-width: 42ch;
+		margin: 0 0 1rem;
+		flex: 1;
+	}
+
+	.gt-cap-card__more {
+		margin: 0;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-cap-card:hover .gt-cap-card__more,
+	.gt-cap-card:focus-visible .gt-cap-card__more {
+		color: var(--gt-coral);
+	}
+</style>

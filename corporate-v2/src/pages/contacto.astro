@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, mailtoHref, whatsappHref } from '../data/contact';
+---
+
+<BaseLayout
+	title="Contacto | GeoTactics"
+	description="Hablar con GeoTactics sobre un problema de territorio, gestión u operación. Nueva Loja, Sucumbíos."
+	noindex={false}
+>
+	<article class="gt-ct">
+		<header class="gt-ct__intro gt-container--wide">
+			<p class="gt-ct__micro">GT / CONTACT</p>
+			<h1>Conversemos sobre el problema.</h1>
+			<p class="gt-ct__lead">
+				Cuéntanos qué necesitas resolver. Puede ser un problema de territorio, gestión, operación,
+				información o un nuevo mercado. Primero entendemos el problema; después definimos la tecnología.
+			</p>
+		</header>
+
+		<section class="gt-ct__block gt-container--wide" aria-labelledby="gt-ct-why">
+			<h2 id="gt-ct-why">Motivo</h2>
+			<ul class="gt-ct__motives">
+				{contact.motives.map((m) => (
+					<li>{m.label}</li>
+				))}
+			</ul>
+		</section>
+
+		<section class="gt-ct__split gt-container--wide">
+			<div>
+				<h2>Canales</h2>
+				<ul class="gt-ct__ch">
+					<li>
+						<p class="gt-ct__k">Correo</p>
+						<a href={mailtoHref}>{contact.email}</a>
+					</li>
+					<li>
+						<p class="gt-ct__k">WhatsApp</p>
+						<a href={whatsappHref} rel="noopener noreferrer" target="_blank">
+							{contact.whatsappDisplay}
+							<span class="visually-hidden">(se abre en una ventana nueva)</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div>
+				<h2>Base</h2>
+				<p>
+					{contact.baseCity}, {contact.baseProvince}
+					<br />
+					Ecuador
+				</p>
+			</div>
+		</section>
+
+		<section class="gt-ct__form-wrap gt-container--wide" aria-labelledby="gt-ct-form">
+			<h2 id="gt-ct-form">Escribir</h2>
+			<form class="gt-ct__form" data-gt-mail>
+				<label>
+					Nombre
+					<input type="text" name="nombre" autocomplete="name" />
+				</label>
+				<label>
+					Correo
+					<input type="email" name="email" autocomplete="email" />
+				</label>
+				<label>
+					Motivo
+					<select name="motivo">
+						{contact.motives.map((m) => (
+							<option value={m.label}>{m.label}</option>
+						))}
+					</select>
+				</label>
+				<label>
+					Mensaje
+					<textarea name="mensaje" rows="6"></textarea>
+				</label>
+				<button class="gt-cta" type="submit">Continuar por correo</button>
+			</form>
+		</section>
+	</article>
+</BaseLayout>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-gt-mail]');
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const data = new FormData(form);
+		const nombre = String(data.get('nombre') ?? '').trim();
+		const email = String(data.get('email') ?? '').trim();
+		const motivo = String(data.get('motivo') ?? '').trim();
+		const mensaje = String(data.get('mensaje') ?? '').trim();
+		const subject = encodeURIComponent(`GeoTactics · ${motivo || 'Contacto'}`);
+		const body = encodeURIComponent(
+			[nombre && `Nombre: ${nombre}`, email && `Correo: ${email}`, motivo && `Motivo: ${motivo}`, '', mensaje]
+				.filter(Boolean)
+				.join('\n'),
+		);
+		window.location.href = `mailto:info@geotactics.com.ec?subject=${subject}&body=${body}`;
+	});
+</script>
+
+<style>
+	.gt-ct {
+		padding-bottom: var(--gt-space-12);
+	}
+
+	.gt-ct__intro {
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ct__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-ct h1 {
+		font-size: var(--gt-fs-xl);
+		max-width: 16ch;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-ct__lead,
+	.gt-ct__note {
+		max-width: 40rem;
+		color: var(--gt-text-muted);
+	}
+
+	.gt-ct__block,
+	.gt-ct__form-wrap {
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ct h2 {
+		font-size: var(--gt-fs-lg);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-ct__motives {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.gt-ct__motives li {
+		padding: 0.4rem 0.7rem;
+		border: 1px solid var(--gt-border);
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-ct__split {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--gt-space-8);
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-ct__ch {
+		list-style: none;
+		margin: 0 0 var(--gt-space-4);
+		padding: 0;
+	}
+
+	.gt-ct__k {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.25rem;
+	}
+
+	.gt-ct__badge {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--gt-coffee);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-ct__form {
+		display: grid;
+		gap: var(--gt-space-4);
+		max-width: 36rem;
+		margin: var(--gt-space-5) 0;
+	}
+
+	.gt-ct__form label {
+		display: grid;
+		gap: 0.35rem;
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-ct__form input,
+	.gt-ct__form select,
+	.gt-ct__form textarea {
+		font: inherit;
+		padding: 0.65rem 0.75rem;
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		min-height: var(--gt-touch);
+	}
+
+	.gt-ct__form textarea {
+		min-height: 8rem;
+	}
+
+	@media (max-width: 720px) {
+		.gt-ct h1 {
+			max-width: none;
+		}
+
+		.gt-ct__split {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

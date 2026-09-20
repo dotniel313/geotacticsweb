@@ -1,0 +1,131 @@
+---
+import TerritorialGrid from './TerritorialGrid.astro';
+import TerritorialLayer from './TerritorialLayer.astro';
+import { copy, site, conversarHref } from '../config/site';
+---
+
+<section class="gt-hero" aria-labelledby="gt-hero-title">
+	<TerritorialGrid intensity="hero" />
+	<div class="gt-hero__layout gt-container--wide">
+		<div class="gt-hero__primary">
+			<p class="gt-hero__origin">
+				<span class="gt-hero__coord">{site.coordinates}</span>
+				<span>{site.originLine}</span>
+			</p>
+			<h1 id="gt-hero-title">{copy.h1}</h1>
+			<p class="gt-hero__support">{copy.supporting}</p>
+			<div class="gt-hero__actions">
+				<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+				<a class="gt-cta gt-cta--ghost" href="/tecnologia">{copy.ctaSecondary}</a>
+			</div>
+			<p class="gt-hero__anchor">
+				<span class="gt-hero__id">ID-2017</span>
+				{site.anchor2017}
+			</p>
+		</div>
+		<div class="gt-hero__territory">
+			<TerritorialLayer />
+		</div>
+	</div>
+</section>
+
+<style>
+	.gt-hero {
+		position: relative;
+		padding: clamp(2.5rem, 6vw, 5.5rem) 0 clamp(2.75rem, 6vw, 5rem);
+		overflow: hidden;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-hero__layout {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		grid-template-columns: minmax(0, 1.65fr) minmax(12rem, 1fr);
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+		align-items: center;
+	}
+
+	.gt-hero__origin {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--gt-gray-600);
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-hero__coord {
+		font-variant-numeric: tabular-nums;
+		letter-spacing: 0.16em;
+		color: var(--gt-coral);
+		font-weight: 700;
+	}
+
+	h1 {
+		font-size: var(--gt-fs-2xl);
+		font-weight: 700;
+		margin-bottom: var(--gt-space-5);
+		max-width: 16ch;
+	}
+
+	.gt-hero__support {
+		font-size: var(--gt-fs-lg);
+		color: var(--gt-gray-800);
+		margin-bottom: var(--gt-space-6);
+		max-width: 36rem;
+	}
+
+	.gt-hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-hero__anchor {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem;
+		font-size: 0.8rem;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-hero__id {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.68rem;
+		letter-spacing: 0.12em;
+		border: 1px solid var(--gt-border);
+		padding: 0.2rem 0.4rem;
+		color: var(--gt-coffee);
+	}
+
+	@media (max-width: 1024px) {
+		.gt-hero__layout {
+			grid-template-columns: 1fr;
+			gap: 1.25rem;
+		}
+
+		h1 {
+			max-width: 18ch;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.gt-hero__actions {
+			flex-direction: column;
+			align-items: stretch;
+		}
+
+		.gt-hero__actions .gt-cta {
+			width: 100%;
+		}
+
+		h1 {
+			max-width: none;
+		}
+	}
+</style>

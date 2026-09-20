@@ -1,0 +1,201 @@
+---
+import { getCollection } from 'astro:content';
+
+const published = (await getCollection('news'))
+	.filter((entry) => entry.data.publicationStatus === 'public')
+	.sort((a, b) => +b.data.date - +a.data.date)
+	.slice(0, 4);
+
+const empty = published.length === 0;
+const total = String(published.length).padStart(2, '0');
+
+const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 'short', year: 'numeric' });
+---
+
+<div class:list={['gt-signals', empty && 'gt-signals--empty']} aria-label="GeoTactics Signals" data-signals>
+	<div class="gt-signals__inner gt-container--wide">
+		{
+			empty ? (
+				<p class="gt-signals__empty">
+					<span class="gt-signals__id">GEOTACTICS / SIGNALS</span>
+					<span class="gt-signals__title">Archivo en construcción. No hay entradas publicables.</span>
+					<a class="gt-signals__more" href="/noticias">
+						Noticias
+					</a>
+				</p>
+			) : (
+				published.map((entry, i) => (
+					<a
+						class="gt-signals__link"
+						href={`/noticias/${entry.data.slug}`}
+						data-signal-item
+						hidden={i !== 0}
+						aria-hidden={i !== 0}
+					>
+						<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
+						<span class="gt-signals__title">{entry.data.title}</span>
+						<span class="gt-signals__meta">
+							<time datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
+							<span class="gt-signals__count">
+								{String(i + 1).padStart(2, '0')}/{total}
+							</span>
+							<span aria-hidden="true">→</span>
+						</span>
+					</a>
+				))
+			)
+		}
+		{
+			published.length > 1 && (
+				<div class="gt-signals__controls">
+					<button type="button" data-signal-prev aria-label="Entrada anterior">
+						‹
+					</button>
+					<button type="button" data-signal-next aria-label="Entrada siguiente">
+						›
+					</button>
+				</div>
+			)
+		}
+	</div>
+</div>
+
+{
+	published.length > 1 && (
+		<script>
+			const root = document.querySelector('[data-signals]');
+			if (root) {
+				const slides = [...root.querySelectorAll<HTMLElement>('[data-signal-item]')];
+				let i = 0;
+				const show = (n: number) => {
+					i = (n + slides.length) % slides.length;
+					slides.forEach((el, idx) => {
+						const on = idx === i;
+						el.hidden = !on;
+						el.setAttribute('aria-hidden', String(!on));
+					});
+				};
+				root.querySelector('[data-signal-prev]')?.addEventListener('click', () => show(i - 1));
+				root.querySelector('[data-signal-next]')?.addEventListener('click', () => show(i + 1));
+				root.addEventListener('keydown', (event) => {
+					if (!(event instanceof KeyboardEvent)) return;
+					if (event.key === 'ArrowLeft') {
+						event.preventDefault();
+						show(i - 1);
+					}
+					if (event.key === 'ArrowRight') {
+						event.preventDefault();
+						show(i + 1);
+					}
+				});
+			}
+		</script>
+	)
+}
+
+<style>
+	.gt-signals {
+		position: sticky;
+		top: var(--gt-header-h);
+		z-index: var(--gt-z-signals);
+		background: var(--gt-coral);
+		color: var(--gt-white);
+		min-height: var(--gt-signals-h);
+		display: flex;
+		align-items: center;
+	}
+
+	.gt-signals__inner {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: var(--gt-space-3);
+		width: 100%;
+		min-height: var(--gt-signals-h);
+		min-width: 0;
+	}
+
+	.gt-signals__empty,
+	.gt-signals__link {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto;
+		gap: var(--gt-space-4);
+		align-items: center;
+		min-height: var(--gt-signals-h);
+		min-width: 0;
+		margin: 0;
+		color: var(--gt-white);
+		font-size: 0.82rem;
+		font-weight: 600;
+	}
+
+	.gt-signals__link {
+		text-decoration: none;
+	}
+
+	.gt-signals__id {
+		letter-spacing: 0.14em;
+		font-size: 0.68rem;
+		white-space: nowrap;
+	}
+
+	.gt-signals__title {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		border-bottom: 1px dotted color-mix(in srgb, white 45%, transparent);
+		font-weight: 500;
+	}
+
+	.gt-signals__more {
+		color: inherit;
+		white-space: nowrap;
+		font-size: 0.75rem;
+	}
+
+	.gt-signals__meta {
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+		white-space: nowrap;
+		font-variant-numeric: tabular-nums;
+		font-size: 0.75rem;
+		font-weight: 500;
+	}
+
+	.gt-signals__controls {
+		display: flex;
+		gap: 0.25rem;
+	}
+
+	.gt-signals__controls button {
+		width: var(--gt-touch);
+		height: var(--gt-touch);
+		border: 1px solid color-mix(in srgb, white 45%, transparent);
+		background: transparent;
+		color: white;
+		font-size: 1.1rem;
+	}
+
+	@media (min-width: 721px) {
+		.gt-signals__controls {
+			display: none;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-signals__empty,
+		.gt-signals__link {
+			grid-template-columns: 1fr auto;
+			gap: 0.4rem;
+		}
+
+		.gt-signals__id {
+			grid-column: 1 / -1;
+		}
+
+		.gt-signals__meta time {
+			display: none;
+		}
+	}
+</style>

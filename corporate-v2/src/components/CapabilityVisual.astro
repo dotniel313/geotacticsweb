@@ -1,0 +1,78 @@
+---
+interface Props {
+	kind: 'territory' | 'gov' | 'society' | 'ops' | 'market' | 'tour';
+}
+
+const { kind } = Astro.props;
+---
+
+<svg class="gt-cv" viewBox="0 0 72 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+	{
+		kind === 'territory' && (
+			<>
+				<circle cx="28" cy="24" r="14" stroke="currentColor" stroke-opacity="0.35" />
+				<circle cx="28" cy="24" r="3" fill="#e84c3d" />
+				<line x1="28" y1="24" x2="58" y2="12" stroke="currentColor" stroke-opacity="0.45" />
+				<circle cx="58" cy="12" r="2.5" fill="#e84c3d" />
+				<line x1="8" y1="40" x2="64" y2="40" stroke="currentColor" stroke-opacity="0.22" />
+			</>
+		)
+	}
+	{
+		kind === 'gov' && (
+			<>
+				<rect x="10" y="14" width="16" height="20" stroke="currentColor" stroke-opacity="0.4" />
+				<rect x="46" y="14" width="16" height="20" stroke="currentColor" stroke-opacity="0.4" />
+				<line x1="26" y1="24" x2="46" y2="24" stroke="#e84c3d" stroke-opacity="0.85" />
+				<circle cx="36" cy="24" r="2.5" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'ops' && (
+			<>
+				<line x1="8" y1="24" x2="64" y2="24" stroke="currentColor" stroke-opacity="0.3" />
+				<circle cx="16" cy="24" r="4" stroke="currentColor" stroke-opacity="0.55" />
+				<circle cx="36" cy="24" r="4" stroke="#e84c3d" />
+				<circle cx="56" cy="24" r="4" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'market' && (
+			<>
+				<circle cx="18" cy="24" r="5" stroke="currentColor" stroke-opacity="0.5" />
+				<circle cx="54" cy="24" r="5" stroke="currentColor" stroke-opacity="0.5" />
+				<line x1="23" y1="24" x2="49" y2="24" stroke="#e84c3d" />
+				<circle cx="36" cy="24" r="2" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'society' && (
+			<>
+				<circle cx="24" cy="22" r="6" stroke="currentColor" stroke-opacity="0.45" />
+				<circle cx="42" cy="22" r="6" stroke="currentColor" stroke-opacity="0.45" />
+				<circle cx="33" cy="32" r="6" stroke="currentColor" stroke-opacity="0.45" />
+				<circle cx="33" cy="26" r="2" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'tour' && (
+			<>
+				<path d="M12 38 L36 8 L60 38" stroke="currentColor" stroke-opacity="0.4" fill="none" />
+				<circle cx="36" cy="22" r="3" fill="#e84c3d" />
+			</>
+		)
+	}
+</svg>
+
+<style>
+	.gt-cv {
+		width: 4.5rem;
+		height: auto;
+		color: var(--gt-gray-800);
+		display: block;
+	}
+</style>

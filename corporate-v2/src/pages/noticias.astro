@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { conversarHref, copy } from '../config/site';
+import { newsTypeLabels } from '../data/news';
+
+const entries = (await getCollection('news'))
+	.filter((e) => e.data.publicationStatus === 'public')
+	.sort((a, b) => +b.data.date - +a.data.date);
+---
+
+<BaseLayout
+	title="Noticias | GeoTactics"
+	description="Signals de GeoTactics: actividad, productos, investigación y actualizaciones. Sin titulares inventados."
+	noindex={false}
+>
+	<article class="gt-nw">
+		<header class="gt-nw__intro gt-container--wide">
+			<p class="gt-nw__micro">GT / SIGNALS</p>
+			<h1>Noticias</h1>
+			<p class="gt-nw__lead">Actividad de la empresa. No es un ticker. No es breaking news.</p>
+		</header>
+
+		{
+			entries.length === 0 ? (
+				<section class="gt-nw__empty gt-container--wide" aria-labelledby="gt-nw-empty">
+					<h2 id="gt-nw-empty">Archivo en construcción</h2>
+					<p>
+						El archivo de noticias se está construyendo. Cuando haya una nota publicable, aparecerá aquí.
+					</p>
+				</section>
+			) : (
+				<ul class="gt-nw__list gt-container--wide">
+					{entries.map((entry) => (
+						<li>
+							<a href={`/noticias/${entry.data.slug}`}>
+								<p class="gt-nw__type">{newsTypeLabels[entry.data.type]}</p>
+								<h2>{entry.data.title}</h2>
+								<p>
+									<time datetime={entry.data.date.toISOString()}>
+										{entry.data.date.toLocaleDateString('es-EC', {
+											day: 'numeric',
+											month: 'long',
+											year: 'numeric',
+										})}
+									</time>
+								</p>
+								<p>{entry.data.summary}</p>
+							</a>
+						</li>
+					))}
+				</ul>
+			)
+		}
+
+		<footer class="gt-nw__cta gt-container--wide">
+			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-nw {
+		padding-bottom: var(--gt-space-12);
+	}
+
+	.gt-nw__intro {
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-nw__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-nw h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-nw__lead {
+		max-width: 36rem;
+		color: var(--gt-text-muted);
+	}
+
+	.gt-nw__empty {
+		padding: var(--gt-space-10) 0;
+		max-width: 40rem;
+	}
+
+	.gt-nw__empty h2 {
+		font-size: var(--gt-fs-lg);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-nw__list {
+		list-style: none;
+		margin: 0;
+		padding: var(--gt-space-10) 0;
+	}
+
+	.gt-nw__list a {
+		display: block;
+		padding: var(--gt-space-5) 0;
+		border-bottom: 1px solid var(--gt-border);
+		text-decoration: none;
+	}
+
+	.gt-nw__type {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gt-coral);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-nw__cta {
+		padding-top: var(--gt-space-6);
+	}
+</style>

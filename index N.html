@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geotactics | Inteligencia Territorial y Gobernanza Digital</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body { margin: 0; overflow: hidden; font-family: 'Open Sans', sans-serif; background-color: #f4f7f6; user-select: none; }
+        html { margin: 0; padding: 0; }
+        @media (max-width: 1000px) {
+            html, body { overflow-x: hidden !important; width: 100% !important; height: 100% !important; position: relative !important; }
+            body { overflow-y: auto !important; overflow-x: hidden !important; -webkit-overflow-scrolling: touch !important; transform: translateZ(0) !important; will-change: scroll-position !important; backface-visibility: hidden !important; }
+            html { -webkit-overflow-scrolling: touch !important; transform: translateZ(0) !important; }
+            * { -webkit-tap-highlight-color: transparent !important; }
+            #mundo-horizontal, #dynamic-section, .horizontal-scroll-area { -webkit-overflow-scrolling: touch !important; transform: translateZ(0) !important; }
+            body:has(#splash-screen:not(.hidden)) { overflow: hidden !important; height: 100vh !important; height: 100dvh !important; position: fixed !important; width: 100% !important; }
+        }
+        a { text-decoration: none; }
+
+        /* --- SPLASH SCREEN --- */
+        #splash-screen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff; z-index: 99999; justify-content: center; align-items: center; transition: opacity 0.6s ease, visibility 0.6s ease; }
+        #splash-screen.hidden { opacity: 0; visibility: hidden; }
+        @media (max-width: 1000px) {
+            #splash-screen { z-index: 999999 !important; width: 100vw !important; height: 100dvh !important; position: fixed !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
+            #splash-screen:not(.hidden) { display: flex !important; }
+            #splash-screen:not(.hidden) ~ *, body:has(#splash-screen:not(.hidden)) > *:not(#splash-screen) { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+            #splash-screen:not(.hidden) ~ * .news-ticker-bar { display: none !important; }
+            .news-ticker-bar { display: none !important; }
+            .splash-logo { z-index: 1000000 !important; position: relative !important; }
+        }
+        .splash-logo img { width: 250px; height: auto; animation: pulse-logo 1.5s infinite ease-in-out; }
+        @keyframes pulse-logo { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* --- HUD SUPERIOR --- */
+        .hud-bar { position: fixed; width: 100%; z-index: 900; padding: 15px 40px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; pointer-events: none; background: rgba(255,255,255,0.95); border-bottom: 1px solid #ddd; top: 0; left: 0; }
+        .nav-links { pointer-events: auto; display: flex; gap: 30px; align-items: center; }
+        .nav-item { color: #4A3E3D; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: color 0.3s; }
+        .nav-item:hover { color: #E84C3D; }
+        .btn-cta-start { background: #E84C3D; color: white !important; padding: 8px 20px; border-radius: 4px; font-weight: 800; font-size: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(232, 76, 61, 0.3); transition: all 0.2s; cursor: pointer; pointer-events: auto; }
+        .btn-cta-start:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(232, 76, 61, 0.4); }
+        .btn-dossier { background: #4A3E3D; color: white !important; padding: 8px 15px; border-radius: 4px; display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .btn-dossier:hover { background: #E84C3D; }
+
+        /* --- BARRA NOTICIAS (SUELO) --- */
+        .news-ticker-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 36px; background: #4A3E3D; color: white; z-index: 890; display: flex; align-items: center; overflow: hidden; white-space: nowrap; border-top: 2px solid #E84C3D; pointer-events: auto; }
+        .ticker-label { background: #E84C3D; height: 100%; padding: 0 20px; display: flex; align-items: center; font-weight: 800; font-size: 10px; letter-spacing: 1px; z-index: 2; }
+        .ticker-wrap { width: 100%; overflow: hidden; padding-left: 100%; box-sizing: content-box; }
+        .ticker-move { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker-anim 40s linear infinite; }
+        .ticker-move:hover { animation-play-state: paused; }
+        .ticker-item { display: inline-block; padding: 0 30px; font-size: 11px; font-weight: 400; cursor: pointer; transition: color 0.3s; }
+        .ticker-item:hover { color: #E84C3D; }
+        .ticker-item strong { color: #E84C3D; margin-right: 5px; font-weight: 700; }
+        @keyframes ticker-anim { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        /* --- NUEVO: LECTOR DE NOTICIAS GLASSMORPHISM --- */
+        .news-reader-panel { position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; z-index: 2000; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-left: 1px solid rgba(255,255,255,0.4); box-shadow: -10px 0 30px rgba(0,0,0,0.1); transition: right 0.5s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; overflow-y: auto; pointer-events: auto; }
+        .news-reader-panel.abierto { right: 0; }
+        .news-header { padding: 30px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: flex-start; background: rgba(255,255,255,0.5); position: sticky; top: 0; z-index: 10; }
+        .news-close-btn { background: white; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; color: #E84C3D; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: transform 0.2s; }
+        .news-close-btn:hover { transform: scale(1.1) rotate(90deg); background: #E84C3D; color: white; }
+        .news-reader-body { padding: 30px; }
+        .news-date { font-size: 11px; font-weight: 800; color: #E84C3D; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+        .news-title-large { font-size: 24px; font-weight: 900; color: #4A3E3D; line-height: 1.2; margin: 0 0 25px 0; }
+        .news-cover-img { width: 100%; height: 250px; object-fit: cover; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); background: #eee; }
+        .news-content-text { font-size: 14px; line-height: 1.8; color: #555; }
+        .news-content-text p { margin-bottom: 15px; }
+
+        @media (max-width: 768px) {
+            .news-reader-panel { width: 100vw; right: -100vw; }
+            .news-title-large { font-size: 20px; }
+            .news-cover-img { height: 200px; }
+        }
+
+        /* --- ELEMENTOS MÓVILES - OCULTOS EN ESCRITORIO --- */
+        #mobile-category-nav, .mobile-news-section, .mobile-footer-initial, .mobile-fab-container { display: none !important; }
+
+        /* --- MÓVIL (AJUSTES) --- */
+        @media (max-width: 1000px) {
+            #mobile-category-nav, .mobile-news-section, .mobile-footer-initial, .mobile-fab-container { display: block !important; }
+            .mobile-fab-container { display: flex !important; }
+            .mobile-news-section { width: 100% !important; margin: 0 !important; margin-top: 20px !important; margin-bottom: 20px !important; order: 4 !important; pointer-events: auto; }
+            .news-ticker-bar-mobile { width: 100% !important; height: 40px !important; background: #4A3E3D !important; color: white !important; display: flex !important; align-items: center !important; overflow: hidden !important; white-space: nowrap !important; border-top: 2px solid #E84C3D !important; position: relative !important; z-index: 100 !important; }
+            .ticker-label-mobile { background: #E84C3D !important; height: 100% !important; padding: 0 15px !important; display: flex !important; align-items: center !important; font-weight: 800 !important; font-size: 9px !important; letter-spacing: 1px !important; flex-shrink: 0 !important; }
+            .ticker-wrap-mobile { width: 100% !important; overflow: hidden !important; padding-left: 100% !important; box-sizing: content-box !important; }
+            .ticker-move-mobile { display: inline-block !important; white-space: nowrap !important; padding-right: 100% !important; animation: ticker-anim 40s linear infinite !important; }
+            .ticker-move-mobile:hover { animation-play-state: paused !important; }
+            
+            .mobile-footer-initial { width: 100% !important; padding: 20px 15px !important; background: #f4f7f6 !important; border-top: 1px solid #ddd !important; margin: 0 auto !important; order: 5 !important; display: flex !important; flex-direction: column !important; align-items: center !important; }
+            .mobile-fab-container { width: auto !important; display: flex !important; padding: 0 !important; order: 0 !important; position: fixed !important; bottom: 100px !important; right: 20px !important; z-index: 1000 !important; pointer-events: auto !important; }
+            .fab-container-mobile { position: relative !important; display: flex !important; flex-direction: column-reverse !important; align-items: flex-end !important; gap: 15px !important; }
+            .fab-main-mobile { width: 50px !important; height: 50px !important; background: white !important; border-radius: 50% !important; display: flex !important; justify-content: center !important; align-items: center !important; color: #E84C3D !important; font-size: 32px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important; cursor: pointer !important; z-index: 10000 !important; }
+            .fab-options-mobile { display: flex !important; flex-direction: column !important; gap: 15px !important; opacity: 0 !important; visibility: hidden !important; transform: translateY(20px) !important; transition: all 0.3s !important; align-items: flex-end !important; margin-bottom: 15px !important; }
+            .fab-container-mobile.active .fab-options-mobile { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+            .fab-item { display: flex !important; align-items: center !important; gap: 10px !important; text-decoration: none !important; flex-direction: row-reverse !important; }
+            .fab-label { background: white !important; color: #4A3E3D !important; padding: 6px 12px !important; border-radius: 4px !important; font-size: 12px !important; font-weight: 700 !important; box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important; opacity: 0 !important; pointer-events: none !important; }
+            .fab-container-mobile.active .fab-label { opacity: 1 !important; }
+            .fab-btn { width: 45px !important; height: 45px !important; border-radius: 50% !important; display: flex !important; justify-content: center !important; align-items: center !important; color: white !important; font-size: 22px !important; box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important; }
+            .fab-whatsapp { background: #25D366 !important; } .fab-phone { background: #3498db !important; } .fab-email { background: #f39c12 !important; } .fab-linkedin { background: #0077b5 !important; }
+            .fab-container-mobile.active .fab-main-mobile { background: #E84C3D !important; color: white !important; }
+            .fab-container-mobile.active .fab-main-mobile i { transform: rotate(45deg) !important; }
+            .fab-container { display: none !important; } .news-ticker-bar { display: none !important; } .footer-capsule { display: none !important; }
+        }
+
+        /* --- PIE DE PÁGINA FLOTANTE (ESCRITORIO) --- */
+        .footer-capsule { position: fixed; bottom: 45px; left: 50%; transform: translateX(-50%); z-index: 900; display: flex; align-items: center; gap: 20px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); padding: 8px 25px; border-radius: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.1); pointer-events: auto; white-space: nowrap; }
+        .footer-info { font-size: 11px; color: #666; display: flex; align-items: center; gap: 15px; font-weight: 600; }
+        .footer-sep { width: 1px; height: 12px; background: #ccc; }
+        .footer-social { display: flex; gap: 15px; padding-left: 15px; border-left: 1px solid #eee; }
+        .footer-social a { color: #4A3E3D; font-size: 18px; transition: transform 0.2s; display: flex; }
+        .footer-social a:hover { color: #E84C3D; transform: scale(1.2); }
+
+        /* --- BOTÓN FLOTANTE (FAB) - ESCRITORIO --- */
+        .fab-container { display: flex; position: fixed !important; bottom: 20px !important; right: 20px !important; z-index: 9999 !important; pointer-events: auto !important; flex-direction: column-reverse !important; align-items: center !important; gap: 15px !important; margin: 0 !important; padding: 0 !important; }
+        @media (max-width: 1000px) { .fab-container { display: none !important; } }
+        .fab-main { width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #E84C3D; font-size: 32px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; transition: all 0.3s; z-index: 10000 !important; }
+        .fab-container.active .fab-main { background: #E84C3D; color: white; }
+        .fab-options { display: flex; flex-direction: column; gap: 15px; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s; align-items: center; z-index: 9998 !important; }
+        .fab-container.active .fab-options { opacity: 1; visibility: visible; transform: translateY(0); }
+        .fab-item { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .fab-label { background: white; color: #4A3E3D; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 700; box-shadow: 0 2px 10px rgba(0,0,0,0.1); opacity: 0; pointer-events: none;}
+        .fab-container.active .fab-label { opacity: 1; }
+        .fab-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 22px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: transform 0.2s; }
+        .fab-whatsapp { background: #25D366; } .fab-phone { background: #3498db; } .fab-email { background: #f39c12; } .fab-linkedin { background: #0077b5; }
+
+        /* --- MUNDO HORIZONTAL --- */
+        #mundo-horizontal { display: flex; width: 600vw; height: 100vh; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; position: relative; z-index: 1; }
+        section { width: 100vw; height: 100vh; position: relative; flex-shrink: 0; background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px); background-size: 40px 40px; overflow: hidden; }
+        body.overlay-open #mundo-horizontal, body.overlay-open #mundo-horizontal * { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; z-index: -1 !important; }
+        body.overlay-open { background: #ffffff !important; overflow: hidden; }
+        
+        .grupo-marca-izquierda { position: absolute; top: 45%; left: 8%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 0; width: 350px; }
+        .grupo-marca-izquierda img { width: 100%; height: auto; filter: drop-shadow(0 5px 15px rgba(255,255,255,0.8)); }
+        .badge-aniversario { background: #E84C3D; color: white; padding: 6px 20px; border-radius: 30px; font-weight: 800; letter-spacing: 1px; font-size: 12px; text-transform: uppercase; margin-top: 15px; box-shadow: 0 5px 15px rgba(232, 76, 61, 0.3); }
+        .clients-bar { position: absolute; bottom: 120px; left: 8%; width: auto; background: rgba(255,255,255,0.6); backdrop-filter: blur(5px); padding: 15px 20px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); z-index: 10; }
+        .clients-title { font-size: 10px; text-transform: uppercase; color: #4A3E3D; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: block;}
+        .clients-logos { display: flex; gap: 25px; opacity: 0.6; align-items: center; justify-content: center; }
+        .client-logo-img { height: 30px; width: auto; filter: grayscale(100%) opacity(0.6); transition: all 0.3s; }
+        
+        #open-box-zone { position: absolute; left: 45%; top: 50%; transform: translate(-50%, -50%); width: 320px; height: 120px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(204, 204, 204, 0.5); display: flex; justify-content: center; align-items: center; text-align: center; color: #888; font-weight: 800; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; z-index: 5; transition: all 0.3s; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        #open-box-zone::before, #open-box-zone::after { content: ''; position: absolute; width: 20px; height: 20px; transition: all 0.3s; }
+        #open-box-zone::before { top: -2px; left: -2px; border-top: 3px solid #E84C3D; border-left: 3px solid #E84C3D; }
+        #open-box-zone::after { bottom: -2px; right: -2px; border-bottom: 3px solid #E84C3D; border-right: 3px solid #E84C3D; }
+        #open-box-zone.zona-activa { background: rgba(74, 62, 61, 0.9); border-color: #E84C3D; color: #fff; transform: translate(-50%, -50%) scale(1.05); }
+        
+        #drag-tip-message { position: absolute; top: 62%; left: 50%; transform: translateX(-50%); background: rgba(74, 62, 61, 0.95); color: white; padding: 12px 25px; border-radius: 30px; font-size: 13px; font-weight: 700; pointer-events: none; opacity: 0; z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.2); white-space: nowrap; }
+        #drag-tip-message.visible { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+        .ficha { position: absolute; width: 130px; height: 100px; background: #E84C3D; color: white; border-bottom: 4px solid #4A3E3D; border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: grab; z-index: 20; padding: 10px; text-align: center; transition: transform 0.1s, top 0.5s ease, left 0.5s ease; }
+        .ficha span { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
+        .ficha i { font-size: 32px; line-height: 1; margin-bottom: 5px; }
+        #f1 { top: 30%; right: 25%; } #f3 { top: 55%; right: 25%; } #f2 { top: 18%; right: 8%; } #f4 { top: 43%; right: 8%; } #f5 { top: 68%; right: 8%; }
+
+        /* --- TIMELINE --- */
+        .dynamic-container { display: grid; grid-template-columns: 400px 1fr; height: 100%; width: 100vw; }
+        .left-context { padding: 100px 50px; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-right: 1px solid #ddd; z-index: 10; }
+        .cat-number { font-size: 14px; color: #E84C3D; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; display: block; text-transform: uppercase;}
+        .cat-title-big { font-size: 40px; font-weight: 900; color: #4A3E3D; margin-bottom: 20px; text-transform: uppercase; }
+        .cat-desc-text { font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 40px; max-width: 80%;}
+        .btn-volver { padding: 12px 30px; background: #4A3E3D; color: white; border: none; font-weight: 700; cursor: pointer; border-radius: 4px; width: fit-content; text-transform: uppercase; letter-spacing: 1px; }
+        .horizontal-scroll-area { overflow-x: auto; overflow-y: hidden; display: flex; align-items: center; padding: 0 50px; height: 100%; }
+        .project-column { min-width: 400px; margin-right: 100px; height: 75%; display: flex; flex-direction: column; position: relative; }
+        .proj-images { flex: 1.2; position: relative; margin-bottom: 20px; cursor: pointer; }
+        .p-img { position: absolute; bottom: 0; left: 0; width: 90%; height: 280px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 6px; transition: all 0.4s ease; transform-origin: bottom center; }
+        .p-img:nth-child(1) { z-index: 1; transform: rotate(-5deg) translateX(-10px) scale(0.9); }
+        .p-img:nth-child(2) { z-index: 2; transform: rotate(5deg) translateX(10px) scale(0.95); }
+        .p-img:nth-child(3) { z-index: 3; transform: rotate(0deg) scale(1); }
+        .project-column:hover .p-img:nth-child(1) { transform: rotate(-15deg) translateX(-40px) scale(0.9); }
+        .project-column:hover .p-img:nth-child(2) { transform: rotate(15deg) translateX(40px) scale(0.9); }
+        .project-column:hover .p-img:nth-child(3) { transform: translateY(-10px) scale(1.05); }
+        .timeline-divider { height: 4px; width: 100%; background: #ccc; position: relative; margin-bottom: 20px; }
+        .timeline-divider::after { content: ''; position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 16px; height: 16px; background: #E84C3D; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 1px #E84C3D; }
+        .project-column::before { content: ''; position: absolute; top: calc(50% + 30px); right: -100px; width: 100px; height: 4px; background: #ccc; }
+        .project-column:last-child::before { display: none; }
+        .proj-info { flex: 0.8; }
+        .p-year-visible { font-size: 14px; font-weight: 800; color: #E84C3D; margin-bottom: 5px; display: block; }
+        .p-title { font-size: 20px; font-weight: 800; color: #4A3E3D; margin: 0 0 10px 0; }
+        .p-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 15px; }
+        .p-meta { border-top: 1px solid #ddd; padding-top: 10px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: 600; margin-bottom: 15px;}
+        .proj-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-tiny { text-decoration: none; padding: 6px 12px; border: 1px solid #4A3E3D; color: #4A3E3D; font-size: 11px; text-transform: uppercase; font-weight: 700; border-radius: 4px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;}
+        .btn-tiny-red { border-color: #E84C3D; color: #E84C3D; }
+
+        /* --- LIGHTBOX & OVERLAYS --- */
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #lightbox.activo { display: flex; opacity: 1; }
+        #lightbox-img { max-width: 90%; max-height: 90%; border: 5px solid white; border-radius: 4px; }
+        .btn-cerrar-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; cursor: pointer; transition: transform 0.2s; }
+
+        .full-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #ffffff !important; z-index: 2000 !important; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); overflow-y: auto; }
+        .full-overlay.abierto { transform: translateY(0); }
+        .btn-cerrar-overlay { position: fixed !important; top: 80px !important; right: 40px !important; background: white !important; border: none !important; color: #E84C3D !important; font-size: 32px !important; cursor: pointer !important; z-index: 2100 !important; border-radius: 50% !important; width: 50px !important; height: 50px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+        .overlay-container { max-width: 1200px; margin: 100px auto; padding: 0 20px 50px 20px; }
+        .overlay-header { margin-bottom: 50px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+        .overlay-header h2 { font-size: 32px; color: #444; margin: 0; font-weight: 300; letter-spacing: 2px; }
+
+        /* EQUIPO & MAPA ESTILOS */
+        .team-grid { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 40px; }
+        .member-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; width: 280px; }
+        .member-photo-circle { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; margin-bottom: 30px; filter: grayscale(100%); transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .member-wrapper:hover .member-photo-circle { filter: grayscale(0%); transform: scale(1.05); }
+        .member-photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .member-name-large { color: #E84C3D; font-size: 24px; font-weight: 300; margin: 0 0 10px 0; position: relative; display: inline-block; }
+        .member-role-title { color: #555; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; }
+        .member-desc-block { color: #888; font-size: 14px; font-weight: 300; margin-bottom: 15px; line-height: 1.4; }
+        .member-contact-links a { display: block; color: #E84C3D; font-size: 13px; text-decoration: underline; margin-bottom: 3px; }
+        
+        #map-container { width: 100%; height: 75vh; background: #ffffff; position: relative; z-index: 1; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: block; }
+        .leaflet-layer { filter: grayscale(100%) contrast(1.1); }
+        .pin-cartodb { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.4); position: relative; }
+        .pin-cartodb.pin-territorial { background: #E84C3D; } .pin-cartodb.pin-gobernanza { background: #3498db; } .pin-cartodb.pin-recursos { background: #27ae60; } .pin-cartodb.pin-legado { background: #f39c12; } .pin-cartodb.pin-especiales { background: #9b59b6; }
+        .pin-hq { width: 16px; height: 16px; border-radius: 50%; background: #4A3E3D; box-shadow: 0 2px 6px rgba(0,0,0,0.4); position: relative; }
+        .leaflet-tooltip { background: rgba(74, 62, 61, 0.95) !important; border: none !important; border-radius: 6px !important; color: white !important; padding: 8px 12px !important; font-size: 12px !important; font-weight: 600 !important; margin-top: -10px !important; }
+        .leaflet-legend { background: rgba(255, 255, 255, 0.98) !important; padding: 15px !important; border-radius: 8px !important; box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important; font-family: 'Open Sans', sans-serif !important; font-size: 12px !important; z-index: 1000 !important; }
+        .btn-map-jump { display: block; width: 100%; padding: 8px 0; margin-top: 8px; background: #4A3E3D; color: white; border: none; border-radius: 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+
+        @media (max-width: 1000px) {
+            .mobile-menu-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; background: transparent; border: none; cursor: pointer; padding: 0; gap: 5px; z-index: 1001; position: relative; }
+            .mobile-menu-toggle span { display: block; width: 24px; height: 3px; background: #4A3E3D; border-radius: 2px; transition: all 0.3s ease; }
+            .mobile-menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(8px, 8px); }
+            .mobile-menu-toggle.active span:nth-child(2) { opacity: 0; }
+            .mobile-menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(8px, -8px); }
+            .mobile-menu { position: fixed; top: 0; right: -100%; width: 280px; height: 100vh; background: white; z-index: 1000; transition: right 0.3s ease; padding: 80px 30px 30px 30px; }
+            .mobile-menu.active { right: 0; }
+            .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease; }
+            .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+            .mobile-menu-item { display: block; padding: 18px 0; font-size: 16px; font-weight: 700; color: #4A3E3D; border-bottom: 1px solid #eee; text-transform: uppercase; }
+            
+            #escena-home { height: auto !important; padding: 100px 15px 40px 15px !important; display: flex !important; flex-direction: column !important; align-items: center !important; }
+            body.section-active #escena-home, body.section-active .mobile-news-section { display: none !important; }
+            body.section-active #dynamic-section { display: block !important; }
+            body:not(.section-active) #dynamic-section { display: none !important; }
+            
+            .grupo-marca-izquierda, .clients-bar, #mobile-category-nav, .mobile-news-section, #open-box-zone { position: relative !important; top: auto !important; left: auto !important; transform: none !important; width: 100% !important; margin: 0 auto 30px auto !important; }
+            .cat-btn-row { display: flex !important; justify-content: center !important; margin-bottom: 8px !important; }
+            .cat-btn { padding: 10px 20px !important; background: #f4f7f6 !important; border-radius: 30px !important; font-size: 10px !important; font-weight: 700 !important; border: 1px solid #ddd !important; }
+            .cat-btn.active { background: #E84C3D; color: white; border-color: #E84C3D; }
+            
+            .dynamic-container { grid-template-columns: 1fr !important; display: flex !important; flex-direction: column !important; }
+            .left-context { padding: 20px !important; text-align: center !important; border-right: none !important; border-bottom: 1px solid #eee !important; }
+            .horizontal-scroll-area { flex-direction: column !important; padding: 30px 20px 100px 20px !important; }
+            .horizontal-scroll-area::before { content: '' !important; position: absolute !important; top: 0 !important; bottom: 0 !important; left: 50% !important; width: 4px !important; background: #ccc !important; transform: translateX(-50%) !important; }
+            .project-column { width: 100% !important; margin-bottom: 60px !important; }
+            .project-column::before { display: none !important; }
+            .proj-images { height: 200px !important; margin-bottom: 20px !important; }
+            .p-img { width: 75% !important; height: 180px !important; left: 50% !important; border: 3px solid white !important; }
+            .p-img:nth-child(1) { transform: translateX(-50%) translateX(-20px) rotate(-8deg) scale(0.88) !important; }
+            .p-img:nth-child(2) { transform: translateX(-50%) translateX(20px) rotate(8deg) scale(0.92) !important; }
+            .p-img:nth-child(3) { transform: translateX(-50%) rotate(0deg) scale(1) !important; }
+            .timeline-divider { height: 40px !important; background: transparent !important; }
+            .timeline-divider::after { top: auto !important; transform: none !important; width: 16px !important; height: 16px !important; border: 3px solid white !important; box-shadow: 0 0 0 2px #E84C3D !important; }
+            .proj-info { background: rgba(255,255,255,0.95) !important; padding: 20px !important; border-radius: 12px !important; box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important; }
+            #btn-volver-final { display: block !important; margin: 30px auto 50px auto !important; padding: 12px 30px !important; background: #4A3E3D !important; color: white !important; font-weight: 700 !important; border-radius: 4px !important; }
+            
+            .hud-bar .nav-links-desktop { display: none; }
+            #open-box-zone, .ficha { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="splash-screen"><div class="splash-logo"><img src="logo.png" alt="Geotactics Loading"></div></div>
+
+    <div id="lightbox" onclick="closeLightbox()"><div class="btn-cerrar-lightbox">✕</div><img id="lightbox-img" src="" alt="Proyecto Fullscreen" onclick="event.stopPropagation()"></div>
+
+    <!-- EL NUEVO LECTOR FLOTANTE GLASSMORPHISM -->
+    <div id="news-reader-panel" class="news-reader-panel">
+        <div class="news-header">
+            <h3 style="margin:0; font-size: 12px; color: #4A3E3D; font-weight: 800; letter-spacing: 2px;">SALA DE PRENSA</h3>
+            <button class="news-close-btn" onclick="cerrarNoticia()"><i class="ri-close-line"></i></button>
+        </div>
+        <div class="news-reader-body" id="news-reader-body">
+            <!-- El contenido de la noticia se inyectará aquí -->
+        </div>
+    </div>
+
+    <!-- Menús y FAB Flotante Escritorio -->
+    <div class="fab-container" id="fab-menu">
+        <div class="fab-options">
+            <a href="https://wa.me/593993634073" target="_blank" class="fab-item"><span class="fab-label">WhatsApp</span><div class="fab-btn fab-whatsapp"><i class="ri-whatsapp-line"></i></div></a>
+            <a href="tel:+593993634073" class="fab-item"><span class="fab-label">Llamar</span><div class="fab-btn fab-phone"><i class="ri-phone-line"></i></div></a>
+            <a href="mailto:info@geotactics.com.ec" class="fab-item"><span class="fab-label">Email</span><div class="fab-btn fab-email"><i class="ri-mail-line"></i></div></a>
+            <a href="https://ec.linkedin.com/in/daniel-orellana-38347131" target="_blank" class="fab-item"><span class="fab-label">LinkedIn</span><div class="fab-btn fab-linkedin"><i class="ri-linkedin-fill"></i></div></a>
+        </div>
+        <div class="fab-main" onclick="toggleFab()"><i class="ri-add-line"></i></div>
+    </div>
+
+    <nav class="hud-bar top-bar">
+        <div class="nav-links">
+            <div style="font-weight: 800; font-size: 18px; color: #4A3E3D;">GEOTACTICS<span style="color:#E84C3D;">.</span></div>
+            <a class="nav-item nav-links-desktop" onclick="toggleOverlay('overlay-equipo')">Nosotros</a>
+            <a class="nav-item nav-links-desktop" onclick="toggleOverlay('overlay-ubicacion')">Operación y Proyectos</a>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()" style="display: none;"><span></span><span></span><span></span></button>
+        </div>
+        <div class="nav-links">
+            <a class="nav-item btn-cta-start" onclick="window.location.href='mailto:info@geotactics.com.ec'">INICIAR PROYECTO <i class="ri-arrow-right-line"></i></a>
+            <a href="https://www.geotactics.info/_files/ugd/936075_b54d4fa956f14af290ce32aca34a64b0.pdf" target="_blank" class="nav-item btn-dossier"><i class="ri-download-line"></i> Dossier</a>
+        </div>
+    </nav>
+
+    <!-- BARRA DE NOTICIAS -->
+    <footer class="news-ticker-bar">
+        <div class="ticker-label">ÚLTIMAS NOTICIAS</div>
+        <div class="ticker-wrap">
+            <div class="ticker-move" id="news-container-desktop">
+                <div class="ticker-item">Cargando...</div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="footer-capsule">
+        <div class="footer-info"><span>© 2026 Geotactics</span><div class="footer-sep"></div><span>Nueva Loja, Sucumbíos, Ecuador.</span></div>
+        <div class="footer-social">
+            <a href="https://ec.linkedin.com/in/daniel-orellana-38347131" target="_blank"><i class="ri-linkedin-fill"></i></a>
+            <a href="https://www.facebook.com/Geotacticsec" target="_blank"><i class="ri-facebook-box-fill"></i></a>
+            <a href="https://www.instagram.com/geotactics_ec/" target="_blank"><i class="ri-instagram-fill"></i></a>
+            <a href="https://x.com/GeotacticsEC" target="_blank"><i class="ri-twitter-x-line"></i></a>
+        </div>
+    </div>
+
+    <!-- Menú móvil -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <a class="mobile-menu-item" onclick="toggleMobileMenu(); toggleOverlay('overlay-equipo');"><i class="ri-team-line" style="margin-right: 10px; font-size: 20px; vertical-align: middle;"></i>Nosotros</a>
+        <a class="mobile-menu-item" onclick="toggleMobileMenu(); toggleOverlay('overlay-ubicacion');"><i class="ri-map-pin-line" style="margin-right: 10px; font-size: 20px; vertical-align: middle;"></i>Operación y Proyectos</a>
+    </div>
+
+    <div id="mundo-horizontal">
+        <section id="escena-home">
+            <div class="grupo-marca-izquierda"><img src="logo.png" alt="Geotactics" onerror="this.style.display='none'"><div class="badge-aniversario">9 Años de Innovación</div></div>
+            
+            <div class="clients-bar"><span class="clients-title">ALIADOS ESTRATÉGICOS</span><div class="clients-logos" id="clients-container"></div></div>
+
+            <div id="mobile-category-nav">
+                <h3 class="category-section-title">Nuestro Campo de Acción</h3>
+                <div class="cat-btn-row"><div class="cat-btn" onclick="selectMobileCategory('territorial', this)">Inteligencia Territorial</div></div>
+                <div class="cat-btn-row"><div class="cat-btn" onclick="selectMobileCategory('gobernanza', this)">Gobernanza Digital</div></div>
+                <div class="cat-btn-row"><div class="cat-btn" onclick="selectMobileCategory('recursos', this)">Gestión de Recursos Naturales</div></div>
+                <div class="cat-btn-row"><div class="cat-btn" onclick="selectMobileCategory('legado', this)">Legado y Futuro</div></div>
+                <div class="cat-btn-row"><div class="cat-btn" onclick="selectMobileCategory('especiales', this)">Proyectos Especiales</div></div>
+            </div>
+            
+            <div class="mobile-news-section">
+                <div class="news-ticker-bar-mobile">
+                    <div class="ticker-label-mobile">ÚLTIMAS NOTICIAS</div>
+                    <div class="ticker-wrap-mobile"><div class="ticker-move-mobile" id="ticker-move-mobile"></div></div>
+                </div>
+            </div>
+            
+            <div class="mobile-footer-initial">
+                <div class="mobile-footer-content">
+                    <div class="mobile-footer-info"><span>© 2026 Geotactics</span><span>•</span><span>Nueva Loja, Sucumbíos</span></div>
+                    <div class="mobile-footer-social">
+                        <a href="https://ec.linkedin.com/in/daniel-orellana-38347131" target="_blank"><i class="ri-linkedin-fill"></i></a>
+                        <a href="https://www.facebook.com/Geotacticsec" target="_blank"><i class="ri-facebook-box-fill"></i></a>
+                        <a href="https://www.instagram.com/geotactics_ec/" target="_blank"><i class="ri-instagram-fill"></i></a>
+                        <a href="https://x.com/GeotacticsEC" target="_blank"><i class="ri-twitter-x-line"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="open-box-zone"><div><i class="ri-qr-scan-2-line" style="font-size: 24px; display: block; margin-bottom: 5px;"></i>LEER ARCHIVOS</div></div>
+            
+            <div class="ficha" id="f1" data-target="territorial"><i class="ri-map-pin-range-line"></i><span>Inteligencia<br>Territorial</span></div>
+            <div class="ficha" id="f2" data-target="gobernanza"><i class="ri-database-2-line"></i><span>Gobernanza<br>Digital</span></div>
+            <div class="ficha" id="f3" data-target="recursos"><i class="ri-plant-line"></i><span>Gestión de<br>Recursos</span></div>
+            <div class="ficha" id="f4" data-target="legado"><i class="ri-hand-heart-line"></i><span>Legado &<br>Futuro</span></div>
+            <div class="ficha" id="f5" data-target="especiales"><i class="ri-stack-line"></i><span>Proyectos<br>Especiales</span></div>
+        </section>
+
+        <!-- FAB móvil -->
+        <div class="mobile-fab-container">
+            <div class="fab-container-mobile" id="fab-menu-mobile">
+                <div class="fab-options-mobile">
+                    <a href="https://wa.me/593993634073" target="_blank" class="fab-item"><span class="fab-label">WhatsApp</span><div class="fab-btn fab-whatsapp"><i class="ri-whatsapp-line"></i></div></a>
+                    <a href="tel:+593993634073" class="fab-item"><span class="fab-label">Llamar</span><div class="fab-btn fab-phone"><i class="ri-phone-line"></i></div></a>
+                    <a href="mailto:info@geotactics.com.ec" class="fab-item"><span class="fab-label">Email</span><div class="fab-btn fab-email"><i class="ri-mail-line"></i></div></a>
+                    <a href="https://ec.linkedin.com/in/daniel-orellana-38347131" target="_blank" class="fab-item"><span class="fab-label">LinkedIn</span><div class="fab-btn fab-linkedin"><i class="ri-linkedin-fill"></i></div></a>
+                </div>
+                <div class="fab-main-mobile" onclick="toggleFabMobile()"><i class="ri-add-line"></i></div>
+            </div>
+        </div>
+
+        <section id="dynamic-section">
+            <div class="dynamic-container">
+                <div class="left-context">
+                    <button class="btn-volver" onclick="volver()">← Volver</button>
+                    <div style="margin-top: 40px;">
+                        <span id="cat-num" class="cat-number">SELECCIONA UNA CATEGORÍA</span>
+                        <h2 id="cat-title" class="cat-title-big">Explora nuestra historia</h2>
+                        <p id="cat-desc" class="cat-desc-text">Arrastra una ficha al lector (escritorio) o selecciona una categoría arriba (móvil).</p>
+                    </div>
+                </div>
+                <div id="horizontal-feed" class="horizontal-scroll-area"></div>
+                <button id="btn-volver-final" onclick="volverMobile()" style="display: none;">← Volver al Inicio</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- OVERLAYS -->
+    <div id="overlay-equipo" class="full-overlay">
+        <button class="btn-cerrar-overlay" onclick="toggleOverlay('overlay-equipo')"><i class="ri-close-line"></i></button>
+        <div class="overlay-container">
+            <div class="overlay-header"><h2>CODE GEOTACTICS</h2></div>
+            <h3 class="team-section-title">El Equipo Detrás de la Innovación</h3>
+            <div class="team-grid" id="team-container"></div>
+        </div>
+    </div>
+
+    <div id="overlay-ubicacion" class="full-overlay">
+        <button class="btn-cerrar-overlay" onclick="toggleOverlay('overlay-ubicacion')"><i class="ri-close-line"></i></button>
+        <div class="overlay-container" style="max-width: 100%; padding: 0;">
+            <div class="overlay-header" style="max-width: 1100px; margin: 80px auto 30px auto; padding: 0 20px;">
+                <h2>OPERACIONES & PROYECTOS</h2>
+            </div>
+            <div id="map-container"></div>
+        </div>
+    </div>
+
+    <div id="drag-tip-message">Tip: Arrastra la ficha hasta aquí para leerla.</div>
+
+    <!-- LIBRERÍAS DE MAPAS Y CSV -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    
+    <script>
+        // =====================================================================
+        // PEGA TUS 4 ENLACES CSV DE GOOGLE SHEETS AQUÍ ABAJO
+        // =====================================================================
+        const URL_CSV_PROYECTOS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTCgNUHYyHo1UkxNsSjSZ2h95y53gfYbuqd-OYcu0Q8EpC3EDiJzF-dWpaCyIo19B7sxinPBMHQrYBQ/pub?gid=0&single=true&output=csv';
+        const URL_CSV_NOTICIAS = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTCgNUHYyHo1UkxNsSjSZ2h95y53gfYbuqd-OYcu0Q8EpC3EDiJzF-dWpaCyIo19B7sxinPBMHQrYBQ/pub?gid=621915959&single=true&output=csv';
+        const URL_CSV_CLIENTES = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTCgNUHYyHo1UkxNsSjSZ2h95y53gfYbuqd-OYcu0Q8EpC3EDiJzF-dWpaCyIo19B7sxinPBMHQrYBQ/pub?gid=1180610857&single=true&output=csv';
+        const URL_CSV_EQUIPO = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTCgNUHYyHo1UkxNsSjSZ2h95y53gfYbuqd-OYcu0Q8EpC3EDiJzF-dWpaCyIo19B7sxinPBMHQrYBQ/pub?gid=390294212&single=true&output=csv';
+
+        // Variables Globales
+        let proyectosDB = [];
+        let noticiasDB = []; // Variable global para guardar noticias y leerlas en el panel
+        let map = null;
+        let datosCargados = false;
+        
+        const categoryDetails = {
+            'territorial': { num: '01', title: 'INTELIGENCIA TERRITORIAL', desc: 'Convertimos el dato geográfico en ventaja estratégica.' },
+            'gobernanza': { num: '02', title: 'GOBERNANZA DIGITAL', desc: 'Impulsamos la gestión pública del siglo XXI.' },
+            'recursos': { num: '03', title: 'GESTIÓN DE RECURSOS NATURALES', desc: 'Tecnología al servicio de la sostenibilidad.' },
+            'legado': { num: '04', title: 'LEGADO Y FUTURO', desc: 'Más allá de la tecnología, construimos impacto social.' },
+            'especiales': { num: '05', title: 'PROYECTOS ESPECIALES', desc: 'El laboratorio de nuestra innovación.' }
+        };
+
+        function leerCSV(url) {
+            return new Promise((resolve) => {
+                if(!url || url === '') { resolve([]); return; }
+                Papa.parse(url, {
+                    download: true, header: true, dynamicTyping: true, skipEmptyLines: true,
+                    complete: function(results) { resolve(results.data); }, error: function() { resolve([]); }
+                });
+            });
+        }
+
+        async function iniciarSitio() {
+            try {
+                const [projsRes, newsRes, clientsRes, teamRes] = await Promise.all([
+                    leerCSV(URL_CSV_PROYECTOS), leerCSV(URL_CSV_NOTICIAS), leerCSV(URL_CSV_CLIENTES), leerCSV(URL_CSV_EQUIPO)
+                ]);
+
+                // A. NOTICIAS (Ahora interactivas)
+                if(newsRes && newsRes.length > 0) {
+                    const activeNews = newsRes.filter(n => String(n.activo).toUpperCase() === 'TRUE');
+                    noticiasDB = activeNews; // Guardamos en memoria
+
+                    if(activeNews.length > 0) {
+                        const cDesk = document.getElementById('news-container-desktop'); 
+                        const cMob = document.getElementById('ticker-move-mobile');
+                        
+                        let newsHTML = '';
+                        // Creamos los botones clickeables pasando el índice de la noticia
+                        activeNews.forEach((n, index) => { 
+                            newsHTML += `<div class="ticker-item" onclick="abrirNoticia(${index})"><strong>INFO:</strong> ${n.titular || n.texto}</div>`; 
+                        });
+
+                        if(cDesk) cDesk.innerHTML = newsHTML;
+                        if(cMob) cMob.innerHTML = newsHTML;
+                    }
+                }
+
+                // B. CLIENTES
+                if(clientsRes && clientsRes.length > 0) {
+                    const activeClients = clientsRes.filter(c => String(c.activo).toUpperCase() === 'TRUE').sort((a, b) => a.orden - b.orden);
+                    const container = document.getElementById('clients-container'); 
+                    if(container) {
+                        container.innerHTML = '';
+                        activeClients.forEach(c => { 
+                            const img = document.createElement('img'); 
+                            img.src = c.logo_url; img.className = 'client-logo-img'; img.title = c.nombre; 
+                            container.appendChild(img); 
+                        });
+                    }
+                }
+
+                // C. EQUIPO
+                if(teamRes && teamRes.length > 0) {
+                    const sortedTeam = teamRes.sort((a, b) => a.orden - b.orden);
+                    const container = document.getElementById('team-container'); 
+                    if(container) {
+                        container.innerHTML = '';
+                        sortedTeam.forEach(m => { 
+                            const foto = m.foto_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png'; 
+                            container.innerHTML += `<div class="member-wrapper"><div class="member-photo-circle"><img src="${foto}"></div><div class="member-info-below"><h3 class="member-name-large">${m.nombre}</h3><div class="member-role-title">${m.cargo}</div><div class="member-desc-block">${m.descripcion}</div><div class="member-alias">Alias: ${m.alias}</div><div class="member-contact-links"><a href="mailto:${m.email}">Email</a></div></div></div>`; 
+                        });
+                    }
+                }
+
+                // D. PROYECTOS
+                if(projsRes && projsRes.length > 0) {
+                    proyectosDB = projsRes.map(item => ({ 
+                        cat: String(item.categoria).toLowerCase(), sys: item.sistema, cliente: item.cliente, proy: item.descripcion, year: item.anio, lat: item.lat, lng: item.lng, loc: item.ubicacion, 
+                        imgs: [item.foto1, item.foto2, item.foto3].filter(u => u && typeof u === 'string' && u.length > 5), 
+                        demo: item.link_demo, pdf: item.link_pdf 
+                    }));
+                }
+
+                datosCargados = true;
+                
+                if(window.innerWidth <= 1000) {
+                    renderCategory('territorial');
+                    const allButtons = document.querySelectorAll('.cat-btn');
+                    for(let btn of allButtons) { if(btn.textContent.toLowerCase().includes('territorial')) { btn.classList.add('active'); break; } }
+                    document.getElementById('cat-num').style.display = 'block'; 
+                }
+
+            } catch (error) { console.error("Error datos:", error); datosCargados = true; }
+            
+            const splashScreen = document.getElementById('splash-screen');
+            setTimeout(() => { if(splashScreen) { splashScreen.classList.add('hidden'); } }, 1000);
+        }
+        iniciarSitio();
+
+        // --- LÓGICA DE NOTICIAS (LECTOR) ---
+        function abrirNoticia(index) {
+            const noticia = noticiasDB[index];
+            if(!noticia) return;
+
+            const lectorPanel = document.getElementById('news-reader-panel');
+            const lectorCuerpo = document.getElementById('news-reader-body');
+            
+            // Si la noticia no tiene foto, no mostramos la etiqueta img
+            const imgHtml = noticia.foto_url && noticia.foto_url.length > 5 
+                ? `<img src="${noticia.foto_url}" class="news-cover-img" alt="Foto de la noticia">` 
+                : '';
+
+            lectorCuerpo.innerHTML = `
+                <span class="news-date">${noticia.fecha || ''}</span>
+                <h2 class="news-title-large">${noticia.titular || noticia.texto}</h2>
+                ${imgHtml}
+                <div class="news-content-text">
+                    <p>${noticia.contenido || 'Más información en breve...'}</p>
+                </div>
+            `;
+            
+            lectorPanel.classList.add('abierto');
+        }
+
+        function cerrarNoticia() {
+            document.getElementById('news-reader-panel').classList.remove('abierto');
+        }
+
+        // --- MAPA ---
+        function initMap() {
+            if (map) { map.remove(); map = null; }
+            map = L.map('map-container').setView([0.00, -77.50], 8);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; Geotactics', maxZoom: 19 }).addTo(map);
+            const layers = { 'territorial': L.layerGroup().addTo(map), 'gobernanza': L.layerGroup().addTo(map), 'recursos': L.layerGroup().addTo(map), 'legado': L.layerGroup().addTo(map), 'especiales': L.layerGroup().addTo(map) };
+            proyectosDB.forEach(p => { if(p.lat && p.lng) { const icon = L.divIcon({ className: 'pin-cartodb-wrapper', html: `<div class="pin-cartodb pin-${p.cat}"></div>`, iconSize: [12, 12], iconAnchor: [6, 6], popupAnchor: [0, -6] }); const popup = `<b>${p.loc} (${p.year})</b><h3>${p.sys}</h3><button class="btn-map-jump" onclick="saltarDesdeMapa('${p.cat}')">VER EN CRONOLOGÍA →</button>`; const marker = L.marker([p.lat, p.lng], {icon: icon}).addTo(layers[p.cat]); marker.bindPopup(popup); } });
+            const hq = L.divIcon({ className: 'pin-hq-wrapper', html: '<div class="pin-hq"></div>', iconSize: [16, 16], iconAnchor: [8, 8], popupAnchor: [0, -8] }); const hqMarker = L.marker([0.091, -76.89], {icon: hq}).addTo(map); hqMarker.bindPopup('<b>CUARTEL GENERAL</b><br>Geotactics HQ<br>Nueva Loja');
+            L.control.layers(null, { "<span style='color:#E84C3D'>■</span> Territorial": layers.territorial, "<span style='color:#3498db'>■</span> Gobernanza": layers.gobernanza, "<span style='color:#27ae60'>■</span> Recursos": layers.recursos, "<span style='color:#f39c12'>■</span> Legado": layers.legado, "<span style='color:#9b59b6'>■</span> Especiales": layers.especiales }, { collapsed: false }).addTo(map);
+            setTimeout(() => { if(map) map.invalidateSize(); }, 100);
+        }
+
+        function renderCategory(catKey) {
+            if (!datosCargados) { setTimeout(() => renderCategory(catKey), 500); return; }
+            const data = categoryDetails[catKey];
+            const projects = proyectosDB.filter(p => p.cat === catKey).sort((a, b) => b.year - a.year);
+            document.getElementById('cat-num').innerText = data.num + ' / CATEGORÍA';
+            document.getElementById('cat-title').innerText = data.title;
+            document.getElementById('cat-desc').innerText = data.desc;
+            const container = document.getElementById('horizontal-feed');
+            container.innerHTML = '';
+            if(projects.length === 0) { container.innerHTML = '<div style="padding:40px;color:#999;">Próximamente...</div>'; return; }
+            projects.forEach(p => {
+                const i1 = (p.imgs && p.imgs[0]) || `https://via.placeholder.com/300x200?text=Geotactics`;
+                const i2 = (p.imgs && p.imgs[1]) || '';
+                const i3 = (p.imgs && p.imgs[2]) || '';
+                let imgsHtml = `<img src="${i1}" class="p-img" onclick="openLightbox(this.src)">`;
+                if(i2) imgsHtml += `<img src="${i2}" class="p-img" onclick="openLightbox(this.src)">`;
+                if(i3) imgsHtml += `<img src="${i3}" class="p-img" onclick="openLightbox(this.src)">`;
+                let btns = '';
+                if((p.demo && p.demo.length > 4) || (p.pdf && p.pdf.length > 4)) {
+                    btns = '<div class="proj-actions">';
+                    if(p.demo && p.demo.length > 4) btns += `<a href="${p.demo}" target="_blank" class="btn-tiny btn-tiny-red">Ver Demo</a>`;
+                    if(p.pdf && p.pdf.length > 4) btns += `<a href="${p.pdf}" target="_blank" class="btn-tiny">Ficha PDF</a>`;
+                    btns += '</div>';
+                }
+                container.innerHTML += `<div class="project-column"><div class="proj-images">${imgsHtml}</div><div class="timeline-divider"></div><div class="proj-info"><span class="p-year-visible">${p.year}</span><div class="p-title">${p.sys}</div><div class="p-desc">${p.proy}</div><div class="p-meta"><i class="ri-user-line"></i> ${p.cliente} <br><i class="ri-map-pin-line"></i> ${p.loc}</div>${btns}</div></div>`;
+            });
+            if(window.innerWidth <= 1000) { document.getElementById('btn-volver-final').style.display = 'block'; }
+        }
+
+        // --- NAVEGACIÓN Y DRAG & DROP ---
+        function selectMobileCategory(cat, btnElement) {
+            if(!btnElement) { const allButtons = document.querySelectorAll('.cat-btn'); for(let btn of allButtons) { if(btn.textContent.toLowerCase().includes(cat.toLowerCase())) { btnElement = btn; break; } } }
+            document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove('active'); });
+            if(btnElement) { btnElement.classList.add('active'); }
+            document.body.classList.add('section-active'); document.getElementById('dynamic-section').style.display = 'block';
+            renderCategory(cat); setTimeout(() => { document.getElementById('dynamic-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+            document.getElementById('mobile-menu-overlay').classList.toggle('active');
+            document.getElementById('mobile-menu-toggle').classList.toggle('active');
+        }
+        
+        function toggleFab() { document.getElementById('fab-menu').classList.toggle('active'); }
+        function toggleFabMobile() { document.getElementById('fab-menu-mobile').classList.toggle('active'); }
+
+        const fichas = document.querySelectorAll('.ficha'); const zonaBox = document.getElementById('open-box-zone'); const mundo = document.getElementById('mundo-horizontal');
+        if(window.innerWidth > 1000) { fichas.forEach(ficha => { hacerArrastrable(ficha); }); }
+        let zIndexCounter = 100;
+        function hacerArrastrable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; let hasMoved = false;
+            elmnt.onmousedown = dragMouseDown; elmnt.ontouchstart = dragMouseDown;
+            elmnt.addEventListener('mouseenter', () => zonaBox.classList.add('zona-hint')); elmnt.addEventListener('mouseleave', () => zonaBox.classList.remove('zona-hint'));
+            function dragMouseDown(e) { e = e || window.event; if(e.type !== 'touchstart') e.preventDefault(); hasMoved = false; zIndexCounter++; elmnt.style.zIndex = zIndexCounter; elmnt.style.transition = "none"; if(e.type === 'touchstart') { pos3 = e.touches[0].clientX; pos4 = e.touches[0].clientY; } else { pos3 = e.clientX; pos4 = e.clientY; } document.onmouseup = closeDragElement; document.ontouchend = closeDragElement; document.onmousemove = elementDrag; document.ontouchmove = elementDrag; }
+            function elementDrag(e) { e = e || window.event; hasMoved = true; let clientX, clientY; if(e.type === 'touchmove') { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } else { clientX = e.clientX; clientY = e.clientY; } pos1 = pos3 - clientX; pos2 = pos4 - clientY; pos3 = clientX; pos4 = clientY; elmnt.style.top = (elmnt.offsetTop - pos2) + "px"; elmnt.style.left = (elmnt.offsetLeft - pos1) + "px"; if (detectarColision(elmnt, zonaBox)) { zonaBox.classList.add('zona-activa'); } else { zonaBox.classList.remove('zona-activa'); } }
+            function closeDragElement() { document.onmouseup = null; document.onmousemove = null; document.ontouchend = null; document.ontouchmove = null; elmnt.style.transition = "transform 0.1s, top 0.5s ease, left 0.5s ease"; if (detectarColision(elmnt, zonaBox)) { zonaBox.classList.remove('zona-activa'); renderCategory(elmnt.getAttribute('data-target')); mundo.style.transform = `translateX(-100vw)`; } zonaBox.classList.remove('zona-hint'); }
+        }
+        function detectarColision(el1, el2) { const r1 = el1.getBoundingClientRect(); const r2 = el2.getBoundingClientRect(); return !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom); }
+        function volver() { mundo.style.transform = `translateX(0)`; fichas.forEach(f => { f.style.top = ""; f.style.left = ""; f.style.right = ""; }); } 
+        function volverMobile() { document.body.classList.remove('section-active'); document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active')); document.getElementById('dynamic-section').style.display = 'none'; window.scrollTo({ top: 0, behavior: 'smooth' }); document.getElementById('btn-volver-final').style.display = 'none'; }
+        function saltarDesdeMapa(cat) { toggleOverlay('overlay-ubicacion'); setTimeout(() => { renderCategory(cat); if(window.innerWidth > 1000) mundo.style.transform = `translateX(-100vw)`; else document.getElementById('dynamic-section').scrollIntoView(); }, 300); }
+        function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('activo'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('activo'); }
+
+        function toggleOverlay(id) {
+            const overlay = document.getElementById(id);
+            if (overlay.classList.contains('abierto')) { overlay.classList.remove('abierto'); document.body.classList.remove('overlay-open'); if(id === 'overlay-ubicacion' && map) { map.remove(); map = null; }
+            } else { document.querySelectorAll('.full-overlay').forEach(ov => ov.classList.remove('abierto')); overlay.classList.add('abierto'); document.body.classList.add('overlay-open'); if(id === 'overlay-ubicacion') { setTimeout(() => { initMap(); }, 600); } }
+        }
+    </script>
+</body>
+</html>

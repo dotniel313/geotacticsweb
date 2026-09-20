@@ -1,0 +1,80 @@
+---
+import { evidenceItems } from '../config/site';
+---
+
+<section class="gt-evidence" aria-labelledby="gt-evidence-title">
+	<div class="gt-container">
+		<h2 id="gt-evidence-title" class="visually-hidden">Evidencia de trayectoria</h2>
+		<ul class="gt-evidence__list">
+			{
+				evidenceItems.map((item) => (
+					<li class="gt-evidence__item">
+						<p class="gt-evidence__code">{item.id}</p>
+						<h3 class="gt-evidence__concept">{item.concept}</h3>
+						<p class="gt-evidence__anchor">{item.anchor}</p>
+						<p class="gt-evidence__note">{item.text}</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.gt-evidence {
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-evidence__list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: var(--gt-space-8) var(--gt-space-6);
+	}
+
+	.gt-evidence__code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.65rem;
+	}
+
+	.gt-evidence__concept {
+		font-size: 0.72rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		font-weight: 700;
+		color: var(--gt-gray-950);
+		margin: 0 0 0.45rem;
+	}
+
+	.gt-evidence__anchor {
+		font-size: 1.2rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--gt-gray-950);
+		margin: 0 0 0.55rem;
+		line-height: 1.2;
+	}
+
+	.gt-evidence__note {
+		color: var(--gt-text-muted);
+		font-size: 0.9rem;
+		max-width: 28ch;
+	}
+
+	@media (max-width: 900px) {
+		.gt-evidence__list {
+			grid-template-columns: 1fr;
+			gap: var(--gt-space-6);
+		}
+
+		.gt-evidence__note {
+			max-width: 46ch;
+		}
+	}
+</style>

@@ -1,0 +1,396 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseVisualFallback from '../../components/CaseVisualFallback.astro';
+import { conversarHref, copy } from '../../config/site';
+import { isPublicCase, periodLabel, placeLabel } from '../../lib/cases';
+import { recordBySlug } from '../../data/records';
+
+export async function getStaticPaths() {
+	const cases = await getCollection('cases');
+	return cases.filter(isPublicCase).map((entry) => ({
+		params: { slug: entry.data.slug },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const c = entry.data;
+const products = await getCollection('products');
+const allCases = await getCollection('cases');
+const relatedProducts = products.filter((p) => p.data.public && c.products.includes(p.data.slug));
+const relatedCases = allCases.filter((item) => isPublicCase(item) && c.relatedCases.includes(item.data.slug));
+const publicEvidence = c.evidence.filter((e) => e.public);
+const publicDocs = c.documents.filter((d) => d.publicationStatus === 'publicable');
+const publicGallery = c.gallery.filter((g) => g.publicationStatus === 'publicable');
+const rec = recordBySlug(c.slug);
+const liveLinks = c.externalLinks.filter((l) => l.status === 'live');
+const period = periodLabel(entry);
+const place = placeLabel(entry);
+const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
+---
+
+<BaseLayout title={c.seoTitle} description={c.seoDescription} noindex={false}>
+	<article class="gt-cd">
+		<header class="gt-cd__hero">
+			<div class="gt-cd__hero-inner gt-container--wide">
+				<div>
+					<p class="gt-cd__micro">GT / CASE · {c.id}</p>
+					<h1>{c.title}</h1>
+					<p class="gt-cd__lead">{c.summary}</p>
+				</div>
+				<div class="gt-cd__visual">
+					{
+						rec && rec.assets.length > 0 ? (
+							<div class="gt-cd__fan">
+								{rec.assets.slice(0, 3).map((a) => (
+									<img src={a.thumb ?? a.src} alt={a.alt} width="640" height="400" />
+								))}
+							</div>
+						) : (
+							<CaseVisualFallback kind={c.visual} />
+						)
+					}
+				</div>
+			</div>
+		</header>
+
+		<dl class="gt-cd__facts gt-container--wide">
+			<div>
+				<dt>Lugar</dt>
+				<dd>{place}</dd>
+			</div>
+			{
+				period && (
+					<div>
+						<dt>Período</dt>
+						<dd>{period}</dd>
+					</div>
+				)
+			}
+			{
+				c.client && (
+					<div>
+						<dt>Organización</dt>
+						<dd>{c.client}</dd>
+					</div>
+				)
+			}
+		</dl>
+
+		{
+			c.context && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-ctx">
+					<h2 id="gt-cd-ctx">Contexto</h2>
+					<p>{c.context}</p>
+				</section>
+			)
+		}
+		{
+			c.problem && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-pr">
+					<h2 id="gt-cd-pr">Problema</h2>
+					<p>{c.problem}</p>
+				</section>
+			)
+		}
+		{
+			c.intervention && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-did">
+					<h2 id="gt-cd-did">Qué hizo GeoTactics</h2>
+					<p>{c.intervention}</p>
+				</section>
+			)
+		}
+		{
+			c.outcome && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-out">
+					<h2 id="gt-cd-out">Escala documentada</h2>
+					<p>{c.outcome}</p>
+				</section>
+			)
+		}
+
+		{
+			(relatedProducts.length > 0 || c.components.length > 0) && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-sys">
+					<h2 id="gt-cd-sys">Sistemas relacionados</h2>
+					<ul class="gt-cd__rels">
+						{relatedProducts.map((p) => (
+							<li>
+								<a href={`/productos/${p.data.slug}`}>{p.data.name}</a>
+								<span>{p.data.type}</span>
+							</li>
+						))}
+						{c.components.map((id) => (
+							<li>
+								<span class="gt-cd__comp">{componentLabels[id] ?? id}</span>
+								<span>Componente</span>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			c.phases.length > 0 && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-ph">
+					<h2 id="gt-cd-ph">Fases</h2>
+					<ol class="gt-cd__phases">
+						{c.phases.map((phase) => (
+							<li>
+								<p class="gt-cd__code">{phase.id}</p>
+								<div>
+									<h3>{phase.title}</h3>
+									{phase.period && <p class="gt-cd__when">{phase.period}</p>}
+									{phase.summary && <p>{phase.summary}</p>}
+								</div>
+							</li>
+						))}
+					</ol>
+				</section>
+			)
+		}
+
+		{
+			publicGallery.length > 0 && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-gal">
+					<h2 id="gt-cd-gal">Galería</h2>
+					<ul>
+						{publicGallery.map((item) => (
+							<li>{item.caption ?? item.id}</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			publicDocs.length > 0 && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-doc">
+					<h2 id="gt-cd-doc">Documentos</h2>
+					<ul>
+						{publicDocs.map((doc) => (
+							<li>
+								{doc.url ? <a href={doc.url}>{doc.title}</a> : doc.title}
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			publicEvidence.length > 0 && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-ev">
+					<h2 id="gt-cd-ev">Qué se documentó</h2>
+					<ul class="gt-cd__ev">
+						{publicEvidence.map((item) => (
+							<li>{item.claim}</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			liveLinks.length > 0 && (
+				<section class="gt-cd__block gt-container--wide">
+					<ul>
+						{liveLinks.map((link) => (
+							<li>
+								<a href={link.url}>{link.label}</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		{
+			relatedCases.length > 0 && (
+				<section class="gt-cd__block gt-container--wide" aria-labelledby="gt-cd-rel">
+					<h2 id="gt-cd-rel">Casos relacionados</h2>
+					<ul class="gt-cd__rels">
+						{relatedCases.map((item) => (
+							<li>
+								<a href={`/casos/${item.data.slug}`}>{item.data.title}</a>
+								<span>{placeLabel(item)}</span>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+
+		<footer class="gt-cd__cta gt-container--wide">
+			<p>
+				<a href="/casos">Archivo de casos</a>
+			</p>
+			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-cd {
+		padding-bottom: var(--gt-space-12);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-cd__hero {
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-cd__hero-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+		gap: var(--gt-space-8);
+		align-items: end;
+	}
+
+	.gt-cd__micro,
+	.gt-cd__code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+	}
+
+	.gt-cd__micro {
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-cd h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+		max-width: 18rem;
+	}
+
+	.gt-cd__lead {
+		max-width: 40rem;
+		font-size: var(--gt-fs-lg);
+		color: var(--gt-gray-800);
+	}
+
+	.gt-cd__visual {
+		border: 1px solid var(--gt-border);
+	}
+
+	.gt-cd__fan img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.gt-cd__facts {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--gt-space-6);
+		margin: 0;
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-cd__facts dt {
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-coral);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-cd__facts dd {
+		margin: 0;
+		font-weight: 600;
+	}
+
+	.gt-cd__block {
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-cd__block h2 {
+		font-size: var(--gt-fs-lg);
+		margin-bottom: var(--gt-space-4);
+		max-width: 22rem;
+	}
+
+	.gt-cd__block p {
+		max-width: 42rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-cd__rels,
+	.gt-cd__ev,
+	.gt-cd__phases {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.gt-cd__rels li,
+	.gt-cd__ev li {
+		padding: 0.75rem 0;
+		border-top: 1px solid var(--gt-border);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1rem;
+		justify-content: space-between;
+		max-width: 42rem;
+	}
+
+	.gt-cd__rels span,
+	.gt-cd__when {
+		color: var(--gt-text-muted);
+		font-size: 0.88rem;
+	}
+
+	.gt-cd__comp {
+		font-weight: 600;
+	}
+
+	.gt-cd__phases li {
+		display: grid;
+		grid-template-columns: 7rem minmax(0, 1fr);
+		gap: var(--gt-space-4);
+		padding: var(--gt-space-5) 0;
+		border-top: 1px solid var(--gt-border);
+		max-width: 44rem;
+	}
+
+	.gt-cd__phases h3 {
+		font-size: 1.05rem;
+		margin-bottom: 0.3rem;
+	}
+
+	.gt-cd__code {
+		color: var(--gt-coral);
+		margin-top: 0.35rem;
+	}
+
+	.gt-cd__cta {
+		padding-top: var(--gt-space-10);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--gt-space-5);
+		align-items: center;
+	}
+
+	@media (max-width: 720px) {
+		.gt-cd__hero-inner,
+		.gt-cd__facts,
+		.gt-cd__phases li {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-cd h1,
+		.gt-cd__block h2 {
+			max-width: none;
+		}
+	}
+</style>

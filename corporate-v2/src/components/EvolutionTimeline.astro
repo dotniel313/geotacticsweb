@@ -1,0 +1,276 @@
+---
+import { timelineEvents, type TimelineEvent } from '../data/timeline';
+
+interface Props {
+	mode?: 'full' | 'compact' | 'method';
+	heading?: string;
+}
+
+const { mode = 'full', heading } = Astro.props;
+const events: TimelineEvent[] =
+	mode === 'method'
+		? timelineEvents.filter((e) => e.track === 'method')
+		: mode === 'compact'
+			? timelineEvents.filter((e) => e.home)
+			: timelineEvents;
+const hid = `gt-tl-h-${mode}`;
+const trackId = `gt-tl-track-${mode}`;
+const hintId = `gt-tl-hint-${mode}`;
+const dateKindLabel: Record<TimelineEvent['dateKind'], string> = {
+	exact: 'Año documentado',
+	approximate: 'Aproximado',
+	period: 'Período',
+	memory: 'Memoria',
+	unresolved: 'Fecha no cerrada',
+};
+---
+
+<section class:list={['gt-tl', mode === 'compact' && 'gt-tl--compact']} data-gt-tl={mode} aria-labelledby={hid}>
+	<div class="gt-tl__head gt-container--wide">
+		<p class="gt-tl__micro">GT / EVOLUTION</p>
+		<h2 id={hid}>{heading ?? 'Trayectoria'}</h2>
+		<p class="gt-tl__lead">
+			{
+				mode === 'method'
+					? 'Origen de la idea, GOST y cambios de base. Los registros de producto y caso viven en el Archivo.'
+					: 'Cuándo y en qué etapa. No es genealogía de productos. Fechas no inventadas para forzar continuidad.'
+			}
+		</p>
+	</div>
+
+	<div class="gt-tl__toolbar gt-container--wide">
+		<p class="gt-tl__hint" id={hintId}>
+			Navegación: desplazamiento, teclado o botones. El contenido no depende de arrastrar.
+		</p>
+		<div class="gt-tl__controls" hidden>
+			<button type="button" data-gt-tl-prev aria-controls={trackId}>Anterior</button>
+			<button type="button" data-gt-tl-next aria-controls={trackId}>Siguiente</button>
+		</div>
+	</div>
+
+	<ol id={trackId} class="gt-tl__track" data-gt-tl-track tabindex="0" aria-describedby={hintId}>
+		{
+			events.map((event) => (
+				<li class="gt-tl__item" data-gt-tl-item>
+					<article tabindex="-1">
+						<p class="gt-tl__year">
+							<time>{event.yearLabel}</time>
+							<span class="gt-tl__kind">{dateKindLabel[event.dateKind]}</span>
+						</p>
+						<h3>{event.title}</h3>
+						<p>{event.summary}</p>
+						{
+							event.href ? (
+								<p class="gt-tl__more">
+									<a href={event.href}>Ver relacionado</a>
+								</p>
+							) : null
+						}
+						<div class="gt-tl__asset" data-asset-slot={event.id} hidden></div>
+					</article>
+				</li>
+			))
+		}
+	</ol>
+</section>
+
+<script>
+	const roots = document.querySelectorAll<HTMLElement>('[data-gt-tl]');
+	roots.forEach((root) => {
+		const track = root.querySelector<HTMLElement>('[data-gt-tl-track]');
+		const items = [...root.querySelectorAll<HTMLElement>('[data-gt-tl-item]')];
+		const prev = root.querySelector<HTMLButtonElement>('[data-gt-tl-prev]');
+		const next = root.querySelector<HTMLButtonElement>('[data-gt-tl-next]');
+		const controls = root.querySelector<HTMLElement>('.gt-tl__controls');
+		if (!track || items.length === 0) return;
+
+		const mq = window.matchMedia('(min-width: 721px)');
+		const syncControls = () => {
+			if (controls) controls.hidden = !mq.matches;
+		};
+		syncControls();
+		mq.addEventListener('change', syncControls);
+
+		let index = 0;
+		const go = (i: number) => {
+			index = Math.max(0, Math.min(items.length - 1, i));
+			items[index]?.scrollIntoView({
+				behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+				inline: 'start',
+				block: 'nearest',
+			});
+			items[index]?.querySelector('article')?.focus();
+		};
+
+		prev?.addEventListener('click', () => go(index - 1));
+		next?.addEventListener('click', () => go(index + 1));
+
+		track.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+				event.preventDefault();
+				go(index + 1);
+			}
+			if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+				event.preventDefault();
+				go(index - 1);
+			}
+			if (event.key === 'Home') {
+				event.preventDefault();
+				go(0);
+			}
+			if (event.key === 'End') {
+				event.preventDefault();
+				go(items.length - 1);
+			}
+		});
+	});
+</script>
+
+<style>
+	.gt-tl {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.gt-tl__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-tl h2 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+		max-width: 18rem;
+	}
+
+	.gt-tl__lead {
+		max-width: 40rem;
+		color: var(--gt-text-muted);
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-tl__toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--gt-space-4);
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-tl__hint {
+		font-size: var(--gt-fs-sm);
+		color: var(--gt-gray-600);
+		max-width: 36rem;
+	}
+
+	.gt-tl__controls {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.gt-tl__controls button {
+		min-height: var(--gt-touch);
+		min-width: var(--gt-touch);
+		padding: 0 0.85rem;
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		color: var(--gt-gray-950);
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-tl__controls button:hover {
+		border-color: var(--gt-coral);
+	}
+
+	.gt-tl__track {
+		list-style: none;
+		margin: 0;
+		padding: 0 var(--gt-gutter-x) var(--gt-space-4);
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: min(22rem, 80vw);
+		gap: 0.75rem;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scrollbar-gutter: stable;
+	}
+
+	.gt-tl__item {
+		scroll-snap-align: start;
+		min-width: 0;
+	}
+
+	.gt-tl__item article {
+		height: 100%;
+		background: var(--gt-white);
+		border: 1px solid var(--gt-border);
+		border-left: 3px solid var(--gt-coral);
+		padding: var(--gt-space-5);
+	}
+
+	.gt-tl__year {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 0.75rem;
+		align-items: baseline;
+		margin-bottom: var(--gt-space-3);
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.72rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.gt-tl__year time {
+		color: var(--gt-coral);
+		font-weight: 700;
+	}
+
+	.gt-tl__kind {
+		color: var(--gt-gray-400);
+	}
+
+	.gt-tl h3 {
+		font-size: var(--gt-fs-md);
+		margin-bottom: var(--gt-space-3);
+	}
+
+	.gt-tl__item p {
+		color: var(--gt-gray-800);
+		font-size: var(--gt-fs-sm);
+	}
+
+	.gt-tl__more {
+		margin-top: var(--gt-space-4);
+	}
+
+	.gt-tl--compact .gt-tl__track {
+		grid-auto-columns: min(20rem, 78vw);
+	}
+
+	@media (max-width: 720px) {
+		.gt-tl h2 {
+			max-width: none;
+		}
+
+		.gt-tl__track {
+			display: flex;
+			flex-direction: column;
+			overflow-x: visible;
+			scroll-snap-type: none;
+			padding-inline: var(--gt-gutter-x);
+			grid-auto-flow: unset;
+			grid-auto-columns: unset;
+		}
+
+		.gt-tl__controls {
+			display: none;
+		}
+	}
+</style>

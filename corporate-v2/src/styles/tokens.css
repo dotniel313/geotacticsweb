@@ -1,0 +1,97 @@
+/* GeoTactics Corporate 2.0 — design tokens
+   Coral / graphite / grises / off-white. Café = herencia, no texto principal.
+   Grises provisionales; contraste AA vs --gt-off-white:
+   gray-950 ≈ 15:1 · gray-800 ≈ 11:1 · gray-600 ≈ 5.4:1 (cuerpo)
+   coral #E84C3D + blanco ≈ ~4.5:1 (botón ≥16px / Signals). */
+
+:root {
+	--gt-coral: #e84c3d;
+	/* Símbolo del logo master: #DA3B26 — no recolorear el PNG para coincidir */
+	--gt-logo-symbol: #da3b26;
+	--gt-coffee: #4a3e3d;
+
+	--gt-gray-950: #16181b;
+	--gt-gray-800: #2e3238;
+	--gt-gray-600: #5a6169;
+	--gt-gray-400: #9aa1a8;
+	--gt-gray-200: #e2e5e8;
+	--gt-gray-100: #eef1f2;
+	--gt-off-white: #f4f7f6;
+	--gt-white: #ffffff;
+
+	--gt-text: var(--gt-gray-950);
+	--gt-text-muted: var(--gt-gray-600);
+	--gt-bg: var(--gt-off-white);
+	--gt-border: color-mix(in srgb, var(--gt-coffee) 22%, var(--gt-gray-200));
+	--gt-focus: var(--gt-coral);
+
+	--gt-space-1: 0.25rem;
+	--gt-space-2: 0.5rem;
+	--gt-space-3: 0.75rem;
+	--gt-space-4: 1rem;
+	--gt-space-5: 1.5rem;
+	--gt-space-6: 2rem;
+	--gt-space-8: 3rem;
+	--gt-space-10: 4.5rem;
+	--gt-space-12: 6rem;
+
+	--gt-container: 72rem;
+	--gt-container-wide: 80rem;
+	--gt-gutter-x: 1rem;
+
+	--gt-radius-sm: 2px;
+	--gt-radius: 4px;
+
+	--gt-border-w: 1px;
+
+	--gt-shadow-none: none;
+
+	--gt-font: 'Open Sans', system-ui, sans-serif; /* FONT_ASSET_PENDING: no remote webfont */
+	--gt-fs-xs: 0.75rem;
+	--gt-fs-sm: 0.875rem;
+	--gt-fs-md: 1rem;
+	--gt-fs-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);
+	--gt-fs-xl: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	--gt-fs-2xl: clamp(2rem, 1.2rem + 3vw, 3.25rem);
+	--gt-lh-tight: 1.15;
+	--gt-lh-body: 1.55;
+	--gt-fw-regular: 400;
+	--gt-fw-medium: 600;
+	--gt-fw-bold: 700;
+
+	--gt-z-skip: 1000;
+	--gt-z-header: 100;
+	--gt-z-signals: 90;
+	--gt-z-nav: 200;
+	--gt-z-lightbox: 400;
+
+	--gt-header-h: 4rem;
+	--gt-signals-h: 2.75rem;
+	--gt-grid-size: 40px;
+	--gt-motion: 180ms;
+	--gt-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+	--gt-touch: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:root {
+		--gt-motion: 0.01ms;
+	}
+}
+
+@media (min-width: 721px) and (max-width: 1024px) {
+	:root {
+		/* Tablet: ~94% del viewport; no desktop reducido ni mobile prematuro */
+		--gt-gutter-x: 3vw;
+	}
+}
+
+@media (max-width: 720px) {
+	:root {
+		--gt-gutter-x: 1rem;
+		--gt-space-8: 1.75rem;
+		--gt-space-10: 2.25rem;
+		--gt-space-12: 2.75rem;
+	}
+}

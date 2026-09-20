@@ -1,0 +1,103 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import CaseVisualFallback from './CaseVisualFallback.astro';
+import { periodLabel, placeLabel } from '../lib/cases';
+
+interface Props {
+	entry: CollectionEntry<'cases'>;
+}
+
+const { entry } = Astro.props;
+const c = entry.data;
+const period = periodLabel(entry);
+const place = placeLabel(entry);
+---
+
+<article class="gt-case-card">
+	<a class="gt-case-card__hit" href={`/casos/${c.slug}`}>
+		<div class="gt-case-card__visual">
+			<CaseVisualFallback kind={c.visual} />
+		</div>
+		<div class="gt-case-card__body">
+			<p class="gt-case-card__code">{c.id}</p>
+			<p class="gt-case-card__meta">
+				{place}
+				{period && <span aria-hidden="true"> · </span>}
+				{period}
+			</p>
+			<h3 class="gt-case-card__title">{c.title}</h3>
+			<p class="gt-case-card__sum">{c.summary}</p>
+			{
+				c.products.length > 0 && (
+					<p class="gt-case-card__sys">{c.products.map((p) => p.toUpperCase()).join(' · ')}</p>
+				)
+			}
+		</div>
+	</a>
+</article>
+
+<style>
+	.gt-case-card {
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		min-width: 0;
+	}
+
+	.gt-case-card__hit {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		min-height: var(--gt-touch);
+	}
+
+	.gt-case-card__visual {
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-case-card__body {
+		padding: 1.1rem 1.15rem 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.gt-case-card__code,
+	.gt-case-card__sys {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+	}
+
+	.gt-case-card__meta {
+		font-size: 0.78rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--gt-coral);
+	}
+
+	.gt-case-card__title {
+		font-size: 1.15rem;
+	}
+
+	.gt-case-card__sum {
+		color: var(--gt-text-muted);
+		font-size: 0.95rem;
+	}
+
+	.gt-case-card__sys {
+		margin-top: 0.35rem;
+		color: var(--gt-coffee);
+	}
+
+	@media (max-width: 720px) {
+		.gt-case-card {
+			border-left: none;
+			border-right: none;
+			background: transparent;
+		}
+	}
+</style>

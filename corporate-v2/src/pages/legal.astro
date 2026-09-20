@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Aviso legal | GeoTactics"
+	description="Aviso legal del sitio corporativo GeoTactics."
+	noindex={false}
+>
+	<article class="gt-lg gt-container--wide">
+		<p class="gt-lg__micro">GT / LEGAL</p>
+		<h1>Aviso legal</h1>
+
+		<h2>Sitio</h2>
+		<p>
+			Esta es la versión corporativa 2.0 de GeoTactics. El sitio público vigente permanece en
+			geotactics.com.ec.
+		</p>
+
+		<h2>Identidad</h2>
+		<p>
+			GeoTactics opera como Sociedad Anónima. Los datos de registro societario se comunican por el canal
+			institucional cuando corresponde.
+		</p>
+
+		<h2>Contenido</h2>
+		<p>
+			El sitio describe productos, casos y trayectoria documentados. No pretende ser un archivo histórico
+			exhaustivo.
+		</p>
+
+		<h2>Enlaces</h2>
+		<p>
+			Los hipervínculos a plataformas de producto se limitan a superficies LIVE y publicables. GeoTactics no
+			responde por sitios de terceros.
+		</p>
+
+		<h2>Contacto</h2>
+		<p>
+			<a href="mailto:info@geotactics.com.ec">info@geotactics.com.ec</a>
+			·
+			<a href="/contacto">/contacto</a>
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-lg {
+		padding: var(--gt-space-10) 0 var(--gt-space-12);
+		max-width: 42rem;
+	}
+
+	.gt-lg__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-lg h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-lg__badge {
+		font-size: var(--gt-fs-sm);
+		color: var(--gt-coffee);
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-lg h2 {
+		font-size: var(--gt-fs-lg);
+		margin: var(--gt-space-6) 0 var(--gt-space-3);
+	}
+</style>

@@ -1,0 +1,301 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductVisualFallback from '../../components/ProductVisualFallback.astro';
+import ProductStatus from '../../components/ProductStatus.astro';
+import { conversarHref, copy } from '../../config/site';
+import { ctaLabels, publicSurface } from '../../data/surfaces';
+import { casesForProduct } from '../../lib/cases';
+import { recordBySlug } from '../../data/records';
+import { familyById, type FamilyId } from '../../data/taxonomy';
+import { statusLabels } from '../../lib/products';
+
+export async function getStaticPaths() {
+	const products = await getCollection('products');
+	return products
+		.filter((e) => e.data.public)
+		.map((entry) => ({
+			params: { slug: entry.data.slug },
+			props: { entry },
+		}));
+}
+
+const { entry } = Astro.props;
+const p = entry.data;
+const rec = recordBySlug(p.slug);
+const cases = casesForProduct(await getCollection('cases'), p.slug);
+const products = (await getCollection('products')).filter((e) => e.data.public);
+const related = products.filter((e) => (p.relatedProducts ?? rec?.relatedRecords ?? []).includes(e.data.slug));
+const surface = publicSurface(p.slug);
+const family = rec ? familyById(rec.primaryFamily as FamilyId) : undefined;
+const yearLabel = p.yearLabel ?? (p.year != null ? String(p.year) : undefined);
+
+const problem = p.problem ?? rec?.problem;
+const origin = p.origin;
+const purpose = p.purpose ?? rec?.solution;
+const how = p.howItWorks;
+const gost = p.gostRelation ?? rec?.gostRelation;
+const disciplines = (p.disciplines?.length ? p.disciplines : rec?.disciplines) ?? [];
+const captureNote =
+	p.slug === 'datasucumbios' || p.slug === 'sigdr'
+		? 'CAPTURE es el componente de campo de SIGDR. En Sucumbíos se registraron 27.539 habitantes en 31 parroquias rurales, a partir de un levantamiento propio.'
+		: undefined;
+---
+
+<BaseLayout title={p.seoTitle} description={p.seoDescription} noindex={false}>
+	<article class="gt-pd">
+		<header class="gt-pd__hero">
+			<div class="gt-pd__hero-inner gt-container--wide">
+				<div>
+					<p class="gt-pd__micro">GT / PRODUCT · {p.id}</p>
+					{family && (
+						<p class="gt-pd__fam">
+							{family.code} / {family.title}
+						</p>
+					)}
+					<h1>{p.name}</h1>
+					<p class="gt-pd__lead">{p.summary}</p>
+					<ProductStatus status={p.status} yearLabel={yearLabel} yearStatus={p.yearStatus} />
+				</div>
+				<div class="gt-pd__visual">
+					{
+						rec && rec.assets.length > 0 ? (
+							<div class="gt-pd__fan">
+								{rec.assets.slice(0, 3).map((a) => (
+									<img src={a.thumb ?? a.src} alt={a.alt} width="640" height="400" />
+								))}
+							</div>
+						) : (
+							<ProductVisualFallback id={p.id} statusLabel={statusLabels[p.status]} kind={p.visual} />
+						)
+					}
+				</div>
+			</div>
+		</header>
+
+		{
+			problem && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Problema</h2>
+					<p>{problem}</p>
+				</section>
+			)
+		}
+		{
+			origin && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Origen</h2>
+					<p>{origin}</p>
+				</section>
+			)
+		}
+		{
+			purpose && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Qué hace</h2>
+					<p>{purpose}</p>
+				</section>
+			)
+		}
+		{
+			how && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Cómo funciona</h2>
+					<p>{how}</p>
+				</section>
+			)
+		}
+		{
+			rec?.territory && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Territorio / contexto</h2>
+					<p>{rec.territory}</p>
+				</section>
+			)
+		}
+		{
+			disciplines.length > 0 && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Disciplinas verificadas</h2>
+					<p>{disciplines.join(' · ')}</p>
+				</section>
+			)
+		}
+		{
+			gost && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Relación con GOST</h2>
+					<p>{gost}</p>
+				</section>
+			)
+		}
+		{
+			captureNote && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>CAPTURE</h2>
+					<p>{captureNote}</p>
+				</section>
+			)
+		}
+		{
+			cases.length > 0 && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Casos relacionados</h2>
+					<ul class="gt-pd__rels">
+						{cases.map((c) => (
+							<li>
+								<a href={`/casos/${c.data.slug}`}>{c.data.title}</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+		{
+			related.length > 0 && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Productos relacionados</h2>
+					<ul class="gt-pd__rels">
+						{related.map((item) => (
+							<li>
+								<a href={`/productos/${item.data.slug}`}>{item.data.name}</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+		{
+			surface?.url && (
+				<section class="gt-pd__block gt-container--wide">
+					<h2>Superficie digital</h2>
+					<p>
+						<a href={surface.url} rel="noopener noreferrer" target="_blank">
+							{surface.ctaType !== 'none' ? ctaLabels[surface.ctaType] : 'Abrir'}
+							<span class="visually-hidden"> (se abre en una ventana nueva)</span>
+						</a>
+					</p>
+				</section>
+			)
+		}
+
+		<footer class="gt-pd__cta gt-container--wide">
+			<p>
+				<a href="/productos">Catálogo</a>
+				<span aria-hidden="true"> · </span>
+				<a href="/archivo">Archivo</a>
+			</p>
+			<a class="gt-cta" href={conversarHref}>
+				{copy.ctaPrimary}
+			</a>
+		</footer>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-pd {
+		padding-bottom: var(--gt-space-12);
+	}
+
+	.gt-pd__hero {
+		padding: var(--gt-space-10) 0 var(--gt-space-8);
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__hero-inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+		gap: var(--gt-space-8);
+		align-items: end;
+	}
+
+	.gt-pd__micro,
+	.gt-pd__fam {
+		font-family: ui-monospace, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.gt-pd__micro {
+		color: var(--gt-gray-400);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-pd__fam {
+		color: var(--gt-coral);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-pd h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+		max-width: 22rem;
+	}
+
+	.gt-pd__lead {
+		max-width: 40rem;
+		margin-bottom: var(--gt-space-4);
+		color: var(--gt-gray-800);
+	}
+
+	.gt-pd__visual {
+		border: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__fan {
+		display: grid;
+		gap: 0;
+	}
+
+	.gt-pd__fan img {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.gt-pd__block {
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__block h2 {
+		font-size: var(--gt-fs-lg);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-pd__block p {
+		max-width: 42rem;
+		color: var(--gt-gray-800);
+	}
+
+	.gt-pd__rels {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		max-width: 42rem;
+	}
+
+	.gt-pd__rels li {
+		padding: 0.65rem 0;
+		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__cta {
+		padding-top: var(--gt-space-10);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--gt-space-5);
+		align-items: center;
+	}
+
+	@media (max-width: 720px) {
+		.gt-pd__hero-inner {
+			grid-template-columns: 1fr;
+		}
+
+		.gt-pd h1 {
+			max-width: none;
+		}
+	}
+</style>

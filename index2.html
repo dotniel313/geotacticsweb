@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geotactics - 9 Aniversario</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body { margin: 0; overflow: hidden; font-family: 'Open Sans', sans-serif; background-color: #f4f7f6; user-select: none; }
+        a { text-decoration: none; }
+
+        /* --- HUD SUPERIOR --- */
+        .hud-bar { position: fixed; width: 100%; z-index: 900; padding: 15px 40px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; pointer-events: none; background: rgba(255,255,255,0.95); border-bottom: 1px solid #ddd; }
+        .top-bar { top: 0; left: 0; }
+        
+        .nav-links { pointer-events: auto; display: flex; gap: 30px; align-items: center; }
+        .nav-item { text-decoration: none; color: #2C3E50; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: color 0.3s; }
+        .nav-item:hover { color: #E84C3D; }
+        
+        .btn-cta-start {
+            background: #E84C3D; color: white !important; padding: 8px 20px; border-radius: 4px; 
+            font-weight: 800; font-size: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(232, 76, 61, 0.3); transition: all 0.2s; cursor: pointer; pointer-events: auto;
+        }
+        .btn-cta-start:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(232, 76, 61, 0.4); }
+        
+        .btn-dossier { background: #2C3E50; color: white !important; padding: 8px 15px; border-radius: 4px; display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .btn-dossier:hover { background: #E84C3D; }
+
+        /* --- BARRA NOTICIAS (SUELO) --- */
+        .news-ticker-bar { 
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 36px; 
+            background: #2C3E50; color: white; z-index: 890; display: flex; align-items: center;
+            overflow: hidden; white-space: nowrap; border-top: 2px solid #E84C3D;
+        }
+        .ticker-label { background: #E84C3D; height: 100%; padding: 0 20px; display: flex; align-items: center; font-weight: 800; font-size: 10px; letter-spacing: 1px; z-index: 2; }
+        .ticker-wrap { width: 100%; overflow: hidden; padding-left: 100%; box-sizing: content-box; }
+        .ticker-move { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker-anim 40s linear infinite; }
+        .ticker-item { display: inline-block; padding: 0 30px; font-size: 11px; font-weight: 400; }
+        .ticker-item strong { color: #E84C3D; margin-right: 5px; font-weight: 700; }
+        @keyframes ticker-anim { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        /* --- PIE DE PÁGINA FLOTANTE --- */
+        .footer-capsule {
+            position: fixed; bottom: 45px; left: 50%; transform: translateX(-50%);
+            z-index: 900; display: flex; align-items: center; gap: 20px;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            padding: 8px 25px; border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.1);
+            pointer-events: auto; white-space: nowrap;
+        }
+        .footer-info { font-size: 11px; color: #666; display: flex; align-items: center; gap: 15px; font-weight: 600; }
+        .footer-sep { width: 1px; height: 12px; background: #ccc; }
+        .footer-social { display: flex; gap: 15px; padding-left: 15px; border-left: 1px solid #eee; }
+        .footer-social a { color: #2C3E50; font-size: 18px; transition: transform 0.2s; display: flex; }
+        .footer-social a:hover { color: #E84C3D; transform: scale(1.2); }
+
+        /* --- WHATSAPP FLOTANTE --- */
+        .cta-whatsapp { position: fixed; bottom: 45px; right: 20px; z-index: 1000; width: 50px; height: 50px; background: #25D366; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-size: 28px; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); cursor: pointer; transition: all 0.3s; pointer-events: auto; }
+        .cta-whatsapp:hover { transform: scale(1.1); }
+
+        /* --- MUNDO HORIZONTAL --- */
+        #mundo-horizontal { display: flex; width: 600vw; height: 100vh; transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1); will-change: transform; }
+        section { width: 100vw; height: 100vh; position: relative; flex-shrink: 0; background-image: linear-gradient(#e0e0e0 1px, transparent 1px), linear-gradient(90deg, #e0e0e0 1px, transparent 1px); background-size: 40px 40px; overflow: hidden; }
+        
+        /* HOME */
+        .grupo-marca-izquierda { position: absolute; top: 45%; left: 8%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; pointer-events: none; z-index: 0; width: 350px; }
+        .grupo-marca-izquierda img { width: 100%; height: auto; filter: drop-shadow(0 5px 15px rgba(255,255,255,0.8)); }
+        .badge-aniversario { background: #E84C3D; color: white; padding: 6px 20px; border-radius: 30px; font-weight: 800; letter-spacing: 1px; font-size: 12px; text-transform: uppercase; margin-top: 15px; box-shadow: 0 5px 15px rgba(232, 76, 61, 0.3); }
+
+        /* CLIENTES */
+        .clients-bar { position: absolute; bottom: 120px; left: 8%; width: auto; background: rgba(255,255,255,0.6); backdrop-filter: blur(5px); padding: 15px 20px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); z-index: 10; }
+        .clients-title { font-size: 10px; text-transform: uppercase; color: #2C3E50; font-weight: 800; letter-spacing: 1px; margin-bottom: 10px; display: block;}
+        .clients-logos { display: flex; gap: 25px; opacity: 0.6; align-items: center; justify-content: center; }
+        .client-logo-img { height: 30px; width: auto; filter: grayscale(100%) opacity(0.6); transition: all 0.3s; }
+        .client-logo-img:hover { filter: grayscale(0%) opacity(1); transform: scale(1.1); }
+
+        /* SCANNER */
+        #open-box-zone { position: absolute; left: 45%; top: 50%; transform: translate(-50%, -50%); width: 320px; height: 120px; background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(204, 204, 204, 0.5); display: flex; justify-content: center; align-items: center; text-align: center; color: #888; font-weight: 800; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; z-index: 5; transition: all 0.3s; backdrop-filter: blur(5px); box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+        #open-box-zone::before, #open-box-zone::after { content: ''; position: absolute; width: 20px; height: 20px; transition: all 0.3s; }
+        #open-box-zone::before { top: -2px; left: -2px; border-top: 3px solid #E84C3D; border-left: 3px solid #E84C3D; }
+        #open-box-zone::after { bottom: -2px; right: -2px; border-bottom: 3px solid #E84C3D; border-right: 3px solid #E84C3D; }
+        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(232, 76, 61, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(232, 76, 61, 0); } 100% { box-shadow: 0 0 0 0 rgba(232, 76, 61, 0); } }
+        #open-box-zone { animation: pulse-border 2s infinite; }
+        #open-box-zone.zona-activa { background: rgba(44, 62, 80, 0.9); border-color: #E84C3D; color: #fff; transform: translate(-50%, -50%) scale(1.05); }
+
+        /* FICHAS */
+        .ficha { position: absolute; width: 130px; height: 100px; background: #E84C3D; color: white; border-bottom: 4px solid #2C3E50; border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: grab; z-index: 20; padding: 10px; text-align: center; transition: transform 0.1s, top 0.5s ease, left 0.5s ease; }
+        .ficha:active { cursor: grabbing; transform: scale(1.05); z-index: 100; transition: none; }
+        .ficha span { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
+        .ficha i { font-size: 32px; line-height: 1; margin-bottom: 5px; }
+        #f1 { top: 30%; right: 25%; } #f3 { top: 55%; right: 25%; } #f2 { top: 18%; right: 8%; } #f4 { top: 43%; right: 8%; } #f5 { top: 68%; right: 8%; }
+
+        /* --- VISTA HORIZONTAL TIMELINE --- */
+        .dynamic-container { display: grid; grid-template-columns: 400px 1fr; height: 100%; width: 100vw; }
+        .left-context { padding: 100px 50px; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-right: 1px solid #ddd; z-index: 10; }
+        .cat-number { font-size: 14px; color: #E84C3D; font-weight: 700; letter-spacing: 2px; margin-bottom: 10px; display: block; text-transform: uppercase;}
+        .cat-title-big { font-size: 40px; font-weight: 900; color: #2C3E50; line-height: 1; margin-bottom: 20px; text-transform: uppercase; }
+        .cat-desc-text { font-size: 14px; line-height: 1.6; color: #555; margin-bottom: 40px; font-weight: 400; }
+        .btn-volver { padding: 12px 30px; background: #2C3E50; color: white; border: none; font-weight: 700; cursor: pointer; border-radius: 4px; width: fit-content; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-volver:hover { background: #E84C3D; }
+        .horizontal-scroll-area { overflow-x: auto; overflow-y: hidden; display: flex; align-items: center; padding: 0 50px; height: 100%; background: transparent; scrollbar-width: thin; scrollbar-color: #E84C3D #eee; }
+        .project-column { min-width: 400px; margin-right: 100px; height: 75%; display: flex; flex-direction: column; position: relative; }
+        .proj-images { flex: 1.2; position: relative; margin-bottom: 20px; cursor: pointer; }
+        .p-img { position: absolute; bottom: 0; left: 0; width: 90%; height: 280px; object-fit: cover; border: 4px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.15); border-radius: 6px; transition: all 0.4s ease; transform-origin: bottom center; }
+        .p-img:nth-child(1) { z-index: 1; transform: rotate(-5deg) translateX(-10px) scale(0.9); }
+        .p-img:nth-child(2) { z-index: 2; transform: rotate(5deg) translateX(10px) scale(0.95); }
+        .p-img:nth-child(3) { z-index: 3; transform: rotate(0deg) scale(1); }
+        .project-column:hover .p-img:nth-child(1) { transform: rotate(-15deg) translateX(-40px) scale(0.9); }
+        .project-column:hover .p-img:nth-child(2) { transform: rotate(15deg) translateX(40px) scale(0.9); }
+        .project-column:hover .p-img:nth-child(3) { transform: translateY(-10px) scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        .timeline-divider { height: 4px; width: 100%; background: #ccc; position: relative; margin-bottom: 20px; }
+        .timeline-divider::after { content: ''; position: absolute; top: 50%; left: 0; transform: translateY(-50%); width: 16px; height: 16px; background: #E84C3D; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 1px #E84C3D; }
+        .project-column::before { content: ''; position: absolute; top: calc(50% + 30px); right: -100px; width: 100px; height: 4px; background: #ccc; }
+        .project-column:last-child::before { display: none; }
+        .proj-info { flex: 0.8; }
+        .p-year-visible { font-size: 14px; font-weight: 800; color: #E84C3D; margin-bottom: 5px; display: block; }
+        .p-title { font-size: 20px; font-weight: 800; color: #2C3E50; margin: 0 0 10px 0; line-height: 1.2; }
+        .p-desc { font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 15px; }
+        .p-meta { border-top: 1px solid #ddd; padding-top: 10px; font-size: 11px; color: #888; text-transform: uppercase; font-weight: 600; margin-bottom: 15px;}
+        .p-meta i { color: #E84C3D; margin-right: 5px; }
+        .proj-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-tiny { text-decoration: none; padding: 6px 12px; border: 1px solid #2C3E50; color: #2C3E50; font-size: 11px; text-transform: uppercase; font-weight: 700; border-radius: 4px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 5px;}
+        .btn-tiny:hover { background: #2C3E50; color: white; }
+        .btn-tiny-red { border-color: #E84C3D; color: #E84C3D; }
+        .btn-tiny-red:hover { background: #E84C3D; color: white; }
+
+        /* LIGHTBOX */
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 3000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #lightbox.activo { display: flex; opacity: 1; }
+        #lightbox-img { max-width: 90%; max-height: 90%; box-shadow: 0 0 50px rgba(0,0,0,0.5); border: 5px solid white; border-radius: 4px; }
+        .btn-cerrar-lightbox { position: absolute; top: 30px; right: 30px; color: white; font-size: 40px; cursor: pointer; transition: transform 0.2s; }
+        .btn-cerrar-lightbox:hover { transform: scale(1.2); color: #E84C3D; }
+
+        /* --- OVERLAYS (FONDO BLANCO SÓLIDO) --- */
+        .full-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff !important; z-index: 2000; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); overflow-y: auto; }
+        .full-overlay.abierto { transform: translateY(0); }
+        .btn-cerrar-overlay { position: absolute; top: 80px; right: 40px; background: white; border: none; color: #E84C3D; font-size: 32px; cursor: pointer; transition: transform 0.3s; z-index: 2100; border-radius: 50%; width: 50px; height: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; }
+        .btn-cerrar-overlay:hover { transform: rotate(90deg); background: #E84C3D; color: white; }
+        .overlay-container { max-width: 1200px; margin: 100px auto; padding: 0 20px 50px 20px; }
+        .overlay-header { text-align: left; margin-bottom: 50px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+        .overlay-header h2 { font-size: 32px; color: #444; margin: 0; font-weight: 300; letter-spacing: 2px; }
+
+        /* EQUIPO */
+        .team-grid { display: flex; flex-wrap: wrap; justify-content: space-around; gap: 40px; }
+        .member-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; width: 280px; cursor: default; }
+        .member-photo-circle { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; margin-bottom: 30px; filter: grayscale(100%); transition: all 0.4s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .member-wrapper:hover .member-photo-circle { filter: grayscale(0%); transform: scale(1.05); box-shadow: 0 20px 40px rgba(232, 76, 61, 0.2); }
+        .member-photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .member-name-large { color: #E84C3D; font-size: 24px; font-weight: 300; margin: 0 0 10px 0; position: relative; display: inline-block; }
+        .member-name-large::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 30px; height: 1px; background: #E84C3D; }
+        .member-role-title { color: #555; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; }
+        .member-desc-block { color: #888; font-size: 14px; font-weight: 300; margin-bottom: 15px; line-height: 1.4; }
+        .member-contact-links a { display: block; color: #E84C3D; font-size: 13px; text-decoration: underline; margin-bottom: 3px; }
+
+        /* MAPA */
+        #map-container { width: 100%; height: 75vh; background: #ffffff; position: relative; z-index: 1; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: block; }
+        .leaflet-container { background: #ffffff !important; } 
+        .leaflet-layer { filter: grayscale(100%) contrast(1.1); }
+        .pin-tactico { width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: transform 0.2s; }
+        .pin-tactico:hover { transform: scale(2); z-index: 9999 !important; }
+        .pin-territorial { background: #E84C3D; } .pin-gobernanza { background: #3498db; } .pin-recursos { background: #27ae60; } .pin-especial { background: #9b59b6; } .pin-hq { background: #2C3E50; border: 3px solid #E84C3D; width: 18px; height: 18px; }
+        .leaflet-control-layers { border: none !important; box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important; border-radius: 8px !important; padding: 10px !important; font-family: 'Open Sans', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #444; }
+        .btn-map-jump { display: block; width: 100%; padding: 8px 0; margin-top: 8px; background: #2C3E50; color: white; border: none; border-radius: 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+        .btn-map-jump:hover { background: #E84C3D; }
+
+        @media (max-width: 1000px) {
+            .hud-bar { padding: 10px 15px; flex-direction: column; align-items: flex-start; gap: 10px;}
+            .footer-capsule { bottom: 60px; width: 90%; flex-direction: column; height: auto; border-radius: 15px; }
+            .footer-social { border-left: none; border-top: 1px solid #eee; padding-left: 0; padding-top: 10px; }
+            .grupo-marca-izquierda { width: 250px; left: 5%; top: 20%; transform: none; }
+            .clients-bar { width: auto; left: 0; bottom: 120px; padding: 15px 5%; }
+            #open-box-zone { top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; }
+            #f1, #f2, #f3, #f4, #f5 { right: auto; left: 50%; transform: translateX(-50%); } 
+            #f1 { top: 65%; left: 20%; } #f2 { top: 65%; left: 50%; } #f3 { top: 65%; left: 80%; }
+            .dynamic-container { grid-template-columns: 1fr; }
+            .left-context { height: auto; padding: 40px; border-right: none; border-bottom: 1px solid #ddd; }
+            .horizontal-scroll-area { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <div class="btn-cerrar-lightbox">✕</div>
+        <img id="lightbox-img" src="" alt="Proyecto Fullscreen" onclick="event.stopPropagation()">
+    </div>
+
+    <a href="https://wa.me/593993634073" target="_blank" class="cta-whatsapp">
+        <i class="ri-whatsapp-line"></i>
+    </a>
+
+    <nav class="hud-bar top-bar">
+        <div class="nav-links">
+            <div style="font-weight: 800; font-size: 18px; color: #2C3E50; margin-right: 20px;">
+                GEOTACTICS<span style="color:#E84C3D;">.</span>
+            </div>
+            <a class="nav-item" onclick="toggleOverlay('overlay-equipo')">Equipo</a>
+            <a class="nav-item" onclick="toggleOverlay('overlay-ubicacion')">Ubicación</a>
+        </div>
+        <div class="nav-links">
+            <a class="nav-item btn-cta-start" onclick="window.location.href='mailto:info@geotactics.com.ec'">
+                INICIAR PROYECTO <i class="ri-arrow-right-line"></i>
+            </a>
+            <a href="https://www.geotactics.info/_files/ugd/936075_b54d4fa956f14af290ce32aca34a64b0.pdf" target="_blank" class="nav-item btn-dossier">
+                <i class="ri-download-line"></i> Dossier
+            </a>
+        </div>
+    </nav>
+
+    <footer class="news-ticker-bar">
+        <div class="ticker-label">ÚLTIMAS NOTICIAS</div>
+        <div class="ticker-wrap">
+            <div class="ticker-move">
+                <div class="ticker-item"><strong>NUEVO:</strong> Lanzamiento de DataSucumbios.tech para transparencia de datos abiertos.</div>
+                <div class="ticker-item"><strong>PROYECTO:</strong> Finalización del Censo Parroquial en las 31 parroquias rurales.</div>
+                <div class="ticker-item"><strong>ALIANZA:</strong> Convenio estratégico con GADP Sucumbíos para modernización digital.</div>
+                <div class="ticker-item"><strong>RSE:</strong> Campaña "Patas a la Obra" alcanza 500 registros de mascotas.</div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="footer-capsule">
+        <div class="footer-info">
+            <span>© 2024 Geotactics</span>
+            <div class="footer-sep"></div>
+            <span>Nueva Loja, Sucumbíos</span>
+            <div class="footer-sep"></div>
+            <span>info@geotactics.com.ec</span>
+        </div>
+        <div class="footer-social">
+            <a href="#" target="_blank"><i class="ri-linkedin-fill"></i></a>
+            <a href="#" target="_blank"><i class="ri-facebook-box-fill"></i></a>
+            <a href="#" target="_blank"><i class="ri-instagram-fill"></i></a>
+            <a href="https://x.com/GeotacticsEC" target="_blank"><i class="ri-twitter-x-line"></i></a>
+        </div>
+    </div>
+
+    <div id="mundo-horizontal">
+        <section id="escena-home">
+            <div class="grupo-marca-izquierda">
+                <img src="logo.png" alt="Geotactics" onerror="this.style.display='none'">
+                <div class="badge-aniversario">9 Años de Innovación</div>
+            </div>
+            
+            <div class="clients-bar">
+                <span class="clients-title">ALIADOS ESTRATÉGICOS</span>
+                <div class="clients-logos" id="clients-container">
+                    </div>
+            </div>
+            
+            <div id="open-box-zone">
+                <div>
+                    <i class="ri-qr-scan-2-line" style="font-size: 24px; display: block; margin-bottom: 5px;"></i>
+                    LEER ARCHIVOS
+                </div>
+            </div>
+            
+            <div class="ficha" id="f1" data-target="territorial"><i class="ri-map-pin-range-line"></i><span>Inteligencia<br>Territorial</span></div>
+            <div class="ficha" id="f2" data-target="gobernanza"><i class="ri-database-2-line"></i><span>Gobernanza<br>Digital</span></div>
+            <div class="ficha" id="f3" data-target="recursos"><i class="ri-plant-line"></i><span>Gestión de<br>Recursos</span></div>
+            <div class="ficha" id="f4" data-target="legado"><i class="ri-hand-heart-line"></i><span>Legado &<br>Futuro</span></div>
+            <div class="ficha" id="f5" data-target="especiales"><i class="ri-stack-line"></i><span>Proyectos<br>Especiales</span></div>
+        </section>
+
+        <section id="dynamic-section">
+            <div class="dynamic-container">
+                <div class="left-context">
+                    <button class="btn-volver" onclick="volver()">← Volver</button>
+                    <div style="margin-top: 40px;">
+                        <span id="cat-num" class="cat-number">01 / CATEGORÍA</span>
+                        <h2 id="cat-title" class="cat-title-big">TÍTULO</h2>
+                        <p id="cat-desc" class="cat-desc-text">Descripción...</p>
+                    </div>
+                </div>
+                <div id="horizontal-feed" class="horizontal-scroll-area"></div>
+            </div>
+        </section>
+    </div>
+
+    <div id="overlay-equipo" class="full-overlay">
+        <button class="btn-cerrar-overlay" onclick="toggleOverlay('overlay-equipo')"><i class="ri-close-line"></i></button>
+        <div class="overlay-container">
+            <div class="overlay-header"><h2>EQUIPO</h2></div>
+            <div class="team-grid" id="team-grid-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="overlay-ubicacion" class="full-overlay">
+        <button class="btn-cerrar-overlay" onclick="toggleOverlay('overlay-ubicacion')"><i class="ri-close-line"></i></button>
+        <div class="overlay-container" style="max-width: 100%; padding: 0;">
+            <div class="overlay-header" style="max-width: 1100px; margin: 80px auto 30px auto; padding: 0 20px;">
+                <h2>OPERACIONES & PROYECTOS</h2>
+                <p style="font-size: 14px; color: #777;">9 Años de huella territorial.</p>
+            </div>
+            <div id="map-container"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // --- CONFIGURACION SUPABASE ---
+        const SUPABASE_URL = 'https://fljlevyhwsjnuiwbpnvh.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsamxldnlod3NqbnVpd2JwbnZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQxMTg1NTUsImV4cCI6MjA3OTY5NDU1NX0.oToSDqjICc5aqk7qTflrpvA0sKGPNnONxD9YXQSlYhY';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Variables Globales
+        let proyectosDB = [];
+        let map = null;
+        
+        const categoryDetails = {
+            'territorial': { num: '01', title: 'INTELIGENCIA TERRITORIAL', desc: 'Gestión de datos geográficos para decisiones de alto impacto.' },
+            'gobernanza': { num: '02', title: 'GOBERNANZA DIGITAL', desc: 'Transformación digital y datos abiertos para gobiernos locales.' },
+            'recursos': { num: '03', title: 'GESTIÓN DE RECURSOS', desc: 'Tecnología aplicada a la gestión del agua y la agricultura.' },
+            'legado': { num: '04', title: 'LEGADO SOCIAL', desc: 'Responsabilidad Social Empresarial e impacto comunitario.' },
+            'especiales': { num: '05', title: 'PROYECTOS ESPECIALES', desc: 'Innovación y nuevos emprendimientos tecnológicos.' }
+        };
+
+        // --- INICIALIZACIÓN ---
+        async function iniciarSitio() {
+            // A. NOTICIAS
+            const { data: news } = await _supabase.from('noticias').select('*').eq('activo', true);
+            if(news && news.length > 0) {
+                const container = document.querySelector('.ticker-move');
+                container.innerHTML = '';
+                news.forEach(n => { container.innerHTML += `<div class="ticker-item"><strong>INFO:</strong> ${n.texto}</div>`; });
+            }
+
+            // B. CLIENTES
+            const { data: clients } = await _supabase.from('clientes').select('*').eq('activo', true).order('orden');
+            if(clients && clients.length > 0) {
+                const container = document.getElementById('clients-container');
+                container.innerHTML = '';
+                clients.forEach(c => {
+                    const img = document.createElement('img'); img.src = c.logo_url; img.className = 'client-logo-img'; img.title = c.nombre;
+                    container.appendChild(img);
+                });
+            }
+
+            // C. EQUIPO
+            const { data: team } = await _supabase.from('equipo').select('*').order('orden');
+            if(team) {
+                const container = document.getElementById('team-grid-container');
+                container.innerHTML = '';
+                team.forEach(m => {
+                    const foto = m.foto_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+                    container.innerHTML += `<div class="member-wrapper"><div class="member-photo-circle"><img src="${foto}"></div><div class="member-info-below"><h3 class="member-name-large">${m.nombre}</h3><div class="member-role-title">${m.cargo}</div><div class="member-desc-block">${m.descripcion}</div><div class="member-alias">Alias: ${m.alias}</div><div class="member-contact-links"><a href="mailto:${m.email}">Email</a><a href="https://x.com/${m.twitter.replace('@','')}" target="_blank" class="twitter-link">${m.twitter}</a></div></div></div>`;
+                });
+            }
+
+            // D. PROYECTOS
+            const { data: projs } = await _supabase.from('proyectos').select('*');
+            if(projs && projs.length > 0) {
+                proyectosDB = projs.map(item => ({
+                    cat: item.categoria, sys: item.sistema, cliente: item.cliente, proy: item.descripcion,
+                    year: item.anio, lat: item.lat, lng: item.lng, loc: item.ubicacion,
+                    imgs: [item.foto1, item.foto2, item.foto3].filter(u => u && u.length > 5),
+                    demo: item.link_demo, pdf: item.link_pdf
+                }));
+            } else {
+                // BACKUP DATA (SI SUPABASE FALLA)
+                proyectosDB = [
+                    { cat: 'recursos', sys: 'SIGC', cliente: 'Junta de Riego Pimampiro', proy: 'Modernización Riego', year: '2018', lat: 0.3923, lng: -77.9405, loc: 'Pimampiro', demo: '#', pdf: '#' },
+                    { cat: 'territorial', sys: 'CAPTURE', cliente: 'GADP Sucumbíos', proy: 'Censo 31 Parroquias Rurales', year: '2024', lat: 0.0910, lng: -76.8850, loc: 'Sucumbíos', demo: 'https://capture.geotactics.com.ec' },
+                    { cat: 'gobernanza', sys: 'DataSucumbíos', cliente: 'GADP Sucumbíos', proy: 'Actualización PDyOT', year: '2024', lat: 0.0500, lng: -77.0000, loc: 'Sucumbíos', demo: 'https://datasucumbios.tech' }
+                ];
+            }
+        }
+        iniciarSitio();
+
+        // --- MAPA ---
+        function initMap() {
+            if (map) { map.remove(); map = null; }
+            map = L.map('map-container').setView([0.00, -77.50], 8);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; Geotactics', maxZoom: 19 }).addTo(map);
+            
+            const layers = { 'territorial': L.layerGroup().addTo(map), 'gobernanza': L.layerGroup().addTo(map), 'recursos': L.layerGroup().addTo(map), 'legado': L.layerGroup().addTo(map), 'especiales': L.layerGroup().addTo(map) };
+            
+            proyectosDB.forEach(p => {
+                if(p.lat && p.lng) {
+                    const icon = L.divIcon({ className: 'custom-pin', html: `<div class="pin-tactico pin-${p.cat}"></div>`, iconSize: [16,16], iconAnchor: [8,8] });
+                    const popup = `<b>${p.loc} (${p.year})</b><h3>${p.sys}</h3><p>${p.proy}</p><button class="btn-map-jump" onclick="saltarDesdeMapa('${p.cat}')">VER EN CRONOLOGÍA →</button>`;
+                    L.marker([p.lat, p.lng], {icon: icon}).bindPopup(popup).addTo(layers[p.cat]);
+                }
+            });
+            const hq = L.divIcon({ className: '', html: '<div class="pin-tactico pin-hq"></div>', iconSize: [20,20] });
+            L.marker([0.091, -76.89], {icon: hq}).addTo(map).bindPopup('<b>CUARTEL GENERAL</b><br>Geotactics HQ<br>Nueva Loja');
+
+            L.control.layers(null, { "<span style='color:#E84C3D'>■</span> Territorial": layers.territorial, "<span style='color:#3498db'>■</span> Gobernanza": layers.gobernanza, "<span style='color:#27ae60'>■</span> Recursos": layers.recursos, "<span style='color:#9b59b6'>■</span> Legado": layers.legado, "<span style='color:#333'>■</span> Especiales": layers.especiales }, { collapsed: false }).addTo(map);
+        }
+
+        function renderCategory(catKey) {
+            const data = categoryDetails[catKey];
+            const projects = proyectosDB.filter(p => p.cat === catKey).sort((a, b) => a.year - b.year);
+            document.getElementById('cat-num').innerText = data.num + ' / CATEGORÍA';
+            document.getElementById('cat-title').innerText = data.title;
+            document.getElementById('cat-desc').innerText = data.desc;
+            const container = document.getElementById('horizontal-feed');
+            container.innerHTML = '';
+            if(projects.length === 0) container.innerHTML = '<div style="padding:40px;color:#999;">Próximamente...</div>';
+            projects.forEach(p => {
+                const rnd = Math.floor(Math.random() * 1000);
+                const i1 = (p.imgs && p.imgs[0]) || `https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80&sig=${rnd}`;
+                const i2 = (p.imgs && p.imgs[1]) || `https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=400&q=80&sig=${rnd+1}`;
+                const i3 = (p.imgs && p.imgs[2]) || `https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?auto=format&fit=crop&w=400&q=80&sig=${rnd+2}`;
+                
+                let btns = '';
+                if((p.demo && p.demo.length > 4) || (p.pdf && p.pdf.length > 4)) {
+                    btns = '<div class="proj-actions">';
+                    if(p.demo && p.demo.length > 4) btns += `<a href="${p.demo}" target="_blank" class="btn-tiny btn-tiny-red">Ver Demo</a>`;
+                    if(p.pdf && p.pdf.length > 4) btns += `<a href="${p.pdf}" target="_blank" class="btn-tiny">Ficha PDF</a>`;
+                    btns += '</div>';
+                }
+                
+                container.innerHTML += `<div class="project-column"><div class="proj-images"><img src="${i1}" class="p-img" onclick="openLightbox(this.src)"><img src="${i2}" class="p-img" onclick="openLightbox(this.src)"><img src="${i3}" class="p-img" onclick="openLightbox(this.src)"></div><div class="timeline-divider"></div><div class="proj-info"><span class="p-year-visible">${p.year}</span><div class="p-title">${p.sys}</div><div class="p-desc">${p.proy}</div><div class="p-meta"><i class="ri-user-line"></i> ${p.cliente} <br><i class="ri-map-pin-line"></i> ${p.loc}</div>${btns}</div></div>`;
+            });
+        }
+
+        // UI LOGIC
+        const fichas = document.querySelectorAll('.ficha');
+        const zonaBox = document.getElementById('open-box-zone');
+        const mundo = document.getElementById('mundo-horizontal');
+        let zIndexCounter = 100;
+        fichas.forEach(ficha => { hacerArrastrable(ficha); });
+
+        function hacerArrastrable(elmnt) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            elmnt.onmousedown = dragMouseDown; elmnt.ontouchstart = dragMouseDown;
+            function dragMouseDown(e) { e = e || window.event; if(e.type !== 'touchstart') e.preventDefault(); zIndexCounter++; elmnt.style.zIndex = zIndexCounter; elmnt.style.transition = "none"; if(e.type === 'touchstart') { pos3 = e.touches[0].clientX; pos4 = e.touches[0].clientY; } else { pos3 = e.clientX; pos4 = e.clientY; } document.onmouseup = closeDragElement; document.ontouchend = closeDragElement; document.onmousemove = elementDrag; document.ontouchmove = elementDrag; }
+            function elementDrag(e) { e = e || window.event; let clientX, clientY; if(e.type === 'touchmove') { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; } else { clientX = e.clientX; clientY = e.clientY; } pos1 = pos3 - clientX; pos2 = pos4 - clientY; pos3 = clientX; pos4 = clientY; elmnt.style.top = (elmnt.offsetTop - pos2) + "px"; elmnt.style.left = (elmnt.offsetLeft - pos1) + "px"; if (detectarColision(elmnt, zonaBox)) { zonaBox.classList.add('zona-activa'); } else { zonaBox.classList.remove('zona-activa'); } }
+            function closeDragElement() { document.onmouseup = null; document.onmousemove = null; document.ontouchend = null; document.ontouchmove = null; elmnt.style.transition = "transform 0.1s, top 0.5s ease, left 0.5s ease"; if (detectarColision(elmnt, zonaBox)) { zonaBox.classList.remove('zona-activa'); let target = elmnt.getAttribute('data-target'); renderCategory(target); moverCamara(1); } }
+        }
+        function detectingColision(el1, el2) { const r1 = el1.getBoundingClientRect(); const r2 = el2.getBoundingClientRect(); return !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom); }
+        function detectarColision(el1, el2) { const r1 = el1.getBoundingClientRect(); const r2 = el2.getBoundingClientRect(); return !(r1.right < r2.left || r1.left > r2.right || r1.bottom < r2.top || r1.top > r2.bottom); }
+        function moverCamara(indice) { mundo.style.transform = `translateX(-${indice * 100}vw)`; }
+        function volver() { mundo.style.transform = `translateX(0)`; fichas.forEach(f => { f.style.top = ""; f.style.left = ""; f.style.right = ""; }); } 
+        function saltarDesdeMapa(cat) { toggleOverlay('overlay-ubicacion'); setTimeout(() => { renderCategory(cat); moverCamara(1); }, 300); }
+        function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('activo'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('activo'); }
+
+        function toggleOverlay(id) {
+            const overlay = document.getElementById(id);
+            if (overlay.classList.contains('abierto')) { 
+                overlay.classList.remove('abierto'); 
+                if(id === 'overlay-ubicacion' && map) { map.remove(); map = null; }
+            } else {
+                document.querySelectorAll('.full-overlay').forEach(ov => ov.classList.remove('abierto')); 
+                overlay.classList.add('abierto');
+                // FIX MAPA: MARTILLAZO DE REDIMENSIONADO
+                if(id === 'overlay-ubicacion') {
+                    setTimeout(() => { 
+                        initMap(); 
+                        // Forzar redibujado multiple para Safari
+                        if(map) {
+                            let c = 0;
+                            const int = setInterval(() => { map.invalidateSize(); c++; if(c>5) clearInterval(int); }, 200);
+                        }
+                    }, 600); 
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Privacidad | GeoTactics"
+	description="Privacidad del sitio corporativo de GeoTactics."
+	noindex={false}
+>
+	<article class="gt-lg gt-container--wide">
+		<p class="gt-lg__micro">GT / PRIVACY</p>
+		<h1>Privacidad</h1>
+
+		<h2>Responsable</h2>
+		<p>
+			GeoTactics, con base de operación en Nueva Loja, Sucumbíos, Ecuador.
+		</p>
+
+		<h2>Qué no hace este sitio</h2>
+		<ul>
+			<li>No usa Google Analytics, Meta Pixel, Hotjar ni Microsoft Clarity.</li>
+			<li>No hay cuenta de usuario ni login.</li>
+			<li>No hay banner de cookies: no hay tracking no esencial.</li>
+			<li>El formulario de contacto no envía datos a un servidor de GeoTactics.</li>
+		</ul>
+
+		<h2>Qué sí ocurre</h2>
+		<ul>
+			<li>
+				<strong>Correo.</strong> «Continuar por correo» abre el cliente de correo del dispositivo. El contenido no se almacena en este sitio.
+			</li>
+			<li>
+				<strong>WhatsApp.</strong> El enlace abre wa.me (servicio de terceros). GeoTactics no controla esa
+				plataforma.
+			</li>
+			<li>
+				<strong>Mapa.</strong> El mapa de Territorio pide teselas a OpenStreetMap. Hay atribución visible.
+			</li>
+			<li>
+				<strong>Enlaces a plataformas.</strong> DataSucumbíos, OrangeMap y ExploraSucumbíos son sitios
+				propios/externos. Cada uno tiene su propio tratamiento.
+			</li>
+		</ul>
+
+		<h2>Cookies y almacenamiento</h2>
+		<p>
+			El sitio no establece cookies propias ni usa <code>localStorage</code> / <code>sessionStorage</code> para analítica. El navegador puede guardar datos de terceros al cargar teselas OSM o al abrir WhatsApp.
+		</p>
+
+		<h2>Contacto sobre privacidad</h2>
+		<p>
+			<a href="mailto:info@geotactics.com.ec">info@geotactics.com.ec</a>
+		</p>
+	</article>
+</BaseLayout>
+
+<style>
+	.gt-lg {
+		padding: var(--gt-space-10) 0 var(--gt-space-12);
+		max-width: 42rem;
+	}
+
+	.gt-lg__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: 0.5rem;
+	}
+
+	.gt-lg h1 {
+		font-size: var(--gt-fs-xl);
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-lg__badge {
+		font-size: var(--gt-fs-sm);
+		color: var(--gt-coffee);
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-lg h2 {
+		font-size: var(--gt-fs-lg);
+		margin: var(--gt-space-6) 0 var(--gt-space-3);
+	}
+
+	.gt-lg ul {
+		padding-left: 1.2rem;
+	}
+
+	.gt-lg li {
+		margin-bottom: 0.5rem;
+	}
+</style>

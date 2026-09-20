@@ -1,0 +1,73 @@
+---
+interface Props {
+	kind: 'rural' | 'water' | 'inst' | 'plan' | 'province' | 'canton';
+}
+
+const { kind } = Astro.props;
+---
+
+<svg class="gt-cvf" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+	<rect width="320" height="180" fill="#f4f7f6" />
+	{
+		kind === 'rural' && (
+			<>
+				<line x1="24" y1="148" x2="296" y2="148" stroke="#4a3e3d" stroke-opacity="0.2" />
+				<polygon points="80,148 160,48 240,148" stroke="#4a3e3d" stroke-opacity="0.35" fill="none" />
+				<circle cx="160" cy="92" r="5" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'water' && (
+			<>
+				<path d="M40 120 C80 80, 120 160, 160 110 S240 60, 280 100" stroke="#e84c3d" fill="none" />
+				<path d="M40 140 C90 100, 140 150, 200 120 S260 90, 280 130" stroke="#4a3e3d" stroke-opacity="0.35" fill="none" />
+			</>
+		)
+	}
+	{
+		kind === 'inst' && (
+			<>
+				<rect x="70" y="50" width="70" height="90" stroke="#4a3e3d" stroke-opacity="0.4" />
+				<rect x="180" y="70" width="70" height="70" stroke="#4a3e3d" stroke-opacity="0.4" />
+				<line x1="140" y1="95" x2="180" y2="95" stroke="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'plan' && (
+			<>
+				<line x1="48" y1="140" x2="272" y2="140" stroke="#4a3e3d" stroke-opacity="0.25" />
+				<polyline points="48,120 100,90 150,105 210,60 272,80" stroke="#e84c3d" fill="none" />
+				<circle cx="210" cy="60" r="4" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'province' && (
+			<>
+				<circle cx="160" cy="90" r="52" stroke="#4a3e3d" stroke-opacity="0.25" />
+				<circle cx="160" cy="90" r="28" stroke="#4a3e3d" stroke-opacity="0.4" />
+				<circle cx="160" cy="90" r="5" fill="#e84c3d" />
+			</>
+		)
+	}
+	{
+		kind === 'canton' && (
+			<>
+				<rect x="90" y="40" width="50" height="90" stroke="#4a3e3d" stroke-opacity="0.35" />
+				<rect x="180" y="55" width="50" height="75" stroke="#4a3e3d" stroke-opacity="0.35" />
+				<line x1="140" y1="85" x2="180" y2="85" stroke="#e84c3d" />
+			</>
+		)
+	}
+</svg>
+
+<style>
+	.gt-cvf {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 16 / 9;
+	}
+</style>

@@ -1,0 +1,116 @@
+---
+import { identity } from '../config/identity';
+---
+
+<section class="gt-idb" aria-labelledby="gt-idb-title">
+	<div class="gt-idb__inner gt-container--wide">
+		<p class="gt-idb__micro">{identity.homeMicro}</p>
+		<div class="gt-idb__layout">
+			<div class="gt-idb__primary">
+				<h2 id="gt-idb-title">{identity.homeHeadline}</h2>
+				<p class="gt-idb__support">{identity.homeSupport}</p>
+				<a class="gt-cta gt-cta--ghost" href="/nosotros">{identity.homeCta}</a>
+			</div>
+			<ul class="gt-idb__beats">
+				{
+					identity.homeBeats.map((beat) => (
+						<li>
+							<p class="gt-idb__code">{beat.code}</p>
+							<p>{beat.text}</p>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<style>
+	.gt-idb {
+		padding: var(--gt-space-10) 0;
+		border-bottom: 1px solid var(--gt-border);
+	}
+
+	.gt-idb__micro {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-gray-400);
+		margin-bottom: var(--gt-space-5);
+	}
+
+	.gt-idb__layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+		gap: var(--gt-space-8);
+		align-items: start;
+	}
+
+	.gt-idb h2 {
+		font-size: var(--gt-fs-xl);
+		max-width: 12ch;
+		margin-bottom: var(--gt-space-4);
+	}
+
+	.gt-idb__support {
+		max-width: 36rem;
+		color: var(--gt-gray-800);
+		margin-bottom: var(--gt-space-6);
+	}
+
+	.gt-idb__beats {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: var(--gt-space-5);
+		border-left: 3px solid var(--gt-coffee);
+		padding-left: var(--gt-space-5);
+	}
+
+	.gt-idb__code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--gt-coral);
+		margin-bottom: 0.35rem;
+	}
+
+	.gt-idb__beats p:last-child {
+		color: var(--gt-gray-800);
+		max-width: 32ch;
+	}
+
+	@media (min-width: 721px) and (max-width: 1024px) {
+		.gt-idb__layout {
+			grid-template-columns: 1fr;
+			gap: var(--gt-space-6);
+		}
+
+		.gt-idb h2 {
+			max-width: 18ch;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.gt-idb__layout {
+			grid-template-columns: 1fr;
+			gap: var(--gt-space-6);
+		}
+
+		.gt-idb h2 {
+			max-width: none;
+		}
+
+		.gt-idb__beats {
+			padding-left: var(--gt-space-4);
+		}
+
+		.gt-idb__beats p:last-child {
+			max-width: none;
+		}
+	}
+</style>
