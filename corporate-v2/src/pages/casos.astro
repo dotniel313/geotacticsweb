@@ -31,10 +31,12 @@ const entries = sortCases((await getCollection('cases')).filter(isPublicCase));
 			</div>
 		</section>
 
-		<footer class="gt-page-close">\n\t\t\t<div class="gt-page-close__inner">
+		<footer class="gt-page-close">
+	\t\t<div class="gt-page-close__inner">
 			<p class="gt-page-close__text">Si tienes un problema que necesita convertirse en un sistema útil, conversemos.</p>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
-		</footer>
+		
+			</div></footer>
 	</article>
 </BaseLayout>
 
