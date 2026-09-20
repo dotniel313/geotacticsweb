@@ -3,7 +3,7 @@ id: P-SIGC
 slug: sigc
 name: SIGC
 shortName: SIGC
-summary: "Sistema Integrado para Gestión de Cartera. Organiza información nominal y financiera para seguimiento, recaudación e información de gestión. Primera instancia documentada en Pimampiro, 2018."
+summary: "Sistema Integrado para Gestión de Cartera. Organiza información nominal y financiera para seguimiento, recaudación y gestión. Su trayectoria comienza con juntas de agua en Imbabura."
 status: trayectoria
 group: lineage
 type: Producto / plataforma histórica
@@ -17,7 +17,7 @@ capabilities:
   - gobierno-y-gestion
 primaryFamily: gobierno-y-gestion
 problem: "Juntas de agua sin sistema para organizar cartera, seguimiento y recaudación."
-purpose: "Gestión de cartera: información nominal y financiera."
+purpose: "Integra información de usuarios, situación financiera, cartera y seguimiento de recaudación para convertir registros operativos en información de gestión."
 gostRelation: "GOST → SIGC → YAKU → O/T."
 relatedProducts:
   - yaku
