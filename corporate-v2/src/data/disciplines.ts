@@ -24,7 +24,7 @@ export const disciplines = [
 	{
 		id: 'dw',
 		title: 'DW / Data Mart',
-		role: 'Herencia de identidad corporativa. Una capa de datos cuando el problema la requiere.',
+		role: 'Parte de nuestra herencia tecnológica: organizar información para convertirla en una base útil para análisis y gestión.',
 		confirmed: [],
 		historical: true,
 	},
@@ -38,7 +38,7 @@ export const disciplines = [
 	{
 		id: 'olap',
 		title: 'OLAP',
-		role: 'Análisis multidimensional cuando está documentado.',
+		role: 'Análisis multidimensional para explorar información desde distintas perspectivas cuando el sistema lo requiere.',
 		confirmed: ['YAKU', 'DataSucumbíos'],
 	},
 	{
