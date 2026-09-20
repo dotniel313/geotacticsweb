@@ -12,6 +12,6 @@ cue: Lugar + experiencia
 visual: tour
 ---
 
-ExploraSucumbíos es producto propio (web y móvil), derivado conceptualmente de OrangeMap. El GADP de Sucumbíos es interlocutor potencial.
+El turismo también es un problema de descubrimiento: conectar lugares, operadores, cultura e información para que un territorio pueda ser explorado y comprendido de nuevas maneras.
 
-Ecuador Ancestral es un prototipo de etnoturismo para pueblos originarios de Sucumbíos. Desarrollo pausado.
+ExploraSucumbíos lleva esta lógica a una experiencia web y móvil orientada a la oferta turística de Sucumbíos. Ecuador Ancestral amplía la exploración hacia una ventana digital de los pueblos originarios mediante un prototipo actualmente pausado.
