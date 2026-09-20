@@ -21,10 +21,10 @@ period:
   start: "2017"
   display: "2017"
   dateStatus: publish
-summary: "Primera instancia documentada de SIGDR. Experiencia territorial en la Comuna Gualsaquí."
+summary: "Experiencia territorial en la Comuna Gualsaquí que marca el inicio de la trayectoria de SIGDR en 2017."
 problem: "Necesidad de estructurar información comunal para caracterización y gestión territorial."
-context: "Comuna Gualsaquí, cantón Otavalo, Imbabura. Año documentado: 2017."
-intervention: "Aplicación de SIGDR para estructurar información social, demográfica, productiva, geográfica y organizativa."
+context: "Comuna Gualsaquí, cantón Otavalo, Imbabura. En 2017, GeoTactics lleva SIGDR al territorio como una de sus primeras experiencias de gestión de información rural."
+intervention: "Aplicación de SIGDR para levantar y estructurar información social, demográfica, productiva, geográfica y organizativa orientada a la caracterización y gestión territorial."
 products:
   - sigdr
 methodologies:
