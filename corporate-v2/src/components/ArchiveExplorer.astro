@@ -100,7 +100,7 @@ const ctaFor = (kind: RecordKind) => {
 									hidden
 									aria-label={`${r.title}, ${r.yearLabel}`}
 								>
-									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan>
+									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan data-fan-count={fan.length}>
 										{
 											fan.length === 0 ? (
 												<div class="gt-fan__empty" aria-hidden="true">
@@ -631,8 +631,9 @@ const ctaFor = (kind: RecordKind) => {
 		background: var(--gt-gray-100);
 		transform-origin: bottom center;
 		transition:
-			transform 320ms cubic-bezier(0.2, 0.75, 0.25, 1),
-			box-shadow 320ms cubic-bezier(0.2, 0.75, 0.25, 1);
+			transform 380ms cubic-bezier(0.16, 0.8, 0.24, 1),
+			box-shadow 380ms cubic-bezier(0.16, 0.8, 0.24, 1);
+		will-change: transform;
 	}
 
 	.gt-fan--n1 .gt-fan__shot:nth-child(1) {
@@ -640,14 +641,18 @@ const ctaFor = (kind: RecordKind) => {
 		z-index: 3;
 	}
 
-	.gt-fan--n2 .gt-fan__shot:nth-child(1),
+	.gt-fan--n2 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-3deg) translateX(-5px) scale(0.97);
+		z-index: 1;
+	}
+
 	.gt-fan--n3 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-5deg) translateX(-8px) scale(0.92);
+		transform: rotate(-4deg) translateX(-7px) scale(0.94);
 		z-index: 1;
 	}
 
 	.gt-fan--n3 .gt-fan__shot:nth-child(2) {
-		transform: rotate(5deg) translateX(10px) scale(0.95);
+		transform: rotate(4deg) translateX(8px) scale(0.96);
 		z-index: 2;
 	}
 
@@ -665,27 +670,28 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(1),
 	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-14deg) translateX(-28px) scale(0.9);
+		transform: rotate(-12deg) translateX(-34px) translateY(3px) scale(0.92);
 	}
 
 	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(2),
 	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(2) {
-		transform: rotate(14deg) translateX(28px) scale(0.9);
+		transform: rotate(11deg) translateX(34px) translateY(-2px) scale(0.94);
 	}
 
 	.gt-hit:hover .gt-fan--n2 .gt-fan__shot:nth-child(1),
 	.gt-hit:focus-within .gt-fan--n2 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-11deg) translateX(-22px) translateY(-3px) scale(0.94);
+		transform: rotate(-9deg) translateX(-26px) translateY(2px) scale(0.95);
 	}
 
 	.gt-hit:hover .gt-fan--n2 .gt-fan__shot:nth-child(2),
 	.gt-hit:focus-within .gt-fan--n2 .gt-fan__shot:nth-child(2) {
-		transform: rotate(5deg) translateX(16px) translateY(-5px) scale(1.01);
+		transform: rotate(7deg) translateX(24px) translateY(-5px) scale(0.99);
 	}
 
 	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(3),
 	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(3) {
-		transform: translateY(-7px) scale(1.01);
+		transform: translateY(-9px) scale(1.015);
+		box-shadow: 0 15px 28px color-mix(in srgb, var(--gt-gray-950) 18%, transparent);
 	}
 
 	.gt-hit__kind {
