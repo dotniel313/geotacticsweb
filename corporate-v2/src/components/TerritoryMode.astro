@@ -86,7 +86,13 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 
 <style>
 	.gt-tm {
+		/* Territory is a full-bleed working surface; it owns its own closing rhythm.
+		   This prevents the global footer margin from becoming an empty gray band. */
 		padding-bottom: 0;
+	}
+
+	.gt-tm + .gt-foot {
+		margin-top: 0;
 	}
 
 	.gt-tm__head {
