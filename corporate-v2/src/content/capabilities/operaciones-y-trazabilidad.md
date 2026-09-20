@@ -12,6 +12,6 @@ cue: Flujo + registro
 visual: ops
 ---
 
-Cuando el problema es un despacho, un ticket o una cadena de registros, la familia no es «móvil» ni «mina»: es trazabilidad.
+Hay operaciones donde cada movimiento importa: qué salió, cuándo, cuánto, hacia dónde y cuándo fue recibido. En esos casos construimos sistemas que conectan los puntos del proceso y dejan una trazabilidad comprensible de principio a fin.
 
-Materialización pública: GUANTA — trazabilidad digital punto a punto para despacho y recepción de materiales. En desarrollo.
+GUANTA aplica esta lógica al despacho y recepción de materiales mediante registro operativo y tickets digitales con QR.
