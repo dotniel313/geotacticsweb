@@ -21,9 +21,9 @@ period:
   end: "2019"
   display: "2018–2019"
   dateStatus: publish
-summary: "Experiencia institucional en EMAPAI. SIGC (2018) y YAKU (hacia 2019) forman parte de la misma trayectoria de cliente, sin reducir YAKU a lectura de medidores."
-context: "Empresa pública municipal de agua potable y alcantarillado de Ibarra. Fuentes distinguen una modernización comercial (SIGC, 2018) y una plataforma de gestión/OLAP (YAKU, ~2019)."
-intervention: "YAKU orienta planificación, ejecución, seguimiento e indicadores. Funciones documentadas incluyen planificación, actividades, POA, indicadores, seguimiento y control. Visualizador OLAP documentado."
+summary: "Trayectoria de modernización y gestión institucional en EMAPAI mediante SIGC y posteriormente YAKU, entre 2018 y 2019."
+context: "Empresa pública municipal de agua potable y alcantarillado de Ibarra. La experiencia comienza con SIGC en 2018 y evoluciona hacia YAKU, ampliando el foco desde la gestión comercial hacia planificación, seguimiento y análisis institucional."
+intervention: "YAKU incorpora planificación, actividades, POA, indicadores, seguimiento y control, junto con capacidades de análisis multidimensional para explorar información operativa y comercial."
 products:
   - sigc
   - yaku
@@ -35,7 +35,7 @@ phases:
   - id: sigc-2018
     title: SIGC
     period: "2018"
-    summary: "Modernización comercial / aplicación móvil y web. Relación exacta con YAKU: no unificada en fuentes."
+    summary: "Modernización comercial y gestión de información mediante superficies web y móvil."
   - id: yaku-2019
     title: YAKU
     period: "~2019"
