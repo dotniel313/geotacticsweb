@@ -12,8 +12,6 @@ cue: Territorio + información
 visual: territory
 ---
 
-Esta familia agrupa problemas donde el territorio es el contexto de captura, análisis y decisión.
+Comprender un territorio exige relacionar personas, lugares, información y procesos. Esta familia convierte datos dispersos y levantamientos de campo en una lectura territorial útil para la gestión y la decisión.
 
-Cuando hay dimensión espacial, las herramientas geográficas ayudan a registrar y comprender el territorio. Business Intelligence participa cuando hay que explotar indicadores —como en DataSucumbíos y el monitoreo del PDOT.
-
-Materializaciones: SIGDR, CAPTURE, DataSucumbíos. Casos: Gualsaquí, Vacas Galindo, Dayuma–Inés Arango, PDOT Sucumbíos.
+Según el problema, combinamos captura de información, GIS, análisis e indicadores. SIGDR, CAPTURE y DataSucumbíos muestran distintas etapas de esta experiencia, aplicada también en Gualsaquí, Vacas Galindo, Dayuma–Inés Arango y el trabajo territorial vinculado al PDOT de Sucumbíos.
