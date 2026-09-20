@@ -17,7 +17,7 @@ capabilities:
   - gobierno-y-gestion
 primaryFamily: gobierno-y-gestion
 problem: "Planes institucionales sin sistema de planificación, seguimiento y control."
-purpose: "Planificación, seguimiento y control (POA/PAC). E-GPS fue una extensión móvil histórica, no un sucesor."
+purpose: "Planificación, seguimiento y control de instrumentos como POA y PAC. La experiencia se extendió también a una superficie móvil de interacción ciudadana mediante E-GPS."
 gostRelation: "GOST → SIGC → YAKU → O/T."
 relatedProducts:
   - yaku
