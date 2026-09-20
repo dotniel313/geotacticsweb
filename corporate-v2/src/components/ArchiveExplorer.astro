@@ -282,6 +282,15 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-ax__files li {
 		min-width: 0;
+		position: relative;
+	}
+	@media (min-width: 1025px) {
+		.gt-ax__files li:nth-child(1) { transform: translate(0.35rem, 0.7rem) rotate(-1.1deg); z-index: 2; }
+		.gt-ax__files li:nth-child(2) { transform: translate(-0.15rem, -0.45rem) rotate(0.8deg); z-index: 1; }
+		.gt-ax__files li:nth-child(3) { transform: translate(0.55rem, 0.25rem) rotate(-0.45deg); z-index: 3; }
+		.gt-ax__files li:nth-child(4) { transform: translate(-0.35rem, -0.15rem) rotate(0.65deg); z-index: 1; }
+		.gt-ax__files li:nth-child(5) { transform: translate(0.25rem, 0.55rem) rotate(-0.75deg); z-index: 2; }
+		.gt-ax__files li:nth-child(6) { transform: translate(-0.45rem, -0.35rem) rotate(1deg); z-index: 1; }
 	}
 
 	.gt-file {
