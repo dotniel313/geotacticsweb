@@ -10,21 +10,21 @@ export const identity = {
 		'Empresa ecuatoriana de tecnología. Las tecnologías cambiaron; la idea central no: construimos sistemas alrededor de problemas reales. Origen empresarial en Ibarra. Territorio de evolución y base actual en Nueva Loja, Sucumbíos. Identidad: Ecuador. Proyección nacional e internacional.',
 	whoHeadline: 'Quiénes somos',
 	whoBody: [
-		'GeoTactics es una empresa ecuatoriana de tecnología. No es exclusivamente una empresa GIS, ni BI, ni GovTech, ni de inteligencia territorial, ni amazónica, ni una fábrica de software.',
-		'La concepción estuvo vinculada con fuerza a Business Intelligence y a la identidad histórica Data / Warehouse - Mart. Después se incorporaron otras disciplinas y tipos de sistemas. La continuidad conceptual de esa evolución es GOST.',
-		'Hay una sola empresa: cambia el dominio; se mantiene la forma de estructurar el problema.',
+		'GeoTactics es una empresa ecuatoriana de tecnología que construye sistemas alrededor de problemas reales. Integramos información, territorio, procesos y tecnología para comprender mejor, gestionar mejor y tomar mejores decisiones.',
+		'Business Intelligence y la identidad histórica Data / Warehouse - Mart forman parte de nuestro origen tecnológico. Con cada proyecto incorporamos nuevas disciplinas, herramientas y tipos de sistemas. GOST mantiene la continuidad conceptual de esa evolución.',
+		'El dominio cambia; la forma de comprender y estructurar el problema permanece.',
 	],
 	purposeLabel: 'Propósito',
 	purposeStatus: 'OWNER_APPROVED' as const,
 	purpose: 'Hacer que la tecnología ayude a las organizaciones a funcionar mejor y a las personas a vivir mejor.',
 	historyHeadline: 'Historia',
 	historyLead:
-		'El origen de la idea, la concepción de GOST, las materializaciones tecnológicas y la historia societaria son capas distintas. GeoTactics no se reduce a una sola fecha.',
+		'Una trayectoria que comienza con un problema de gestión, evoluciona hacia una forma propia de estructurarlo y se materializa en sistemas cada vez más diversos.',
 	historyStages: [
 		{
 			code: '2007',
 			title: 'Un problema institucional',
-			text: 'Daniel Orellana vuelve a Ecuador después de su etapa universitaria en Chile y trabaja como Director Administrativo del GADP de Sucumbíos. Encuentra procesos poco documentados, ausencia de metas claras, falta de indicadores, discrecionalidad, débil planificación y limitada capacidad de evaluación. Esa experiencia origina la búsqueda de una metodología para organizar, medir y comprender mejor las organizaciones y el territorio.',
+			text: 'Al volver a Ecuador después de su etapa universitaria en Chile, Daniel Orellana trabaja en la administración del GADP de Sucumbíos. La necesidad de organizar procesos, establecer metas e indicadores y fortalecer la planificación y evaluación abre la pregunta que dará origen a la forma de trabajo de GeoTactics.',
 		},
 		{
 			code: '07–08',
@@ -34,7 +34,7 @@ export const identity = {
 		{
 			code: '2017',
 			title: 'Primera materialización documentada',
-			text: 'SIGDR, Sistema Integrado de Gestión Para Desarrollo Rural. Primera materialización tecnológica actualmente documentada. La idea había comenzado una década antes; el sistema aparece cuando hay evidencia localizable.',
+			text: 'SIGDR —Sistema Integrado de Gestión Para Desarrollo Rural— convierte esa forma de pensar en una solución tecnológica aplicada al territorio rural.',
 		},
 		{
 			code: 'IB',
@@ -44,7 +44,7 @@ export const identity = {
 		{
 			code: 'NL',
 			title: 'Nueva Loja',
-			text: 'Después de 2020 la base de operación se traslada a Nueva Loja, Sucumbíos. El año exacto del traslado no está documentado. Sucumbíos es territorio fundamental de evolución, no el reducto de la marca: GeoTactics es ecuatoriana.',
+			text: 'Nueva Loja, Sucumbíos, se convierte en la base actual y en un territorio fundamental para la evolución de GeoTactics y sus sistemas.',
 		},
 		{
 			code: 'EV',
@@ -61,7 +61,7 @@ export const identity = {
 	vision:
 		'Creemos en un futuro donde la tecnología no complique la gestión, sino que la haga más inteligente, transparente y útil para las personas.\n\nQueremos que GeoTactics continúe evolucionando junto a los problemas que intenta resolver, incorporando nuevas tecnologías sin perder aquello que le dio origen: entender primero la realidad para después construir la solución.',
 	principlesHeadline: 'Cómo pensamos',
-	principlesLead: 'Hábitos de trabajo. No son valores de campaña.',
+	principlesLead: 'Principios que orientan la manera en que convertimos un problema en un sistema.',
 	principles: [
 		{
 			code: '01',
@@ -81,17 +81,17 @@ export const identity = {
 		{
 			code: '04',
 			title: 'BI como fundamento histórico y disciplina actual',
-			text: 'Business Intelligence no se presenta como actividad abandonada. Es herencia corporativa y capa vigente donde está confirmada (DataSucumbíos, monitoreo PDOT).',
+			text: 'Business Intelligence forma parte de nuestra herencia corporativa y continúa como disciplina de análisis, seguimiento y decisión en sistemas que la requieren.',
 		},
 		{
 			code: '05',
 			title: 'Tecnología con propósito',
-			text: 'Web, móvil, GIS, OLAP o almacenes de datos son capas. Se usan si estructuran el problema.',
+			text: 'Web, móvil, GIS, OLAP o arquitecturas de datos se combinan de acuerdo con las necesidades de cada sistema.',
 		},
 		{
 			code: '06',
 			title: 'Evolución del conocimiento',
-			text: 'Los sistemas posteriores reutilizan experiencia metodológica. La siguiente solución hereda oficio, no necesariamente el mismo código.',
+			text: 'Cada proyecto amplía el conocimiento de la empresa. Las nuevas soluciones heredan experiencia y método mientras incorporan las tecnologías que necesitan.',
 		},
 	],
 	gostHeadline: 'GOST · eje de continuidad',
@@ -99,7 +99,7 @@ export const identity = {
 	gostBody: [
 		'GOST es el eje transversal de los desarrollos GeoTactics: metodología, marco conceptual y forma de estructurar problemas. Todos los desarrollos posteriores lo utilizan de manera ontológica.',
 		'No es software. No compite con BI, GIS, OLAP, Data Warehouse / Data Mart, móvil ni web. Esas son disciplinas o capas que se combinan cuando el problema lo requiere.',
-		'Cada desarrollo usa GOST como forma de pensar el problema. El ciclo, la arquitectura y las disciplinas varían según el caso.',
+		'Cada desarrollo usa GOST como forma de pensar el problema, mientras el ciclo, la arquitectura y las disciplinas se adaptan a cada caso.',
 	],
 	gostCta: 'Cómo se materializa',
 	teamHeadline: 'Fundadores y dirección',
@@ -107,7 +107,7 @@ export const identity = {
 		'Daniel Orellana dirige la empresa hoy. Luis Padilla, Germán Flores y Christian Montalvo formaron el núcleo fundador. GeoTactics trabaja con especialistas contratados según el proyecto.',
 	presenceHeadline: 'Origen y presencia',
 	presenceLead:
-		'Ibarra es el origen empresarial. Nueva Loja es la base posterior y actual. Ecuador es la identidad. Territorio muestra implementaciones con coordenadas verificadas.',
+		'Ibarra marca el origen empresarial. Nueva Loja, Sucumbíos, es la base actual y un territorio clave en nuestra evolución. Ecuador es nuestra identidad y el punto de partida para una proyección más amplia.',
 	presenceTeaser: 'Explorar el archivo territorial',
 	diversificationHeadline: 'Evolución y nuevos problemas',
 	diversification:
@@ -116,7 +116,7 @@ export const identity = {
 	homeMicro: 'GT / EMPRESA',
 	homeHeadline: 'Quiénes somos',
 	homeSupport:
-		'Empresa ecuatoriana de tecnología. Origen en Ibarra. Base en Nueva Loja. Sistemas alrededor de problemas reales — no una fábrica genérica ni una consultora de mapas.',
+		'Empresa ecuatoriana de tecnología. Origen en Ibarra, base en Nueva Loja y una trayectoria construida alrededor de problemas reales.',
 	homeBeats: [
 		{ code: 'IDEA', text: '2007: un problema de organización institucional en Sucumbíos. 2007–2008: GOST.' },
 		{ code: 'SISTEMA', text: '2017: SIGDR, primera materialización tecnológica documentada.' },
