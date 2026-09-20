@@ -10,6 +10,7 @@ export type TerritoryPin = {
 	kindLabel: string;
 	family: FamilyId;
 	familyTitle: string;
+	color: string;
 	territory: string;
 	note: string;
 	lat: number;
@@ -52,7 +53,7 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 	for (const p of pins) {
 		const icon = L.divIcon({
 			className: 'gt-pin',
-			html: '<span></span>',
+			html: `<span style="--gt-pin-family:${p.color}"></span>`,
 			iconSize: [12, 12],
 			iconAnchor: [6, 6],
 		});
