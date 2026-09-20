@@ -1,5 +1,5 @@
 ---
-import { familyById } from '../data/taxonomy';
+import { families, familyById } from '../data/taxonomy';
 import { mappableRecords, type RecordKind } from '../data/records';
 import { site } from '../config/site';
 import type { TerritoryPin } from '../scripts/territory-mode';
@@ -33,11 +33,31 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 
 <section class="gt-tm" aria-labelledby="gt-tm-h">
 	<header class="gt-tm__head gt-container--wide">
-		<p class="gt-tm__micro">GT / TERRITORIO</p>
-		<h1 id="gt-tm-h">Territorio</h1>
+		<p class="gt-tm__micro">GT / OPERACIÓN TERRITORIAL</p>
+		<h1 id="gt-tm-h">Operación territorial</h1>
 		<p class="gt-tm__lead">
-			Proyectos e implementaciones de GeoTactics vistos desde el territorio.
+			Una lectura espacial de la trayectoria: proyectos e implementaciones vistos desde el territorio.
 		</p>
+		<div class="gt-tm__filters" aria-label="Filtrar mapa por familia">
+			<button type="button" class="gt-tm__filter is-active" data-territory-all aria-pressed="true">
+				<span class="gt-tm__swatch gt-tm__swatch--all"></span>Todos
+			</button>
+			{families.map((family) => {
+				const count = pins.filter((pin) => pin.family === family.id).length;
+				return (
+					<button
+						type="button"
+						class="gt-tm__filter is-active"
+						data-territory-family={family.id}
+						aria-pressed="true"
+						disabled={count === 0}
+						style={`--gt-map-family:${family.color}`}
+					>
+						<span class="gt-tm__swatch"></span>{family.title}<em>{count}</em>
+					</button>
+				);
+			})}
+		</div>
 	</header>
 	<div class="gt-tm__frame">
 		<div class="gt-tm__canvas" id="gt-tm-map" role="application" aria-label="Mapa territorial GeoTactics"></div>
@@ -121,6 +141,41 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 		text-decoration: none;
 		border-bottom: 1px solid var(--gt-coral);
 	}
+
+
+	.gt-tm__filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.45rem 0.55rem;
+		margin-top: var(--gt-space-5);
+		max-width: 64rem;
+	}
+	.gt-tm__filter {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		min-height: 2.15rem;
+		padding: 0.35rem 0.6rem;
+		border: 1px solid var(--gt-border);
+		background: var(--gt-white);
+		color: var(--gt-gray-800);
+		font-size: 0.72rem;
+		cursor: pointer;
+	}
+	.gt-tm__filter em {
+		font-style: normal;
+		color: var(--gt-gray-400);
+		font-family: ui-monospace, Menlo, monospace;
+	}
+	.gt-tm__filter:not(.is-active) { opacity: 0.42; }
+	.gt-tm__filter:disabled { opacity: 0.25; cursor: default; }
+	.gt-tm__swatch {
+		width: 0.58rem;
+		height: 0.58rem;
+		background: var(--gt-map-family, var(--gt-coral));
+		display: inline-block;
+	}
+	.gt-tm__swatch--all { background: var(--gt-gray-950); }
 
 	.gt-tm__frame {
 		border-block: 1px solid var(--gt-border);
