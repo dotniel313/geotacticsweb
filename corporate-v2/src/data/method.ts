@@ -29,7 +29,7 @@ export const gost = {
 	body: [
 		'GOST —Gestión Operativa de Sistemas Territoriales— es la forma en que GeoTactics organiza un problema antes de elegir la tecnología. El dominio cambia; esa forma de pensar se mantiene.',
 		'El nombre surgió entre 2007 y 2008. Se inspiró intencionalmente en «ghost»: algo cuyos efectos podían percibirse aunque el sistema que los producía no fuera visible.',
-		'No es un software, ni un producto de catálogo, ni BI, GIS, DW u OLAP. Esas son disciplinas o capas que se combinan cuando el problema lo requiere. Cada desarrollo recorre el ciclo según el caso.',
+		'GOST opera por encima de las herramientas: BI, GIS, arquitecturas de datos, OLAP, web o móvil se combinan de acuerdo con la naturaleza del problema. Cada desarrollo recorre el ciclo de una manera propia.',
 	],
 	conception: {
 		year: '2007–2008',
@@ -40,19 +40,19 @@ export const gost = {
 	firstMaterialization: {
 		year: '2017',
 		status: 'documented',
-		note: 'Primera materialización localizada: SIGDR.',
+		note: 'SIGDR · Sistema Integrado de Gestión Para Desarrollo Rural.',
 	},
 } as const;
 
 export const adn = {
 	headline: 'ADN GeoTactics',
-	lead: 'Hábitos que se repiten cuando un problema se convierte en sistema.',
+	lead: 'Principios que se repiten cuando un problema se convierte en sistema y un sistema genera nuevo aprendizaje.',
 	items: [
 		{ code: '01', title: 'Problema real', text: 'La tecnología se elige después de estructurar el problema.' },
-		{ code: '02', title: 'GOST', text: 'Eje transversal. No es el producto.' },
-		{ code: '03', title: 'Disciplinas', text: 'BI, GIS, OLAP, móvil, web: capas, cuando hacen falta.' },
+		{ code: '02', title: 'GOST', text: 'Eje transversal para comprender, ordenar y estructurar el problema.' },
+		{ code: '03', title: 'Disciplinas', text: 'BI, GIS, datos, OLAP, móvil y web se combinan según las necesidades del sistema.' },
 		{ code: '04', title: 'Herencia BI', text: 'Data / Warehouse - Mart forma parte de la identidad histórica de la empresa.' },
 		{ code: '05', title: 'Implementación', text: 'El sistema se prueba en un territorio, una institución o un mercado.' },
-		{ code: '06', title: 'Aprendizaje', text: 'La siguiente solución hereda método, no necesariamente código.' },
+		{ code: '06', title: 'Aprendizaje', text: 'Cada solución amplía el conocimiento que alimenta los desarrollos siguientes.' },
 	],
 } as const;
