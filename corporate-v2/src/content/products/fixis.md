@@ -14,9 +14,9 @@ homeOrder: 3
 capabilities:
   - mercados-y-servicios
 primaryFamily: mercados-y-servicios
-origin: "Observación en zonas periurbanas de Quito (Valle de los Chillos, Carapungo, Chillogallo). Quito no se mapea como implementación operacional."
+origin: "Nace de observar en zonas periurbanas de Quito a trabajadores con oficios disponibles y una demanda de servicios que no siempre logra encontrarlos de forma estructurada."
 problem: "Oferta de oficios visible en espera, sin información estructurada para conectarla con demanda."
-purpose: "Base organizada de profesionales/oficios y matching. Fixis / Fixis PRO según arquitectura."
+purpose: "Organiza profesionales y oficios y conecta la solicitud de un servicio con quienes pueden atenderla. Fixis articula la experiencia del cliente y Fixis PRO la del profesional."
 gostRelation: "Fundamento ontológico GOST."
 assetStatus: missing
 url: https://fixis.geotactics.com.ec
