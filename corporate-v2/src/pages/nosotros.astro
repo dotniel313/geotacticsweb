@@ -12,8 +12,6 @@ const offices = (await getCollection('offices'))
 	.filter((e) => e.data.public)
 	.sort((a, b) => a.data.order - b.data.order);
 
-const originCoordinates = '0.351731, −78.118524';
-
 const seoTitle = 'Nosotros | GeoTactics';
 const seoDescription =
 	'Empresa ecuatoriana de tecnología. Origen en Ibarra. Base en Nueva Loja, Sucumbíos. Sistemas alrededor de problemas reales.';
@@ -34,7 +32,6 @@ const seoDescription =
 					</p>
 				</div>
 				<aside class="gt-ns__hero-aside" aria-label="Origen y base">
-					<p class="gt-ns__coord">{site.coordinates}</p>
 					<p>
 						<span class="gt-ns__k">ORIGEN</span>
 						Ibarra, Ecuador
@@ -190,9 +187,9 @@ const seoDescription =
 								<span> · {office.data.region}</span>
 							</h3>
 							<p>{office.data.note}</p>
-							<p class="gt-ns__coord gt-ns__coord--inline">
-								{office.data.kind === 'origin' ? originCoordinates : office.data.coordinates}
-							</p>
+							{office.data.kind === 'current' && office.data.coordinates ? (
+								<p class="gt-ns__coord gt-ns__coord--inline">{office.data.coordinates}</p>
+							) : null}
 						</article>
 					))
 				}
