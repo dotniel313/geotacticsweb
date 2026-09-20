@@ -298,9 +298,15 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 		border: 1px solid var(--gt-border);
 	}
 
+	.gt-cd__fan {
+		display: grid;
+	}
+
 	.gt-cd__fan img {
 		width: 100%;
-		height: auto;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		object-position: center;
 		display: block;
 	}
 
