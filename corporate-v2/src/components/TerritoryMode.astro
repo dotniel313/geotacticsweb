@@ -69,27 +69,6 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 			© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
 		</p>
 	</div>
-	<div class="gt-tm__alt gt-container--wide">
-		<h2>Registros con coordenadas</h2>
-		<ul>
-			{
-				pins.map((p) => (
-					<li>
-						<a href={`/archivo?familia=${p.family}&hito=${p.recordSlug}`}>
-							<span>{p.territory}</span>
-							<strong>{p.title}</strong>
-							<em>{p.yearLabel}</em>
-						</a>
-						{p.detailHref && (
-							<a class="gt-tm__d" href={p.detailHref}>
-								{p.kindLabel}
-							</a>
-						)}
-					</li>
-				))
-			}
-		</ul>
-	</div>
 </section>
 
 <script type="application/json" data-gt-territory set:html={JSON.stringify({ pins, hq })} />
@@ -179,7 +158,7 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 		background: var(--gt-map-family, var(--gt-coral));
 		display: inline-block;
 	}
-	.gt-tm__swatch--all { background: var(--gt-gray-950); }
+	.gt-tm__swatch--all { background: var(--gt-white); }
 
 	.gt-tm__frame {
 		border-block: 1px solid var(--gt-border);
@@ -203,72 +182,23 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 		padding: 0.45rem 0.75rem;
 	}
 
-	.gt-tm__alt {
-		padding-top: var(--gt-space-8);
-	}
-
-	.gt-tm__alt h2 {
-		font-size: 0.78rem;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		margin-bottom: var(--gt-space-4);
-	}
-
-	.gt-tm__alt ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		border-top: 1px solid var(--gt-border);
-	}
-
-	.gt-tm__alt li {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem 1rem;
-		align-items: center;
-		border-bottom: 1px solid var(--gt-border);
-		min-height: var(--gt-touch);
-	}
-
-	.gt-tm__alt a {
-		text-decoration: none;
-		display: grid;
-		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr) auto;
-		gap: 0.75rem;
-		flex: 1;
-		padding: 0.85rem 0;
-		min-width: 0;
-		align-items: center;
-	}
-
-	.gt-tm__alt span {
-		font-size: 0.72rem;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--gt-coral);
-	}
-
-	.gt-tm__d {
-		flex: 0 0 auto !important;
-		display: inline !important;
-		font-size: 0.72rem;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--gt-gray-800);
-	}
-
 	:global(.gt-pin) {
 		background: transparent;
 	}
 
 	:global(.gt-pin span) {
 		display: block;
-		width: 12px;
-		height: 12px;
+		width: 15px;
+		height: 15px;
 		border-radius: 50%;
 		background: var(--gt-pin-family, var(--gt-gray-800));
 		border: 2px solid var(--gt-white);
-		box-shadow: 0 1px 4px color-mix(in srgb, var(--gt-gray-950) 25%, transparent);
+		box-shadow: 0 2px 8px color-mix(in srgb, var(--gt-gray-950) 28%, transparent);
+		transition: transform var(--gt-motion) var(--gt-ease), box-shadow var(--gt-motion) var(--gt-ease);
+	}
+	:global(.gt-pin:hover span) {
+		transform: scale(1.28);
+		box-shadow: 0 3px 12px color-mix(in srgb, var(--gt-gray-950) 34%, transparent);
 	}
 
 	:global(.gt-pin--hq span) {
@@ -279,11 +209,12 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 	}
 
 	:global(.gt-tpopwrap .leaflet-popup-content-wrapper) {
-		background: var(--gt-gray-950);
-		color: #f4f7f6;
-		border-radius: 2px;
-		box-shadow: none;
-		padding: 0.35rem 0.2rem;
+		background: var(--gt-white);
+		color: var(--gt-gray-950);
+		border: 1px solid color-mix(in srgb, var(--gt-popup-family, var(--gt-coral)) 55%, var(--gt-border));
+		border-radius: 3px;
+		box-shadow: 0 12px 32px color-mix(in srgb, var(--gt-gray-950) 18%, transparent);
+		padding: 0;
 	}
 
 	:global(.gt-tpopwrap .leaflet-popup-tip) {
@@ -292,8 +223,11 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 
 	:global(.gt-tpop) {
 		font-size: 0.82rem;
-		line-height: 1.4;
-		min-width: 12rem;
+		line-height: 1.45;
+		min-width: 15rem;
+		max-width: 18rem;
+		border-top: 4px solid var(--gt-popup-family, var(--gt-coral));
+		padding: 0.9rem 1rem 0.85rem;
 	}
 
 	:global(.gt-tpop p) {
@@ -305,7 +239,7 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		font-size: 0.62rem;
-		color: #e84c3d;
+		color: var(--gt-popup-family, var(--gt-coral));
 	}
 
 	:global(.gt-tpop__t) {
@@ -313,7 +247,7 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 	}
 
 	:global(.gt-tpop__n) {
-		color: #c5c9cc;
+		color: var(--gt-gray-600);
 		font-size: 0.75rem;
 	}
 
@@ -325,18 +259,12 @@ const hq = { lat: 0.091, lng: -76.89, label: `GeoTactics · ${site.originLine}` 
 	}
 
 	:global(.gt-tpop__a) {
-		color: #e84c3d;
+		color: var(--gt-popup-family, var(--gt-coral));
 		text-decoration: none;
-		border-bottom: 1px solid #e84c3d;
+		border-bottom: 1px solid currentColor;
 		font-size: 0.72rem;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 	}
 
-	@media (max-width: 720px) {
-		.gt-tm__alt a {
-			grid-template-columns: 1fr;
-			gap: 0.2rem;
-		}
-	}
 </style>
