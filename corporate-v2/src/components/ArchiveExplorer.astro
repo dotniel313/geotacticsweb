@@ -551,7 +551,7 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-hit__axis {
 		position: relative;
-		width: 100%;
+		width: calc(100% + clamp(4.5rem, 7vw, 7rem));
 		height: 1.15rem;
 		margin: 0 0 0.85rem;
 		overflow: visible;
@@ -573,7 +573,7 @@ const ctaFor = (kind: RecordKind) => {
 	.gt-hit__wire {
 		position: absolute;
 		left: 0.36rem;
-		right: calc(-1 * clamp(4.5rem, 7vw, 7rem));
+		right: 0;
 		top: 50%;
 		height: 2px;
 		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
@@ -583,9 +583,7 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-hit.is-last .gt-hit__wire {
-		right: auto;
-		width: 0;
-		display: none;
+		right: clamp(4.5rem, 7vw, 7rem);
 	}
 
 	.gt-fan {
