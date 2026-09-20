@@ -28,6 +28,8 @@ const liveLinks = c.externalLinks.filter((l) => l.status === 'live');
 const period = periodLabel(entry);
 const place = placeLabel(entry);
 const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
+const coordinates = rec?.coordinates ?? [];
+const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 ---
 
 <BaseLayout title={c.seoTitle} description={c.seoDescription} noindex={false}>
@@ -73,6 +75,21 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 					<div>
 						<dt>Organización</dt>
 						<dd>{c.client}</dd>
+					</div>
+				)
+			}
+			{
+				coordinates.length > 0 && (
+					<div class="gt-cd__geo">
+						<dt>Coordenadas</dt>
+						<dd>
+							{coordinates.map((coordinate) => (
+								<span>
+									{coordinate.label && <b>{coordinate.label}</b>}
+									<code>{formatCoord(coordinate.lat)}, {formatCoord(coordinate.lng)}</code>
+								</span>
+							))}
+						</dd>
 					</div>
 				)
 			}
@@ -289,7 +306,7 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 
 	.gt-cd__facts {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 		gap: var(--gt-space-6);
 		margin: 0 auto;
 		padding: var(--gt-space-8) var(--gt-gutter-x);
@@ -307,6 +324,34 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 	.gt-cd__facts dd {
 		margin: 0;
 		font-weight: 600;
+	}
+
+	.gt-cd__geo dd {
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.gt-cd__geo span {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.65rem;
+		align-items: baseline;
+	}
+
+	.gt-cd__geo b {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-cd__geo code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.76rem;
+		letter-spacing: 0.08em;
+		color: var(--gt-coral);
+		background: transparent;
+		padding: 0;
 	}
 
 	.gt-cd__block {
