@@ -22,10 +22,10 @@ period:
   start: "2022"
   display: "2022"
   dateStatus: publish
-summary: "Caso territorial. SIGDR y CAPTURE en el proyecto técnico de cantonización de Dayuma e Inés Arango (2022)."
+summary: "Levantamiento y estructuración de información territorial para el proyecto técnico de cantonización de Dayuma e Inés Arango, en 2022."
 problem: "Necesidad de información estructurada para un proyecto técnico de cantonización."
-context: "Parroquias Dayuma e Inés Arango, provincia de Orellana. Año 2022. Un solo caso: SIGDR y CAPTURE en el proyecto técnico de cantonización."
-intervention: "Levantamiento, sistematización y estructuración del proyecto técnico. CAPTURE participa como componente de SIGDR."
+context: "Parroquias Dayuma e Inés Arango, provincia de Orellana. En 2022 se desarrolla un trabajo conjunto de levantamiento territorial y estructuración de información para sustentar técnicamente el proyecto de cantonización."
+intervention: "Levantamiento de información en campo, sistematización territorial y estructuración del proyecto técnico, utilizando CAPTURE como componente de la experiencia SIGDR."
 products:
   - sigdr
 components:
@@ -40,7 +40,7 @@ phases:
     summary: "Captura y sistematización de información para el proyecto."
   - id: proyecto
     title: Estructuración del proyecto
-    summary: "Elaboración del proyecto técnico de creación del cantón."
+    summary: "Elaboración y estructuración del proyecto técnico de cantonización."
 gallery:
   - id: wix-dayuma-2022
     caption: Galería Dayuma (Wix)
