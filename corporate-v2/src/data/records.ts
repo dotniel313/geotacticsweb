@@ -44,7 +44,9 @@ export type GeoTacticsRecord = {
 		lng: number;
 		status: 'confirmed' | 'verified_source' | 'historical_reference';
 		note: string;
-	};
+		label?: string;
+	}[];
+
 	problem: string;
 	solution: string;
 	gostRelation: string;
@@ -111,12 +113,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-GUAL',
 		slug: 'gualsaqui',
-		coordinates: {
+		coordinates: [{
 			lat: 0.2546,
 			lng: -78.2631,
 			status: 'historical_reference',
 			note: 'Referencia cartográfica del mapa corporativo histórico.',
-		},
+		}],
 		title: 'Gualsaquí',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -144,12 +146,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-VG',
 		slug: 'vacas-galindo',
-		coordinates: {
+		coordinates: [{
 			lat: 0.2285,
 			lng: -78.6042,
 			status: 'historical_reference',
 			note: 'Referencia cartográfica del mapa corporativo histórico.',
-		},
+		}],
 		title: 'Vacas Galindo',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -204,12 +206,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-PIMA',
 		slug: 'pimampiro',
-		coordinates: {
+		coordinates: [{
 			lat: 0.3923,
 			lng: -77.9405,
 			status: 'historical_reference',
 			note: 'Referencia cartográfica del mapa corporativo histórico.',
-		},
+		}],
 		title: 'Pimampiro (JAAPP)',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
@@ -237,12 +239,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-LV',
 		slug: 'la-victoria',
-		coordinates: {
+		coordinates: [{
 			lat: 0.3315,
 			lng: -78.2148,
 			status: 'historical_reference',
 			note: 'Referencia cartográfica del mapa corporativo histórico.',
-		},
+		}],
 		title: 'La Victoria (JALV)',
 		kind: 'experience',
 		primaryFamily: 'gobierno-y-gestion',
@@ -297,12 +299,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EMAPAI',
 		slug: 'emapai-yaku',
-		coordinates: {
+		coordinates: [{
 			lat: 0.351,
 			lng: -78.1215,
 			status: 'historical_reference',
 			note: 'Referencia cartográfica de Ibarra usada en el mapa corporativo histórico.',
-		},
+		}],
 		title: 'EMAPAI',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
@@ -330,12 +332,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-MADA',
 		slug: 'madaradio',
-		coordinates: {
+		coordinates: [{
 			lat: 0.095,
 			lng: -76.888,
 			status: 'historical_reference',
 			note: 'Referencia de Nueva Loja usada en el mapa corporativo histórico.'
-		},
+		}],
 		title: 'MadaRadio',
 		kind: 'product',
 		primaryFamily: 'sociedad-y-participacion',
@@ -365,6 +367,22 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-DAYUMA',
 		slug: 'dayuma-ines-arango',
+		coordinates: [
+			{
+				lat: -0.6548,
+				lng: -76.8839,
+				status: 'historical_reference',
+				label: 'Dayuma',
+				note: 'Parroquia Dayuma · levantamiento territorial.',
+			},
+			{
+				lat: -0.5521,
+				lng: -76.95,
+				status: 'historical_reference',
+				label: 'Inés Arango',
+				note: 'Parroquia Inés Arango · levantamiento territorial.',
+			},
+		],
 		title: 'Dayuma + Inés Arango',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -429,12 +447,12 @@ export const records: GeoTacticsRecord[] = [
 		year: 2023,
 		yearLabel: '2023',
 		territory: 'Nueva Loja, Sucumbíos',
-		coordinates: {
+		coordinates: [{
 			lat: 0.091,
 			lng: -76.89,
 			status: 'verified_source',
 			note: 'Sede Nueva Loja documentada. No es polígono provincial.',
-		},
+		}],
 		problem: 'Planificación operativa y contratación sin sistema de resultados.',
 		solution: 'Implementación O/T 2023. Distinta del caso PDOT.',
 		gostRelation: 'Aplicación O/T.',
@@ -454,12 +472,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EGPS',
 		slug: 'e-gps',
-		coordinates: {
+		coordinates: [{
 			lat: 0.06,
 			lng: -77.1,
 			status: 'historical_reference',
 			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
-		},
+		}],
 		title: 'E-GPS',
 		kind: 'product',
 		primaryFamily: 'gobierno-y-gestion',
@@ -487,12 +505,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-CAPTURE',
 		slug: 'capture',
-		coordinates: {
+		coordinates: [{
 			lat: 0.091,
 			lng: -76.885,
 			status: 'historical_reference',
 			note: 'Referencia provincial usada en el mapa corporativo histórico para CAPTURE.'
-		},
+		}],
 		title: 'CAPTURE',
 		kind: 'component',
 		primaryFamily: 'inteligencia-territorial',
@@ -529,12 +547,12 @@ export const records: GeoTacticsRecord[] = [
 		year: 2023,
 		yearLabel: '2023',
 		territory: 'Sucumbíos / Ecuador',
-		coordinates: {
+		coordinates: [{
 			lat: 0.091,
 			lng: -76.89,
 			status: 'verified_source',
 			note: 'Sede Nueva Loja. No es polígono provincial.',
-		},
+		}],
 		problem: 'Estructurar información territorial y de gestión para el plan de desarrollo y ordenamiento territorial provincial.',
 		solution:
 			'Dos ramas. A · Inteligencia territorial: SIGDR + CAPTURE → base → BI → DataSucumbíos. B · Gestión del plan: YAKU → O/T → POA/PAC → seguimiento. 27.539 habitantes registrados · 31 parroquias rurales. Base territorial construida mediante levantamiento de información en campo.',
@@ -556,12 +574,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-DS',
 		slug: 'datasucumbios',
-		coordinates: {
+		coordinates: [{
 			lat: 0.05,
 			lng: -77.0,
 			status: 'historical_reference',
 			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
-		},
+		}],
 		title: 'DataSucumbíos',
 		kind: 'product',
 		primaryFamily: 'inteligencia-territorial',
@@ -885,7 +903,7 @@ export function recordBySlug(slug: string) {
 }
 
 export function mappableRecords() {
-	return publicRecords().filter((r) => r.coordinates);
+	return publicRecords().filter((r) => r.coordinates?.length);
 }
 
 export { families };
