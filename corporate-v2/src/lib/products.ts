@@ -14,19 +14,19 @@ export const groupCopy = {
 		id: 'en-operacion',
 		label: 'En operación',
 		micro: 'A · OPERACIÓN',
-		lead: 'Sistemas en operación, disponibles o utilizados en contextos reales.',
+		lead: 'Productos y plataformas que hoy pueden explorarse o forman parte de operaciones activas.',
 	},
 	next: {
 		id: 'nueva-generacion',
 		label: 'Nueva generación',
 		micro: 'B · EVOLUCIÓN',
-		lead: 'Productos propios en desarrollo o prelanzamiento. El estado de cada uno se indica en su ficha.',
+		lead: 'Nuevos productos que trasladan la experiencia GeoTactics hacia operaciones, servicios, participación y otros mercados.',
 	},
 	lineage: {
 		id: 'trayectoria',
 		label: 'Trayectoria',
 		micro: 'C · TRAYECTORIA',
-		lead: 'Sistemas que forman parte de la evolución tecnológica de GeoTactics.',
+		lead: 'Sistemas que construyeron capacidades, abrieron nuevas líneas de trabajo y explican cómo evolucionó GeoTactics.',
 	},
 	catalog: {
 		id: 'otros',
