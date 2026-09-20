@@ -10,7 +10,7 @@ const rendered=await Promise.all(entries.map(async(entry)=>{const {Content}=awai
 <article class="gt-qh">
 <header class="gt-qh__intro gt-container--wide"><p class="gt-qh__micro">{capabilitiesIntro.microcode}</p><h1>Qué hacemos</h1><p class="gt-qh__lead">Partimos del problema, no de una tecnología predeterminada.</p><p class="gt-qh__support">Trabajamos en seis familias de problemas. Cada una puede combinar datos, territorio, procesos, software y análisis de manera distinta.</p></header>
 <div class="gt-qh__list gt-container--wide">{rendered.map(({entry,Content},index)=><section class="gt-qh__cap" id={entry.data.slug} aria-labelledby={`${entry.data.slug}-title`}><div class="gt-qh__visual" aria-hidden="true"><CapabilityVisual kind={entry.data.visual}/></div><div class="gt-qh__copy"><p class="gt-qh__code">{String(index+1).padStart(2,'0')} / {entry.data.microcode}</p><h2 id={`${entry.data.slug}-title`}>{entry.data.title}</h2><p class="gt-qh__cue">{entry.data.cue}</p><p class="gt-qh__short">{entry.data.shortDescription}</p><div class="gt-qh__body"><Content/></div><a class="gt-qh__archive" href={`/archivo?familia=${entry.data.slug}`}>Ver trayectoria →</a></div></section>)}</div>
-<footer class="gt-qh__cta gt-container--wide"><p>Si tienes un problema que todavía no encaja en una categoría, conversemos sobre él.</p><a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a></footer>
+<footer class="gt-page-close"><div class="gt-page-close__inner"><p class="gt-page-close__text">Si tienes un problema que todavía no encaja en una categoría, conversemos sobre él.</p><a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a></div></footer>
 </article>
 </BaseLayout>
 <style>
