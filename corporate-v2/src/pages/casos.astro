@@ -47,10 +47,12 @@ const entries = sortCases((await getCollection('cases')).filter(isPublicCase));
 	.gt-ci h1 { font-size: var(--gt-fs-xl); margin-bottom: var(--gt-space-4); max-width: 18rem; }
 	.gt-ci__lead { font-size: var(--gt-fs-lg); font-weight: 600; max-width: 34rem; margin-bottom: var(--gt-space-4); }
 	.gt-ci__support { max-width: 44rem; color: var(--gt-text-muted); }
-	.gt-ci__list { padding: var(--gt-space-10) 0; }
-	.gt-ci__list h2 { font-size: var(--gt-fs-lg); margin-bottom: var(--gt-space-6); }
-	.gt-ci__grid > :first-child { grid-column: 1 / -1; }
+	.gt-ci__list { padding: var(--gt-space-8) 0; }
+	.gt-ci__list h2 { font-size: var(--gt-fs-lg); margin-bottom: var(--gt-space-5); }
+	.gt-ci__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); align-items: stretch; }
+	.gt-ci__grid > :first-child { grid-column: auto; }
 	.gt-ci__cta { padding-top: var(--gt-space-8); max-width: 40rem; }
 	.gt-ci__cta p { margin-bottom: var(--gt-space-5); }
+	@media (max-width:1024px){ .gt-ci__grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
 	@media (max-width:720px){ .gt-ci h1,.gt-ci__lead{max-width:none}.gt-ci__grid{grid-template-columns:1fr} }
 </style>
