@@ -8,6 +8,8 @@ roleConfirmed: "Fundador. Directiva histórica: Gerente. No actualmente activo."
 roleStatus: confirmed
 bio: "Formó parte del núcleo fundador. Gerente histórico."
 bioStatus: confirmed
+historicalRole: "Fundador & Gerente General"
+historicalMetadataStatus: documented
 photoStatus: missing
 public: true
 founder: true
