@@ -205,8 +205,14 @@ button {
 .gt-page-close {
 	width: min(100% - 2 * var(--gt-gutter-x), var(--gt-container-wide));
 	margin-inline: auto;
-	padding: var(--gt-space-10) 0 var(--gt-space-6);
+	padding: var(--gt-space-8) 0 var(--gt-space-4);
 	border-top: 1px solid var(--gt-border);
+}
+
+/* Pages with the shared closing CTA already have a visual close.
+   Avoid stacking page padding + footer margin into a large empty band. */
+main:has(.gt-page-close) > :first-child {
+	padding-bottom: var(--gt-space-6) !important;
 }
 
 .gt-page-close__inner {
@@ -239,7 +245,11 @@ button {
 
 @media (max-width: 720px) {
 	.gt-page-close {
-		padding-top: var(--gt-space-8);
+		padding-top: var(--gt-space-6);
+	}
+
+	main:has(.gt-page-close) > :first-child {
+		padding-bottom: var(--gt-space-5) !important;
 	}
 }
 
