@@ -475,19 +475,32 @@ const seoDescription =
 	.gt-ns__person,
 	.gt-ns__founder {
 		display: grid;
-		grid-template-columns: 7.5rem minmax(0, 1fr);
-		gap: var(--gt-space-6);
+		grid-template-columns: 7rem minmax(0, 1fr);
+		gap: var(--gt-space-5);
 		align-items: start;
 		max-width: 46rem;
+	}
+
+	.gt-ns__person {
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-ns__sub {
+		margin-top: var(--gt-space-8);
+		margin-bottom: var(--gt-space-5);
 	}
 
 	.gt-ns__founders {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--gt-space-6);
+		display: grid;
+		gap: var(--gt-space-5);
+	}
+
+	.gt-ns__founder {
+		padding-top: var(--gt-space-5);
+		border-top: 1px solid var(--gt-border);
 	}
 
 	.gt-ns__founder.is-active {
@@ -501,8 +514,8 @@ const seoDescription =
 	}
 
 	.gt-ns__photo {
-		width: 7.5rem;
-		height: 7.5rem;
+		width: 7rem;
+		height: 7rem;
 		aspect-ratio: 1;
 		overflow: hidden;
 		border: 1px solid var(--gt-border);
@@ -632,6 +645,11 @@ const seoDescription =
 
 		.gt-ns__photo {
 			width: 5.5rem;
+			height: 5.5rem;
+		}
+
+		.gt-ns__sub {
+			margin-top: var(--gt-space-6);
 		}
 
 		.gt-ns__spine li,
