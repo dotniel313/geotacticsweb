@@ -8,6 +8,10 @@ roleConfirmed: "Fundador. Directiva histórica: Presidente. No actualmente activ
 roleStatus: confirmed
 bio: "Formó parte del núcleo fundador. Jefe de Políticas Públicas y presidente histórico de la sociedad."
 bioStatus: confirmed
+historicalRole: "Fundador & Jefe de Políticas Públicas"
+historicalAlias: "Jefe"
+historicalBio: "Gestión pública y análisis territorial."
+historicalMetadataStatus: documented
 photoStatus: missing
 public: true
 founder: true
