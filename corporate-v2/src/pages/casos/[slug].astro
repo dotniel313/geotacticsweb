@@ -217,7 +217,10 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 					<ul>
 						{liveLinks.map((link) => (
 							<li>
-								<a href={link.url}>{link.label}</a>
+								<a href={link.url} target="_blank" rel="noopener noreferrer">
+									{link.label}
+									<span class="visually-hidden"> (se abre en una ventana nueva)</span>
+								</a>
 							</li>
 						))}
 					</ul>
