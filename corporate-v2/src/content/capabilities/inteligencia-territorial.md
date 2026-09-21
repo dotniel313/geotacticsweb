@@ -3,7 +3,7 @@ id: CAP-01
 slug: inteligencia-territorial
 order: 1
 title: Inteligencia territorial
-shortDescription: Problemas de lectura, registro y análisis del territorio para apoyar gestión y decisión.
+shortDescription: Convertimos información dispersa del territorio en una lectura útil para entender qué ocurre, dónde actuar y cómo decidir mejor.
 microcode: FAM-01
 status: active
 seoTitle: Inteligencia territorial | GeoTactics
@@ -12,6 +12,6 @@ cue: Territorio + información
 visual: territory
 ---
 
-Comprender un territorio exige relacionar personas, lugares, información y procesos. Esta familia convierte datos dispersos y levantamientos de campo en una lectura territorial útil para la gestión y la decisión.
+Un territorio no se entiende mirando una sola base de datos. Hay que conectar personas, lugares, necesidades y procesos. Convertimos información dispersa y levantamientos de campo en una lectura que ayuda a ver qué está pasando, dónde y por qué.
 
-Según el problema, combinamos captura de información, GIS, análisis e indicadores. SIGDR, CAPTURE y DataSucumbíos muestran distintas etapas de esta experiencia, aplicada también en Gualsaquí, Vacas Galindo, Dayuma–Inés Arango y el trabajo territorial vinculado al PDOT de Sucumbíos.
+Para lograrlo combinamos captura de información, GIS, análisis e indicadores según lo que cada territorio necesita. SIGDR, CAPTURE y DataSucumbíos muestran distintas etapas de esta experiencia, aplicada también en Gualsaquí, Vacas Galindo, Dayuma–Inés Arango y el trabajo territorial vinculado al PDOT de Sucumbíos.
