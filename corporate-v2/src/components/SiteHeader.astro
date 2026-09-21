@@ -62,7 +62,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 				{
 					navItems.map((item) => (
 						<li>
-							<a class="gt-mobile__link" href={item.href}>
+							<a class:list={['gt-mobile__link', isActive(item.href) && 'is-active']} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
 								{item.label}
 							</a>
 						</li>
