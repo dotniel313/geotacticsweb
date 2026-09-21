@@ -28,7 +28,7 @@ No se completa PhotoFan con stock. 0 activos = fallback corporativo; 1 = imagen 
 | A-DAY-01 | Dayuma–Inés Arango | fotografía(s) | Wix / corpus histórico | NEEDS_REVIEW | PhotoFan caso | distinguir parroquia/actividad/fecha |
 | A-PDOT-01 | PDOT Sucumbíos | fotografía(s) | Wix / corpus PDOT | NEEDS_REVIEW | PhotoFan caso | actividad, fecha, personas, derechos |
 | A-OT-01 | O/T Sucumbíos | fotografía(s) | Wix / corpus histórico | NEEDS_REVIEW | PhotoFan caso | socialización/capacitación, fecha |
-| A-TEAM-01 | Fundadores / equipo histórico | fotografía(s) | Wix histórico | NEEDS_REVIEW | Nosotros | identificar personas y periodo; no inferir equipo actual |
+| A-TEAM-01 | Fundadores / equipo histórico | fotografía(s) | Wix histórico | APPROVED | Nosotros | identidades confirmadas por OWNER; falta copiar originales al repo y definir alt/caption/destino final |
 | A-MADA-KEY-01 | MadaRadio | presentación | archivo .key histórico | DISCOVERED | evidencia interna / extracción de capturas | revisar contenido y derechos |
 | A-NURSE-KEY-01 | Nurse GO | presentación | archivo .key histórico | DISCOVERED | interno | producto aún no publicable |
 
@@ -57,3 +57,26 @@ Si una fotografía contiene personas, el caption no identifica a nadie sin confi
 Prioridad visual: **PDOT/CAPTURE → Dayuma–Inés Arango → EMAPAI/YAKU → Pimampiro/SIGC → Gualsaquí/SIGDR → equipo histórico**.
 
 La revisión debe hacerse sobre miniaturas reales, no sobre nombres de archivo. Tras aprobación se copian únicamente los activos PUBLICABLES a Corporate 2.0 y se enlazan a `assets[]` / galerías correspondientes.
+
+
+## Mapeo OWNER aprobado — equipo histórico
+
+El 20 Sep 2026 el OWNER confirmó visualmente el siguiente mapeo de los siete retratos históricos recuperados de Wix. Este mapeo sustituye cualquier variante nominal del inventario automático y no debe reconstruirse por inferencia facial.
+
+| ID visual | Nombre confirmado | Uso editorial |
+|---|---|---|
+| EQ01 | Daniel Orellana | Dirección actual + fundador |
+| EQ02 | Luis Padilla | Fundador histórico |
+| EQ03 | Germán Flores | Fundador histórico |
+| EQ04 | Christian Montalvo | Fundador histórico |
+| EQ05 | María José Trujillo | Equipo histórico; rol/periodo público pendiente |
+| EQ06 | Geovanny Romero | Equipo histórico; rol/periodo público pendiente |
+| EQ07 | Marcos Landy | Equipo histórico; rol/periodo público pendiente |
+
+### Restricciones
+
+- EQ01–EQ04 pueden vincularse a los perfiles de fundadores ya existentes.
+- EQ05–EQ07 no se presentan como fundadores ni como equipo actual sin evidencia adicional.
+- No usar variantes automáticas “Giovanni Romero” ni “Marco Landi”; prevalecen los nombres confirmados por OWNER.
+- Las fotografías están aprobadas para identidad, pero todavía no son PUBLICABLES hasta copiar los originales desde el archivo histórico local y registrar alt/caption/procedencia.
+- No sustituir retratos por stock ni generar rostros.
