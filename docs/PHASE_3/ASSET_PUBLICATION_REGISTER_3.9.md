@@ -80,3 +80,29 @@ El 20 Sep 2026 el OWNER confirmó visualmente el siguiente mapeo de los siete re
 - No usar variantes automáticas “Giovanni Romero” ni “Marco Landi”; prevalecen los nombres confirmados por OWNER.
 - Las fotografías están aprobadas para identidad, pero todavía no son PUBLICABLES hasta copiar los originales desde el archivo histórico local y registrar alt/caption/procedencia.
 - No sustituir retratos por stock ni generar rostros.
+
+
+## Metadatos históricos de personas — recuperación Wix
+
+Los retratos no son el único activo de equipo. Para cada persona histórica se debe recuperar, cuando exista en Wix, el contexto textual asociado y conservarlo separado del perfil corporativo actual.
+
+Campos a recuperar:
+- nombre mostrado;
+- cargo / función histórica;
+- apodo o nombre informal mostrado públicamente;
+- biografía o texto de presentación;
+- periodo o contexto visible;
+- enlaces sociales o de contacto históricos;
+- página / sección de origen;
+- URL de origen;
+- evidencia textual cercana.
+
+Criterio de publicación:
+- estos campos se preservan como HISTORICAL_METADATA aunque ya no describan la situación actual;
+- un cargo histórico no se convierte en cargo vigente;
+- un apodo solo se publica si aparece explícitamente en la fuente histórica o es confirmado por OWNER;
+- los datos de contacto antiguos no se republican automáticamente;
+- las variantes de nombre del scraping no sustituyen los nombres confirmados por OWNER;
+- cuando el dato tenga valor patrimonial pero no comercial actual, puede vivir en Archivo / historia del equipo sin mostrarse en la ficha pública principal.
+
+Estado actual: el mapeo visual EQ01–EQ07 está confirmado por OWNER. La recuperación exhaustiva de cargo, apodo, biografía y otros metadatos Wix todavía está pendiente de extracción/reconciliación.
