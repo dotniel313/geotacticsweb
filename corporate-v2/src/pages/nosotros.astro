@@ -137,8 +137,12 @@ const seoDescription =
 					.filter((e) => e.data.currentActive)
 					.map((entry) => (
 						<article class="gt-ns__person" id={entry.data.slug}>
-							<div class="gt-ns__photo" aria-hidden="true">
-								<span />
+							<div class="gt-ns__photo">
+								{entry.data.photo && entry.data.photoStatus === 'publicable' ? (
+									<img src={entry.data.photo} alt={`Retrato histórico de ${entry.data.publicName}`} width="480" height="480" loading="lazy" decoding="async" />
+								) : (
+									<span aria-hidden="true" />
+								)}
 							</div>
 							<div>
 								<p class="gt-ns__code">{entry.data.id}</p>
@@ -156,8 +160,12 @@ const seoDescription =
 						.filter((e) => e.data.founder)
 						.map((entry) => (
 							<li class:list={['gt-ns__founder', entry.data.currentActive && 'is-active']}>
-								<div class="gt-ns__photo" aria-hidden="true">
-									<span />
+								<div class="gt-ns__photo">
+									{entry.data.photo && entry.data.photoStatus === 'publicable' ? (
+										<img src={entry.data.photo} alt={`Retrato histórico de ${entry.data.publicName}`} width="480" height="480" loading="lazy" decoding="async" />
+									) : (
+										<span aria-hidden="true" />
+									)}
 								</div>
 								<div>
 									<p class="gt-ns__code">
@@ -501,6 +509,13 @@ const seoDescription =
 		background-size: 16px 16px;
 		background-color: var(--gt-white);
 		position: relative;
+	}
+
+	.gt-ns__photo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	.gt-ns__photo span {
