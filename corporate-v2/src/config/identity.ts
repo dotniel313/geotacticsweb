@@ -10,9 +10,9 @@ export const identity = {
 		'Somos una empresa ecuatoriana de tecnología nacida de una pregunta sencilla: ¿cómo hacer que una organización entienda mejor lo que ocurre y pueda actuar mejor? Las herramientas han cambiado con los años. Esa pregunta sigue guiándonos.',
 	whoHeadline: 'Quiénes somos',
 	whoBody: [
-		'GeoTactics es una empresa ecuatoriana de tecnología. Nos gustan los problemas que no caben en una sola pantalla: los que mezclan personas, territorio, información, procesos y decisiones. Ahí empezamos a trabajar.'
-		'Comenzamos muy cerca del Business Intelligence y de la lógica Data / Warehouse - Mart. Después, cada proyecto nos obligó a aprender algo nuevo: territorio, GIS, captura móvil, gestión, analítica, trazabilidad, mercados y nuevas formas de interacción.'
-		'Hoy resolvemos problemas distintos a los del comienzo, pero seguimos haciendo lo mismo en lo esencial: entender primero la realidad y construir después la tecnología.'
+		'GeoTactics es una empresa ecuatoriana de tecnología. Nos gustan los problemas que no caben en una sola pantalla: los que mezclan personas, territorio, información, procesos y decisiones. Ahí empezamos a trabajar.',
+		'Comenzamos muy cerca del Business Intelligence y de la lógica Data / Warehouse - Mart. Después, cada proyecto nos obligó a aprender algo nuevo: territorio, GIS, captura móvil, gestión, analítica, trazabilidad, mercados y nuevas formas de interacción.',
+		'Hoy resolvemos problemas distintos a los del comienzo, pero seguimos haciendo lo mismo en lo esencial: entender primero la realidad y construir después la tecnología.',
 	],
 	purposeLabel: 'Propósito',
 	purposeStatus: 'OWNER_APPROVED' as const,
@@ -112,7 +112,7 @@ export const identity = {
 	diversificationHeadline: 'Evolución y nuevos problemas',
 	diversification:
 		'Los nuevos productos nos llevaron a operaciones, mercados, servicios, turismo y participación. No fue un cambio de identidad, sino la consecuencia natural de aplicar lo aprendido a problemas diferentes.',
-	cta: 'Cuéntanos qué necesitas entender, ordenar o hacer funcionar mejor. Empecemos por el problema.'
+	cta: 'Cuéntanos qué necesitas entender, ordenar o hacer funcionar mejor. Empecemos por el problema.',
 	homeMicro: 'GT / EMPRESA',
 	homeHeadline: 'Quiénes somos',
 	homeSupport:
