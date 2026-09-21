@@ -106,3 +106,17 @@ Criterio de publicación:
 - cuando el dato tenga valor patrimonial pero no comercial actual, puede vivir en Archivo / historia del equipo sin mostrarse en la ficha pública principal.
 
 Estado actual: el mapeo visual EQ01–EQ07 está confirmado por OWNER. La recuperación exhaustiva de cargo, apodo, biografía y otros metadatos Wix todavía está pendiente de extracción/reconciliación.
+
+
+## Recuperación de metadatos históricos — fundadores
+
+Se preservan en contenido estructurado, separados de la presentación pública actual:
+
+| Persona | Cargo histórico documentado | Apodo / alias histórico | Fuente |
+|---|---|---|---|
+| Daniel Orellana | Fundador & CEO | Chuky | Wix / Index1 |
+| Luis Padilla | Fundador & Jefe de Programación | Luchin | Wix / Index1 |
+| Germán Flores | Fundador & Jefe de Políticas Públicas | Jefe | Wix / Index1 |
+| Christian Montalvo | Fundador & Gerente General | — | Wix |
+
+Los alias proceden del material histórico Index1; no se atribuyen a Wix cuando Wix no los muestra. Se conservan como metadatos históricos y no se muestran automáticamente en la ficha pública.
