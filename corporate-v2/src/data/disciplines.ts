@@ -6,13 +6,13 @@ export const disciplines = [
 	{
 		id: 'captura',
 		title: 'Captura',
-		role: 'Registrar cuando el problema lo exige.',
+		role: 'Llevar el dato desde el lugar donde ocurre hasta el sistema que necesita utilizarlo.',
 		confirmed: ['CAPTURE', 'Termómetro Social', 'MadaRadio'],
 	},
 	{
 		id: 'datos',
 		title: 'Datos / integración',
-		role: 'Organizar fuentes e información estructurada.',
+		role: 'Unir información dispersa y convertirla en una base que pueda comprenderse y utilizarse.',
 		confirmed: [],
 	},
 	{
@@ -24,14 +24,14 @@ export const disciplines = [
 	{
 		id: 'dw',
 		title: 'DW / Data Mart',
-		role: 'Parte de nuestra herencia tecnológica: organizar información para convertirla en una base útil para análisis y gestión.',
+		role: 'Una herencia tecnológica que nos enseñó a organizar información para que pueda convertirse en análisis y gestión.',
 		confirmed: [],
 		historical: true,
 	},
 	{
 		id: 'bi',
 		title: 'Business Intelligence',
-		role: 'Datos → análisis → indicadores → visualización → seguimiento → decisión.',
+		role: 'Convertir datos en una lectura que permita ver qué ocurre, seguir cambios y tomar decisiones.',
 		confirmed: ['DataSucumbíos', 'Monitoreo PDOT'],
 		featured: true,
 	},
@@ -44,7 +44,7 @@ export const disciplines = [
 	{
 		id: 'indicadores',
 		title: 'Indicadores',
-		role: 'Pasar del dato al indicador y del indicador a la gestión.',
+		role: 'Transformar datos en señales que ayuden a saber dónde estamos, qué cambia y dónde actuar.',
 		confirmed: ['DataSucumbíos', 'Monitoreo PDOT'],
 	},
 	{
@@ -58,13 +58,13 @@ export const disciplines = [
 	{
 		id: 'gestion',
 		title: 'Gestión',
-		role: 'Planificación, seguimiento y control cuando el sistema lo materializa.',
+		role: 'Conectar planes, actividades e información para que una organización pueda seguir lo que hace y ajustar lo que necesita.',
 		confirmed: ['YAKU', 'O/T'],
 	},
 	{
 		id: 'surfaces',
 		title: 'Web / móvil',
-		role: 'Superficies de captura, gestión o explotación. Capas, no marca.',
+		role: 'Llevar el sistema a las personas mediante interfaces para capturar, gestionar, consultar o trabajar con la información.',
 		confirmed: ['SIGDR', 'CAPTURE', 'ExploraSucumbíos', 'Termómetro Social', 'MadaRadio', 'DataSucumbíos'],
 	},
 ] as const;
