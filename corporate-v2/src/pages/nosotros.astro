@@ -153,11 +153,11 @@ const seoDescription =
 						</article>
 					))
 			}
-			<h3 class="gt-ns__sub">Fundadores</h3>
+			<h3 class="gt-ns__sub">Fundadores históricos</h3>
 			<ul class="gt-ns__founders">
 				{
 					people
-						.filter((e) => e.data.founder)
+						.filter((e) => e.data.founder && !e.data.currentActive)
 						.map((entry) => (
 							<li class:list={['gt-ns__founder', entry.data.currentActive && 'is-active']}>
 								<div class="gt-ns__photo">
@@ -501,7 +501,10 @@ const seoDescription =
 	}
 
 	.gt-ns__photo {
+		width: 7.5rem;
+		height: 7.5rem;
 		aspect-ratio: 1;
+		overflow: hidden;
 		border: 1px solid var(--gt-border);
 		background:
 			linear-gradient(to right, color-mix(in srgb, var(--gt-coffee) 10%, transparent) 1px, transparent 1px),
