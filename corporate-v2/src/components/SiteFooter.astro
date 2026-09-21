@@ -172,4 +172,10 @@ const year = new Date().getFullYear();
 			gap: var(--gt-space-6);
 		}
 	}
+
+	/* A page-level closing CTA already provides the separation before the footer. */
+	:global(main:has(.gt-page-close) + .gt-foot) {
+		margin-top: 0;
+	}
+
 </style>
