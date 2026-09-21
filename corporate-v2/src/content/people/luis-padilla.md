@@ -8,6 +8,10 @@ roleConfirmed: "Fundador. No actualmente activo."
 roleStatus: confirmed
 bio: "Formó parte del núcleo fundador como jefe de programación."
 bioStatus: confirmed
+historicalRole: "Fundador & Jefe de Programación"
+historicalAlias: "Luchin"
+historicalBio: "Desarrollo de software y arquitectura de datos."
+historicalMetadataStatus: documented
 photoStatus: missing
 public: true
 founder: true
