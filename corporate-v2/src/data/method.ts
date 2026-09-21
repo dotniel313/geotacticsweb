@@ -25,11 +25,11 @@ export const rdFlow = [
 export const gost = {
 	acronym: 'G.O.S.T.',
 	name: 'Gestión Operativa de Sistemas Territoriales',
-	lead: 'Metodología, marco conceptual y forma de estructurar problemas. El eje de continuidad de GeoTactics.',
+	lead: 'Antes de elegir una herramienta, necesitamos entender qué está pasando. GOST es la forma de pensar que ha acompañado a GeoTactics desde su origen.',
 	body: [
-		'GOST —Gestión Operativa de Sistemas Territoriales— es la forma en que GeoTactics organiza un problema antes de elegir la tecnología. El dominio cambia; esa forma de pensar se mantiene.',
-		'El nombre surgió entre 2007 y 2008. Se inspiró intencionalmente en «ghost»: algo cuyos efectos podían percibirse aunque el sistema que los producía no fuera visible.',
-		'GOST opera por encima de las herramientas: BI, GIS, arquitecturas de datos, OLAP, web o móvil se combinan de acuerdo con la naturaleza del problema. Cada desarrollo recorre el ciclo de una manera propia.',
+		'GOST —Gestión Operativa de Sistemas Territoriales— nació de una necesidad práctica: hacer visible una organización que funcionaba entre procesos dispersos, poca información y decisiones difíciles de seguir. Desde entonces, nos ayuda a ordenar la realidad antes de construir la solución.',
+		'El nombre surgió entre 2007 y 2008 inspirado en «ghost»: algo que no siempre se ve, pero cuya presencia se reconoce por lo que hace. Esa idea terminó convirtiéndose en una forma de conectar gestión, información, territorio y tecnología.',
+		'Las herramientas han cambiado con los años. BI, GIS, datos, OLAP, web o móvil aparecen cuando aportan valor al problema. Lo que permanece es la lógica: comprender primero, construir después y aprender de cada implementación.',
 	],
 	conception: {
 		year: '2007–2008',
@@ -46,13 +46,13 @@ export const gost = {
 
 export const adn = {
 	headline: 'ADN GeoTactics',
-	lead: 'Principios que se repiten cuando un problema se convierte en sistema y un sistema genera nuevo aprendizaje.',
+	lead: 'Lo que hemos aprendido proyecto a proyecto terminó formando una manera propia de construir tecnología.',
 	items: [
-		{ code: '01', title: 'Problema real', text: 'La tecnología se elige después de estructurar el problema.' },
-		{ code: '02', title: 'GOST', text: 'Eje transversal para comprender, ordenar y estructurar el problema.' },
-		{ code: '03', title: 'Disciplinas', text: 'BI, GIS, datos, OLAP, móvil y web se combinan según las necesidades del sistema.' },
-		{ code: '04', title: 'Herencia BI', text: 'Data / Warehouse - Mart forma parte de la identidad histórica de la empresa.' },
-		{ code: '05', title: 'Implementación', text: 'El sistema se prueba en un territorio, una institución o un mercado.' },
-		{ code: '06', title: 'Aprendizaje', text: 'Cada solución amplía el conocimiento que alimenta los desarrollos siguientes.' },
+		{ code: '01', title: 'Problema real', text: 'Primero entendemos la realidad y qué necesita cambiar. La tecnología viene después.' },
+		{ code: '02', title: 'GOST', text: 'Nos ayuda a conectar información, personas, procesos y territorio antes de diseñar la respuesta.' },
+		{ code: '03', title: 'Disciplinas', text: 'Elegimos BI, GIS, datos, OLAP, móvil o web cuando ayudan a resolver mejor el problema.' },
+		{ code: '04', title: 'Herencia BI', text: 'Nuestra historia con Business Intelligence y Data / Warehouse - Mart dejó una idea central: los datos deben servir para comprender y decidir.' },
+		{ code: '05', title: 'Implementación', text: 'Una solución demuestra su valor cuando entra en contacto con el territorio, la institución, la operación o el mercado para el que fue creada.' },
+		{ code: '06', title: 'Aprendizaje', text: 'Cada implementación nos enseña algo nuevo y ese aprendizaje vuelve al siguiente problema.' },
 	],
 } as const;
