@@ -59,11 +59,11 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 			<form class="gt-ct__form" data-gt-mail>
 				<label>
 					Nombre
-					<input type="text" name="nombre" autocomplete="name" />
+					<input type="text" name="nombre" autocomplete="name" required />
 				</label>
 				<label>
 					Correo
-					<input type="email" name="email" autocomplete="email" />
+					<input type="email" name="email" autocomplete="email" required />
 				</label>
 				<label>
 					Motivo
@@ -75,7 +75,7 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 				</label>
 				<label>
 					Mensaje
-					<textarea name="mensaje" rows="6"></textarea>
+					<textarea name="mensaje" rows="6" required></textarea>
 				</label>
 				<button class="gt-cta" type="submit">Continuar por correo</button>
 			</form>
@@ -87,6 +87,10 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 	const form = document.querySelector<HTMLFormElement>('[data-gt-mail]');
 	form?.addEventListener('submit', (event) => {
 		event.preventDefault();
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
 		const data = new FormData(form);
 		const nombre = String(data.get('nombre') ?? '').trim();
 		const email = String(data.get('email') ?? '').trim();
