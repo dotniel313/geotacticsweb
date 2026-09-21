@@ -21,7 +21,7 @@ export const site = {
 export const copy = {
 	h1: 'Construimos sistemas alrededor de problemas reales.',
 	supporting:
-		'Empresa ecuatoriana de tecnología. Integramos información, territorio, procesos y tecnología —incluida la herencia de Business Intelligence y Data / Warehouse - Mart— para que las organizaciones funcionen mejor y las personas vivan mejor.',
+		'Entendemos primero el problema. Después construimos la tecnología. Conectamos información, territorio y procesos para convertir realidades complejas en sistemas útiles para gestionar mejor y tomar mejores decisiones.',
 	ctaPrimary: 'Conversemos sobre el problema',
 	ctaSecondary: 'Cómo trabajamos',
 	description:
@@ -46,17 +46,17 @@ export const conversarLabel = 'Conversar';
 export const capabilitiesIntro = {
 	microcode: 'GT / CAPABILITIES',
 	eyebrow: 'Qué hacemos',
-	headline: 'Seis clases de problema. No seis tecnologías.',
+	headline: 'Seis formas de convertir problemas reales en soluciones útiles.',
 	supporting:
-		'Las familias describen qué clase de problema abordamos. BI, GIS, móvil o web son disciplinas o capas, no el mapa corporativo.',
+		'Cada familia parte de una necesidad concreta: comprender un territorio, mejorar una gestión, conectar personas, seguir una operación, activar un mercado o descubrir un lugar. La tecnología se elige después.',
 } as const;
 
 export const productsIntro = {
 	microcode: 'GT / PRODUCTS',
 	eyebrow: 'Productos',
-	headline: 'Las capacidades se materializan en sistemas concretos.',
+	headline: 'Ideas que se convirtieron en sistemas para trabajar en el mundo real.',
 	supporting:
-		'Productos desarrollados por GeoTactics para resolver problemas de territorio, gestión, operación, mercado y trabajo de campo.',
+		'Productos creados por GeoTactics para transformar información en decisiones, ordenar operaciones, conectar personas y hacer más simple la gestión.',
 	catalogSupporting:
 		'Una trayectoria de sistemas en operación, productos en evolución y desarrollos que forman parte de la experiencia tecnológica de GeoTactics.',
 } as const;
@@ -64,20 +64,20 @@ export const productsIntro = {
 export const evidenceItems = [
 	{
 		id: 'EV-2017',
-		concept: 'Trayectoria documentada',
+		concept: 'Construyendo desde el territorio',
 		anchor: '2017',
-		text: 'Primera materialización localizada: sistemas en territorio (SIGDR, Gualsaqui).',
+		text: 'Desde SIGDR, convertimos levantamiento de campo e información territorial en herramientas para gestionar y decidir.',
 	},
 	{
 		id: 'EV-PDOT',
-		concept: 'Escala territorial',
+		concept: 'Información que nace en campo',
 		anchor: '27.539 · 31 parroquias',
-		text: 'Habitantes registrados en la base GeoTactics en las 31 parroquias rurales del levantamiento.',
+		text: '27.539 habitantes registrados en una base territorial construida mediante levantamiento de información en campo.',
 	},
 	{
 		id: 'EV-CAP',
-		concept: 'Experiencia',
+		concept: 'Del problema a la operación',
 		anchor: 'Territorio + gestión + operación',
-		text: 'Experiencia en sistemas territoriales, gestión institucional y operación de campo.',
+		text: 'Sistemas que conectan territorio, gestión institucional y operación para convertir información en acción.',
 	},
 ] as const;
