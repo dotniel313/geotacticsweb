@@ -142,14 +142,14 @@ const ctaFor = (kind: RecordKind) => {
 		</div>
 	</div>
 
-	<dialog class="gt-lb" data-lightbox aria-label="Fotografía">
-		<button type="button" class="gt-lb__close" data-lb-close onclick="this.closest('dialog').close()">
+	<dialog class="gt-lb" data-lightbox aria-label="Fotografía" aria-describedby="gt-lb-caption">
+		<button type="button" class="gt-lb__close" data-lb-close>
 			Cerrar
 		</button>
 		<button type="button" class="gt-lb__nav" data-lb-prev aria-label="Anterior">←</button>
 		<figure>
 			<img data-lb-img alt="" />
-			<figcaption data-lb-cap></figcaption>
+			<figcaption id="gt-lb-caption" data-lb-cap></figcaption>
 		</figure>
 		<button type="button" class="gt-lb__nav" data-lb-next aria-label="Siguiente">→</button>
 	</dialog>
@@ -779,6 +779,12 @@ const ctaFor = (kind: RecordKind) => {
 	.gt-lb__close {
 		top: 0.25rem;
 		right: 0.5rem;
+	}
+
+	.gt-lb__close:focus-visible,
+	.gt-lb__nav:focus-visible {
+		outline: 2px solid var(--gt-coral);
+		outline-offset: 2px;
 	}
 
 	.gt-lb__nav {
