@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductVisualFallback from '../../components/ProductVisualFallback.astro';
 import ProductStatus from '../../components/ProductStatus.astro';
 import { conversarHref, copy } from '../../config/site';
-import { ctaLabels, publicSurface } from '../../data/surfaces';
+import { ctaLabels, publicSurfaces } from '../../data/surfaces';
 import { casesForProduct } from '../../lib/cases';
 import { recordBySlug } from '../../data/records';
 import { familyById, type FamilyId } from '../../data/taxonomy';
@@ -26,7 +26,7 @@ const rec = recordBySlug(p.slug);
 const cases = casesForProduct(await getCollection('cases'), p.slug);
 const products = (await getCollection('products')).filter((e) => e.data.public);
 const related = products.filter((e) => (p.relatedProducts ?? rec?.relatedRecords ?? []).includes(e.data.slug));
-const surface = publicSurface(p.slug);
+const surfaces = publicSurfaces(p.slug);
 const family = rec ? familyById(rec.primaryFamily as FamilyId) : undefined;
 const yearLabel = p.yearLabel ?? (p.year != null ? String(p.year) : undefined);
 const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug}` : '/archivo';
@@ -167,15 +167,20 @@ const captureNote =
 			)
 		}
 		{
-			surface?.url && (
+			surfaces.length > 0 && (
 				<section class="gt-pd__block gt-container--wide">
-					<h2>Superficie digital</h2>
-					<p>
-						<a href={surface.url} rel="noopener noreferrer" target="_blank">
-							{surface.ctaType !== 'none' ? ctaLabels[surface.ctaType] : 'Abrir'}
-							<span class="visually-hidden"> (se abre en una ventana nueva)</span>
-						</a>
-					</p>
+					<h2>Explorar producto</h2>
+					<ul class="gt-pd__surfaces">
+						{surfaces.map((surface) => (
+							<li>
+								<a href={surface.url} rel="noopener noreferrer" target="_blank">
+									<strong>{surface.surfaceType === 'LANDING' ? 'Landing' : surface.label}</strong>
+									<span>{surface.ctaType !== 'none' ? ctaLabels[surface.ctaType] : 'Abrir'}</span>
+									<span class="visually-hidden"> (se abre en una ventana nueva)</span>
+								</a>
+							</li>
+						))}
+					</ul>
 				</section>
 			)
 		}
@@ -280,6 +285,38 @@ const captureNote =
 	.gt-pd__rels li {
 		padding: 0.65rem 0;
 		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__surfaces {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		max-width: 42rem;
+		display: grid;
+		gap: 0;
+	}
+
+	.gt-pd__surfaces li {
+		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__surfaces a {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+		padding: 0.75rem 0;
+		text-decoration: none;
+	}
+
+	.gt-pd__surfaces a:hover strong,
+	.gt-pd__surfaces a:focus-visible strong {
+		color: var(--gt-coral);
+	}
+
+	.gt-pd__surfaces span {
+		color: var(--gt-text-muted);
+		font-size: 0.88rem;
 	}
 
 	.gt-pd__cta {
