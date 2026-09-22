@@ -29,3 +29,22 @@
 ## Landings
 
 No se copian ni rediseñan. Corporate = hub.
+
+
+## Landings recuperadas por OWNER — 22 Sep 2026
+
+Las siguientes URLs fueron aportadas por OWNER y quedan registradas como **NEEDS_REVIEW** hasta validar disponibilidad, contenido y adecuación editorial. No generan CTA pública automática todavía.
+
+| Producto / iniciativa | URL recuperada | Estado |
+|---|---|---|
+| Inquilino | http://www.inquilino.geotactics.com.ec | NEEDS_REVIEW |
+| Ecuador Ancestral | http://www.ecuadorancestral.geotactics.com.ec | NEEDS_REVIEW |
+| Nurse GO | http://www.nursego.geotactics.com.ec | NEEDS_REVIEW |
+| MadaRadio | http://www.madaradio.geotactics.com.ec | NEEDS_REVIEW |
+| Explora App | http://www.exploraapp.geotactics.com.ec | NEEDS_REVIEW |
+| Termómetro Social | http://www.termometrosocial.com.ec | NEEDS_REVIEW |
+| RANTYI App | http://www.rantiyapp.geotactics.com.ec | NEEDS_REVIEW |
+| Orange App | http://www.orangeapp.geotactics.com.ec | NEEDS_REVIEW |
+| GUANTA | http://www.guanta.geotactics.com.ec | NEEDS_REVIEW |
+
+Nota: desde el entorno de revisión actual no se pudo verificar de forma concluyente la disponibilidad de estas URLs. Se preservan como evidencia aportada por OWNER, sin sustituir superficies LIVE ya validadas ni activar enlaces públicos.
