@@ -48,3 +48,18 @@ Las siguientes URLs fueron aportadas por OWNER y quedan registradas como **NEEDS
 | GUANTA | http://www.guanta.geotactics.com.ec | NEEDS_REVIEW |
 
 Nota: desde el entorno de revisión actual no se pudo verificar de forma concluyente la disponibilidad de estas URLs. Se preservan como evidencia aportada por OWNER, sin sustituir superficies LIVE ya validadas ni activar enlaces públicos.
+
+
+## Decisión OWNER — landings como superficies de marketing
+
+El 22 Sep 2026 OWNER indicó explícitamente que estas landings son importantes para marketing y deben formar parte de la experiencia pública Corporate 2.0.
+
+Criterio aplicado:
+- LANDING = superficie de marketing pública;
+- PLATFORM/APP = superficie funcional cuando exista;
+- pueden coexistir landing + plataforma para el mismo producto;
+- el detalle de producto muestra todas las superficies públicas;
+- Operación Territorial puede enlazar directamente la landing desde el popup;
+- RANTYI es el nombre canónico del producto web + móvil; `rantiyapp` se conserva únicamente como hostname histórico/técnico.
+
+Las nueve landings aportadas por OWNER pasan a `LIVE + publicable + conocer` por autorización editorial del propietario.
