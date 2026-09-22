@@ -85,6 +85,7 @@ export type GeoTacticsRecord = {
 	relatedRecords: string[];
 	detailHref?: string;
 	archivePublic: boolean;
+	mapPublic?: boolean;
 };
 
 export const statusLabels: Record<RecordStatus, string> = {
@@ -371,10 +372,11 @@ export const records: GeoTacticsRecord[] = [
 		id: 'R-MADA',
 		slug: 'madaradio',
 		coordinates: [{
-			lat: 0.095,
-			lng: -76.888,
-			status: 'historical_reference',
-			note: 'Referencia de Nueva Loja usada en el mapa corporativo histórico.'
+			lat: 0.090,
+			lng: -76.883,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Manabí y Velasco Ibarra esquina. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
 		}],
 		title: 'MadaRadio',
 		kind: 'product',
@@ -686,6 +688,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-TS',
 		slug: 'termometro-social',
+		coordinates: [{
+			lat: 0.088,
+			lng: -76.887,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. José María Urbina y Venezuela. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Termómetro Social',
 		kind: 'product',
 		primaryFamily: 'sociedad-y-participacion',
@@ -714,6 +723,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-OM',
 		slug: 'orangemap',
+		coordinates: [{
+			lat: 0.088,
+			lng: -76.882,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. José María Urbina e Ilinizas. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'OrangeMap',
 		kind: 'product',
 		primaryFamily: 'mercados-y-servicios',
@@ -743,6 +759,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EX',
 		slug: 'explorasucumbios',
+		coordinates: [{
+			lat: 0.083,
+			lng: -76.886,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. 20 de Junio y Venezuela. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'ExploraSucumbíos',
 		kind: 'product',
 		primaryFamily: 'turismo-y-territorio',
@@ -772,6 +795,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EA',
 		slug: 'ecuador-ancestral',
+		coordinates: [{
+			lat: 0.092,
+			lng: -76.880,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Circunvalación y Manabí esquina. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Ecuador Ancestral',
 		kind: 'prototype',
 		primaryFamily: 'turismo-y-territorio',
@@ -798,6 +828,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-GU',
 		slug: 'guanta',
+		coordinates: [{
+			lat: 0.100,
+			lng: -76.860,
+			status: 'confirmed',
+			label: 'Vía Guanta Km 2',
+			note: 'Nueva Loja. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'GUANTA',
 		kind: 'product',
 		primaryFamily: 'operaciones-y-trazabilidad',
@@ -827,6 +864,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-RA',
 		slug: 'rantyi',
+		coordinates: [{
+			lat: -0.136,
+			lng: -78.498,
+			status: 'confirmed',
+			label: 'San Carlos · Quito',
+			note: 'Sector central de San Carlos. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'RANTYI',
 		kind: 'product',
 		primaryFamily: 'mercados-y-servicios',
@@ -838,7 +882,7 @@ export const records: GeoTacticsRecord[] = [
 		problem:
 			'Personas que desean vender objetos en desuso y buscan un encuentro más territorial entre oferta y demanda.',
 		solution:
-			'Marketplace georreferenciado entre personas: publicación, mapa y ficha, y desbloqueo de contacto.',
+			'Aplicación web y móvil de marketplace georreferenciado entre personas: publicación, mapa y ficha, y desbloqueo de contacto.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -886,6 +930,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-INQUI',
 		slug: 'inqui',
+		coordinates: [{
+			lat: 0.078,
+			lng: -76.884,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. Quito Km 2 1/2. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Inqui',
 		kind: 'prototype',
 		primaryFamily: 'mercados-y-servicios',
@@ -908,6 +959,40 @@ export const records: GeoTacticsRecord[] = [
 		evidenceStatus: 'owner',
 		relatedRecords: ['fixis'],
 		archivePublic: true,
+	},
+	{
+		id: 'R-NURSE',
+		slug: 'nurse-go',
+		title: 'Nurse GO',
+		kind: 'prototype',
+		primaryFamily: 'mercados-y-servicios',
+		facets: ['mobile'],
+		status: 'en_desarrollo',
+		year: 2026,
+		yearLabel: 'En desarrollo',
+		territory: 'Quito, Pichincha',
+		coordinates: [{
+			lat: -0.211,
+			lng: -78.516,
+			status: 'confirmed',
+			label: 'El Tejar · Quito',
+			note: 'Joel Monroy OE 11-89, Ciudadela Amazonas, El Tejar. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
+		problem: 'Producto propio en revisión editorial.',
+		solution: 'Desarrollo GeoTactics con experiencia móvil. La descripción funcional pública se mantiene pendiente de reconciliación.',
+		gostRelation: 'Fundamento ontológico GOST.',
+		technologies: ['mobile'],
+		disciplines: [],
+		products: [],
+		cases: [],
+		assets: [],
+		documents: [],
+		surfaceStatus: 'review',
+		surfaceCta: 'none',
+		evidenceStatus: 'owner',
+		relatedRecords: [],
+		archivePublic: false,
+		mapPublic: true,
 	},
 	{
 		id: 'R-OB',
@@ -953,7 +1038,7 @@ export function recordBySlug(slug: string) {
 }
 
 export function mappableRecords() {
-	return publicRecords().filter((r) => r.coordinates?.length);
+	return records.filter((r) => r.coordinates?.length && (r.archivePublic || r.mapPublic));
 }
 
 export { families };
