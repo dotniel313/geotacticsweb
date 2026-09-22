@@ -28,6 +28,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const lightbox = root.querySelector<HTMLDialogElement>('[data-lightbox]');
 	const lbImg = lightbox?.querySelector<HTMLImageElement>('[data-lb-img]');
 	const lbCap = lightbox?.querySelector<HTMLElement>('[data-lb-cap]');
+	const lbClose = lightbox?.querySelector<HTMLButtonElement>('[data-lb-close]');
 	const ctxCode = root.querySelector('[data-ctx-code]');
 	const ctxTitle = root.querySelector('[data-ctx-title]');
 	const ctxDesc = root.querySelector('[data-ctx-desc]');
@@ -39,6 +40,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	let hintTimer = 0;
 	let lbIndex = 0;
 	let lbSet: { src: string; alt: string; caption?: string }[] = [];
+	let lbTrigger: HTMLElement | null = null;
 
 	const rec = (slug: string) => payload.records.find((r) => r.slug === slug);
 	const fam = (id: FamilyId) => payload.families.find((f) => f.id === id);
@@ -144,7 +146,8 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		if (!slug) return;
 		const el = milestones.find((m) => m.dataset.record === slug && !m.hidden);
 		requestAnimationFrame(() => {
-			el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+			const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
 		});
 	};
 
@@ -263,15 +266,23 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 
 	back?.addEventListener('click', leaveFamily);
 
-	const openLb = (assets: { src: string; alt: string; caption?: string }[], index: number) => {
+	const openLb = (
+		assets: { src: string; alt: string; caption?: string }[],
+		index: number,
+		trigger: HTMLElement | null = null,
+	) => {
 		if (!lightbox || !lbImg || !assets.length) return;
 		lbSet = assets;
 		lbIndex = index;
+		if (trigger) lbTrigger = trigger;
 		const a = assets[index];
 		lbImg.src = a.src;
 		lbImg.alt = a.alt;
 		if (lbCap) lbCap.textContent = a.caption ?? '';
-		if (!lightbox.open) lightbox.showModal();
+		if (!lightbox.open) {
+			lightbox.showModal();
+			requestAnimationFrame(() => lbClose?.focus());
+		}
 	};
 
 	const stepLb = (dir: number) => {
@@ -284,7 +295,9 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		el.addEventListener('keydown', (e) => {
 			if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
 			e.preventDefault();
-			const vis = milestones.filter((x) => !x.hidden);
+			const vis = rail
+				? [...rail.querySelectorAll<HTMLElement>('[data-record]:not([hidden])')]
+				: milestones.filter((x) => !x.hidden);
 			const i = vis.indexOf(el);
 			vis[i + (e.key === 'ArrowRight' ? 1 : -1)]?.focus();
 		});
@@ -294,13 +307,19 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 				e.stopPropagation();
 				const r = rec(el.dataset.record!);
 				if (!r?.assets.length) return;
-				openLb(r.assets, i);
+				openLb(r.assets, i, img);
 			});
 		});
 	});
 
+	lbClose?.addEventListener('click', () => lightbox?.close());
 	lightbox?.querySelector('[data-lb-prev]')?.addEventListener('click', () => stepLb(-1));
 	lightbox?.querySelector('[data-lb-next]')?.addEventListener('click', () => stepLb(1));
+	lightbox?.addEventListener('close', () => {
+		const trigger = lbTrigger;
+		lbTrigger = null;
+		requestAnimationFrame(() => trigger?.focus());
+	});
 	lightbox?.addEventListener('keydown', (e) => {
 		if (e.key === 'ArrowLeft') stepLb(-1);
 		if (e.key === 'ArrowRight') stepLb(1);
@@ -310,7 +329,8 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		rail.addEventListener('keydown', (e) => {
 			if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
 			if ((e.target as HTMLElement).closest('[data-record]')) return;
-			rail.scrollBy({ left: e.key === 'ArrowRight' ? 280 : -280, behavior: 'smooth' });
+			const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			rail.scrollBy({ left: e.key === 'ArrowRight' ? 280 : -280, behavior: reduced ? 'auto' : 'smooth' });
 		});
 	}
 
