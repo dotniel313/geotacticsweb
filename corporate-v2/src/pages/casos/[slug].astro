@@ -30,6 +30,7 @@ const place = placeLabel(entry);
 const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 const coordinates = rec?.coordinates ?? [];
 const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
+const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug}` : '/archivo';
 ---
 
 <BaseLayout title={c.seoTitle} description={c.seoDescription} noindex={false}>
@@ -245,9 +246,11 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 		}
 
 		<footer class="gt-cd__cta gt-container--wide">
-			<p>
-				<a href="/casos">Archivo de casos</a>
-			</p>
+			<nav class="gt-cd__return" aria-label="Continuar explorando">
+				<a href="/casos">← Volver a casos</a>
+				<span aria-hidden="true"> · </span>
+				<a href={archiveHref}>Ver este hito en Archivo</a>
+			</nav>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 		</footer>
 	</article>
@@ -434,6 +437,18 @@ const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
 		flex-wrap: wrap;
 		gap: var(--gt-space-5);
 		align-items: center;
+	}
+
+	.gt-cd__return {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.55rem;
+		font-size: 0.82rem;
+	}
+
+	.gt-cd__return a {
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
 	}
 
 	@media (max-width: 720px) {
