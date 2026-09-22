@@ -43,7 +43,7 @@ const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug
 ---
 
 <BaseLayout title={c.seoTitle} description={c.seoDescription} noindex={false}>
-	<script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
 	<article class="gt-cd">
 		<header class="gt-cd__hero">
 			<div class="gt-cd__hero-inner gt-container--wide">
