@@ -42,7 +42,7 @@ Las siguientes URLs fueron aportadas por OWNER y quedan registradas como **NEEDS
 | Nurse GO | http://www.nursego.geotactics.com.ec | NEEDS_REVIEW |
 | MadaRadio | http://www.madaradio.geotactics.com.ec | NEEDS_REVIEW |
 | Explora App | http://www.exploraapp.geotactics.com.ec | NEEDS_REVIEW |
-| Termómetro Social | http://www.termometrosocial.com.ec | NEEDS_REVIEW |
+| Termómetro Social | http://www.termometrosocial.geotactics.com.ec | NEEDS_REVIEW |
 | RANTYI App | http://www.rantiyapp.geotactics.com.ec | NEEDS_REVIEW |
 | Orange App | http://www.orangeapp.geotactics.com.ec | NEEDS_REVIEW |
 | GUANTA | http://www.guanta.geotactics.com.ec | NEEDS_REVIEW |
@@ -63,3 +63,12 @@ Criterio aplicado:
 - RANTYI es el nombre canónico del producto web + móvil; `rantiyapp` se conserva únicamente como hostname histórico/técnico.
 
 Las nueve landings aportadas por OWNER pasan a `LIVE + publicable + conocer` por autorización editorial del propietario.
+
+
+### Corrección OWNER — Termómetro Social
+
+El 22 Sep 2026 OWNER corrigió la URL de la landing de Termómetro Social. La URL válida registrada es:
+
+`http://www.termometrosocial.geotactics.com.ec`
+
+Sustituye a la URL previamente registrada `http://www.termometrosocial.com.ec`.
