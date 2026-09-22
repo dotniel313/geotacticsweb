@@ -7,6 +7,9 @@ export const statusLabels = {
 	prelanzamiento: 'Prelanzamiento',
 	trayectoria: 'Trayectoria',
 	desarrollado: 'Desarrollado',
+	prototipo: 'Prototipo',
+	desarrollo_pausado: 'Desarrollo pausado',
+	no_comercializado: 'No comercializado',
 } as const;
 
 export const groupCopy = {
