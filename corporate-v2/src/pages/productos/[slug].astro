@@ -29,6 +29,7 @@ const related = products.filter((e) => (p.relatedProducts ?? rec?.relatedRecords
 const surface = publicSurface(p.slug);
 const family = rec ? familyById(rec.primaryFamily as FamilyId) : undefined;
 const yearLabel = p.yearLabel ?? (p.year != null ? String(p.year) : undefined);
+const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug}` : '/archivo';
 
 const problem = p.problem ?? rec?.problem;
 const origin = p.origin;
@@ -180,11 +181,11 @@ const captureNote =
 		}
 
 		<footer class="gt-pd__cta gt-container--wide">
-			<p>
-				<a href="/productos">Catálogo</a>
+			<nav class="gt-pd__return" aria-label="Continuar explorando">
+				<a href="/productos">← Volver a productos</a>
 				<span aria-hidden="true"> · </span>
-				<a href="/archivo">Archivo</a>
-			</p>
+				<a href={archiveHref}>Ver este hito en Archivo</a>
+			</nav>
 			<a class="gt-cta" href={conversarHref}>
 				{copy.ctaPrimary}
 			</a>
@@ -287,6 +288,18 @@ const captureNote =
 		flex-wrap: wrap;
 		gap: var(--gt-space-5);
 		align-items: center;
+	}
+
+	.gt-pd__return {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.55rem;
+		font-size: 0.82rem;
+	}
+
+	.gt-pd__return a {
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
 	}
 
 	@media (max-width: 720px) {
