@@ -15,7 +15,7 @@ capabilities:
   - mercados-y-servicios
 primaryFamily: mercados-y-servicios
 problem: "Personas que desean ofrecer objetos en desuso necesitan una forma más territorial de encontrarse con potenciales interesados."
-purpose: "Marketplace georreferenciado entre personas: publicación, ficha territorial y desbloqueo de contacto."
+purpose: "Aplicación web y móvil de marketplace georreferenciado entre personas: publicación, ficha territorial y desbloqueo de contacto."
 gostRelation: "Fundamento ontológico GOST."
 assetStatus: missing
 urlStatus: none
