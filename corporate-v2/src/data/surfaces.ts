@@ -142,14 +142,14 @@ export const digitalSurfaces: DigitalSurface[] = [
 
 	{
 		id: 'inq-landing',
-		product: 'inquilino',
+		product: 'inqui',
 		label: 'Inquilino',
 		url: 'http://www.inquilino.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'URL recovered from OWNER 22 sep 2026. Current availability not independently verified.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
 	},
 	{
 		id: 'ea-landing',
@@ -157,10 +157,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'Ecuador Ancestral',
 		url: 'http://www.ecuadorancestral.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'URL recovered from OWNER 22 sep 2026. Current availability not independently verified.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
 	},
 	{
 		id: 'nursego-landing',
@@ -168,10 +168,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'Nurse GO',
 		url: 'http://www.nursego.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'URL recovered from OWNER 22 sep 2026. Product remains internal/needs review until content is reconciled.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026; la ficha corporativa completa sigue pendiente de reconciliación.',
 	},
 	{
 		id: 'mada-landing-owner',
@@ -179,10 +179,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'MadaRadio',
 		url: 'http://www.madaradio.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'Owner-recovered landing URL. Separate from previously broken www.madaradio.com.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER. Sustituye como superficie de marketing al dominio histórico roto.',
 	},
 	{
 		id: 'explora-app-landing',
@@ -190,10 +190,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'Explora App',
 		url: 'http://www.exploraapp.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'Owner-recovered landing URL. Existing public platform URL remains canonical until this landing is verified.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing de marketing aportada y autorizada por OWNER; convive con la plataforma pública.',
 	},
 	{
 		id: 'termometro-landing-owner',
@@ -201,10 +201,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'Termómetro Social',
 		url: 'http://www.termometrosocial.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'Owner-recovered landing URL. Current availability not independently verified.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
 	},
 	{
 		id: 'rantiy-app-landing',
@@ -212,10 +212,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'RANTYI App',
 		url: 'http://www.rantiyapp.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'Owner-recovered landing URL. Spelling in hostname is rantiyapp; canonical product slug remains rantyi.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER. El hostname conserva rantiyapp; el producto canónico es RANTYI.',
 	},
 	{
 		id: 'orange-app-landing',
@@ -234,10 +234,10 @@ export const digitalSurfaces: DigitalSurface[] = [
 		label: 'GUANTA',
 		url: 'http://www.guanta.geotactics.com.ec',
 		surfaceType: 'LANDING',
-		status: 'NEEDS_REVIEW',
-		ctaType: 'none',
-		publicationStatus: 'needs_review',
-		note: 'Owner-recovered landing URL. Previous https host check had failed; do not publish until revalidated.',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing de marketing aportada y autorizada por OWNER; separada del host de aplicación previamente no disponible.',
 	},
 	{
 		id: 'corp-prod',
@@ -274,8 +274,8 @@ export function publicPlatform(productSlug: string) {
 	);
 }
 
-export function publicSurface(productSlug: string) {
-	return digitalSurfaces.find(
+export function publicSurfaces(productSlug: string) {
+	return digitalSurfaces.filter(
 		(s) =>
 			s.product === productSlug &&
 			s.status === 'LIVE' &&
@@ -283,6 +283,14 @@ export function publicSurface(productSlug: string) {
 			s.ctaType !== 'none' &&
 			Boolean(s.url),
 	);
+}
+
+export function publicSurface(productSlug: string) {
+	return publicSurfaces(productSlug)[0];
+}
+
+export function publicLanding(productSlug: string) {
+	return publicSurfaces(productSlug).find((s) => s.surfaceType === 'LANDING');
 }
 
 export const ctaLabels: Record<Exclude<CtaType, 'none'>, string> = {
