@@ -28,7 +28,7 @@ No se completa PhotoFan con stock. 0 activos = fallback corporativo; 1 = imagen 
 | A-DAY-01 | Dayuma–Inés Arango | fotografía(s) | Wix / corpus histórico | NEEDS_REVIEW | PhotoFan caso | distinguir parroquia/actividad/fecha |
 | A-PDOT-01 | PDOT Sucumbíos | fotografía(s) | Wix / corpus PDOT | NEEDS_REVIEW | PhotoFan caso | actividad, fecha, personas, derechos |
 | A-OT-01 | O/T Sucumbíos | fotografía(s) | Wix / corpus histórico | NEEDS_REVIEW | PhotoFan caso | socialización/capacitación, fecha |
-| A-TEAM-01 | Fundadores / equipo histórico | fotografía(s) | Wix histórico | APPROVED | Nosotros | identidades confirmadas por OWNER; falta copiar originales al repo y definir alt/caption/destino final |
+| A-TEAM-01 | Fundadores / equipo histórico | fotografía(s) | Wix histórico | MIXED | Nosotros | EQ01–EQ04 PUBLICABLE y visibles vía Wix CDN; EQ05–EQ07 APPROVED/no publicados; originales aún pendientes de copiar al repo |
 | A-MADA-KEY-01 | MadaRadio | presentación | archivo .key histórico | DISCOVERED | evidencia interna / extracción de capturas | revisar contenido y derechos |
 | A-NURSE-KEY-01 | Nurse GO | presentación | archivo .key histórico | DISCOVERED | interno | producto aún no publicable |
 
@@ -120,3 +120,17 @@ Se preservan en contenido estructurado, separados de la presentación pública a
 | Christian Montalvo | Fundador & Gerente General | — | Wix |
 
 Los alias proceden del material histórico Index1; no se atribuyen a Wix cuando Wix no los muestra. Se conservan como metadatos históricos y no se muestran automáticamente en la ficha pública.
+
+
+## Estado técnico equipo — 22 Sep 2026
+
+Se creó `corporate-v2/src/assets/history/team-historical/manifest-team-3.9.csv` con:
+- mapeo EQ01–EQ07;
+- nombre OWNER confirmado;
+- archivo original;
+- ruta dentro del archivo histórico;
+- SHA-256;
+- estado editorial;
+- estado actual de entrega.
+
+Esto elimina la ambigüedad entre “foto identificada”, “foto publicada” y “original preservado en repo”.
