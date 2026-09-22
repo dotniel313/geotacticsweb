@@ -37,6 +37,16 @@ const purpose = p.purpose ?? rec?.solution;
 const how = p.howItWorks;
 const gost = p.gostRelation ?? rec?.gostRelation;
 const disciplines = (p.disciplines?.length ? p.disciplines : rec?.disciplines) ?? [];
+const breadcrumbJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://www.geotactics.com.ec/' },
+		{ '@type': 'ListItem', position: 2, name: 'Productos', item: 'https://www.geotactics.com.ec/productos' },
+		{ '@type': 'ListItem', position: 3, name: p.name, item: `https://www.geotactics.com.ec/productos/${p.slug}` },
+	],
+};
+
 const captureNote =
 	p.slug === 'datasucumbios' || p.slug === 'sigdr'
 		? 'CAPTURE es el componente de campo de SIGDR. En Sucumbíos se registraron 27.539 habitantes en 31 parroquias rurales, a partir de un levantamiento propio.'
@@ -44,6 +54,7 @@ const captureNote =
 ---
 
 <BaseLayout title={p.seoTitle} description={p.seoDescription} noindex={false}>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
 	<article class="gt-pd">
 		<header class="gt-pd__hero">
 			<div class="gt-pd__hero-inner gt-container--wide">
