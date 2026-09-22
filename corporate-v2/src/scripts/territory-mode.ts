@@ -43,11 +43,14 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 		iconAnchor: [7, 7],
 	});
 
-	L.marker([hq.lat, hq.lng], { icon: hqIcon })
+	const hqMarker = L.marker([hq.lat, hq.lng], { icon: hqIcon, keyboard: true })
 		.bindPopup(`<div class="gt-tpop"><p class="gt-tpop__k">Base actual</p><p>${hq.label}</p></div>`, {
 			className: 'gt-tpopwrap',
 		})
 		.addTo(map);
+	hqMarker.on('add', () => {
+		hqMarker.getElement()?.setAttribute('aria-label', `Base actual GeoTactics: ${hq.label}`);
+	});
 
 	for (const p of pins) {
 		if (!familyLayers.has(p.family)) familyLayers.set(p.family, L.layerGroup());
@@ -69,9 +72,15 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 			<p class="gt-tpop__n">${p.note}</p>
 			<p class="gt-tpop__acts"><a class="gt-tpop__a" href="${archive}">Ver en archivo</a>${detail}</p>
 		</div>`;
-		L.marker([p.lat, p.lng], { icon })
+		const marker = L.marker([p.lat, p.lng], { icon, keyboard: true })
 			.bindPopup(html, { className: 'gt-tpopwrap' })
 			.addTo(familyLayers.get(p.family)!);
+		marker.on('add', () => {
+			marker.getElement()?.setAttribute(
+				'aria-label',
+				`${p.kindLabel}: ${p.title}. ${p.territory}. ${p.yearLabel}`,
+			);
+		});
 		bounds.extend([p.lat, p.lng]);
 	}
 
