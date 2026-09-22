@@ -17,6 +17,7 @@ export type TerritoryPin = {
 	lat: number;
 	lng: number;
 	detailHref?: string;
+	marketingHref?: string;
 };
 
 const kindCta: Record<RecordKind, string> = {
@@ -64,13 +65,16 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 		const detail = p.detailHref
 			? `<a class="gt-tpop__a" href="${p.detailHref}">${kindCta[p.kind]}</a>`
 			: '';
+		const landing = p.marketingHref
+			? `<a class="gt-tpop__a" href="${p.marketingHref}" target="_blank" rel="noopener noreferrer">Ver landing</a>`
+			: '';
 		const html = `<div class="gt-tpop" style="--gt-popup-family:${p.color}">
 			<p class="gt-tpop__k">${p.kindLabel} · ${p.yearLabel}</p>
 			<p class="gt-tpop__t">${p.title}</p>
 			<p class="gt-tpop__family">${p.familyTitle}</p>
 			<p class="gt-tpop__territory">${p.territory}</p>
 			<p class="gt-tpop__n">${p.note}</p>
-			<p class="gt-tpop__acts"><a class="gt-tpop__a" href="${archive}">Ver en archivo</a>${detail}</p>
+			<p class="gt-tpop__acts"><a class="gt-tpop__a" href="${archive}">Ver en archivo</a>${detail}${landing}</p>
 		</div>`;
 		const marker = L.marker([p.lat, p.lng], { icon, keyboard: true })
 			.bindPopup(html, { className: 'gt-tpopwrap' })
