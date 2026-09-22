@@ -1,0 +1,37 @@
+name: Corporate 2.0 QA
+
+on:
+  push:
+    branches:
+      - fix/3.8-integrated-qa
+  pull_request:
+    paths:
+      - 'corporate-v2/**'
+      - '.github/workflows/corporate-v2-qa.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: corporate-v2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: corporate-v2/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Astro check
+        run: npm run check
+
+      - name: Build
+        run: npm run build
