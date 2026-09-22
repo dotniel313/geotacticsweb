@@ -107,6 +107,14 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 			}
 		});
 
+		panel.addEventListener('click', (e) => {
+			if (e.target === panel) setOpen(false);
+		});
+
+		panel.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+			link.addEventListener('click', () => setOpen(false));
+		});
+
 		panel.addEventListener('keydown', (e) => {
 			if (e.key !== 'Tab' || panel.hidden) return;
 			const focusable = [...panel.querySelectorAll<HTMLElement>('a, button')];
