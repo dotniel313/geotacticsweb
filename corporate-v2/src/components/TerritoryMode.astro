@@ -2,6 +2,7 @@
 import { families, familyById } from '../data/taxonomy';
 import { mappableRecords, type RecordKind } from '../data/records';
 import { site } from '../config/site';
+import { publicLanding } from '../data/surfaces';
 import type { TerritoryPin } from '../scripts/territory-mode';
 import 'leaflet/dist/leaflet.css';
 
@@ -29,6 +30,7 @@ const pins: TerritoryPin[] = mappableRecords().flatMap((r) =>
 		lat: coordinate.lat,
 		lng: coordinate.lng,
 		detailHref: r.detailHref,
+		marketingHref: publicLanding(r.slug)?.url,
 	}))
 );
 
