@@ -199,7 +199,7 @@ export const digitalSurfaces: DigitalSurface[] = [
 		id: 'termometro-landing-owner',
 		product: 'termometro-social',
 		label: 'Termómetro Social',
-		url: 'http://www.termometrosocial.com.ec',
+		url: 'http://www.termometrosocial.geotactics.com.ec',
 		surfaceType: 'LANDING',
 		status: 'LIVE',
 		ctaType: 'conocer',
