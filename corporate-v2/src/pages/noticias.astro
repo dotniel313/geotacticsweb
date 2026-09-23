@@ -3,6 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { conversarHref, copy } from '../config/site';
 import { newsTypeLabels } from '../data/news';
+import TerritorialGrid from '../components/TerritorialGrid.astro';
+import launchLogo from '../assets/brand/derived/geotactics-full-light.png';
 
 const entries = (await getCollection('news'))
 	.filter((e) => e.data.publicationStatus === 'public')
@@ -18,7 +20,7 @@ const entries = (await getCollection('news'))
 		<header class="gt-nw__intro gt-container--wide">
 			<p class="gt-nw__micro">GT / SIGNALS</p>
 			<h1>Noticias</h1>
-			<p class="gt-nw__lead">Actividad de la empresa. No es un ticker. No es breaking news.</p>
+			<p class="gt-nw__lead">Actualizaciones, lanzamientos y momentos que cuentan cómo evoluciona GeoTactics.</p>
 		</header>
 
 		{
@@ -33,7 +35,15 @@ const entries = (await getCollection('news'))
 				<ul class="gt-nw__list gt-container--wide">
 					{entries.map((entry) => (
 						<li>
-							<a href={`/noticias/${entry.data.slug}`}>
+							<a href={`/noticias/${entry.data.slug}`} class="gt-nw__card">
+								{entry.data.heroAsset === 'launch-web-3' ? (
+									<div class="gt-nw__thumb" aria-hidden="true">
+										<TerritorialGrid intensity="soft" />
+										<img src={launchLogo.src} width={launchLogo.width} height={launchLogo.height} alt="" />
+										<span>WEB 3.0 · 25 SEP 2026</span>
+									</div>
+								) : null}
+								<div class="gt-nw__copy">
 								<p class="gt-nw__type">{newsTypeLabels[entry.data.type]}</p>
 								<h2>{entry.data.title}</h2>
 								<p>
@@ -46,6 +56,7 @@ const entries = (await getCollection('news'))
 									</time>
 								</p>
 								<p>{entry.data.summary}</p>
+								</div>
 							</a>
 						</li>
 					))}
@@ -111,6 +122,48 @@ const entries = (await getCollection('news'))
 		text-decoration: none;
 	}
 
+	.gt-nw__card:has(.gt-nw__thumb) {
+		display: grid;
+		grid-template-columns: minmax(13rem, 0.7fr) minmax(0, 1.3fr);
+		gap: var(--gt-space-6);
+		align-items: stretch;
+	}
+
+	.gt-nw__thumb {
+		position: relative;
+		min-height: 12rem;
+		overflow: hidden;
+		border: 1px solid var(--gt-border);
+		background: var(--gt-off-white);
+		display: grid;
+		place-items: center;
+		padding: var(--gt-space-5);
+		isolation: isolate;
+	}
+
+	.gt-nw__thumb img {
+		position: relative;
+		z-index: 2;
+		width: min(78%, 18rem);
+		height: auto;
+		mix-blend-mode: multiply;
+	}
+
+	.gt-nw__thumb span {
+		position: absolute;
+		left: var(--gt-space-4);
+		bottom: var(--gt-space-4);
+		z-index: 2;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.62rem;
+		letter-spacing: 0.12em;
+		color: var(--gt-coral);
+	}
+
+	.gt-nw__copy {
+		align-self: center;
+	}
+
 	.gt-nw__type {
 		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 		font-size: 0.62rem;
@@ -122,5 +175,14 @@ const entries = (await getCollection('news'))
 
 	.gt-nw__cta {
 		padding-top: var(--gt-space-6);
+	}
+
+	@media (max-width: 720px) {
+		.gt-nw__card:has(.gt-nw__thumb) {
+			grid-template-columns: 1fr;
+		}
+		.gt-nw__thumb {
+			min-height: 10rem;
+		}
 	}
 </style>
