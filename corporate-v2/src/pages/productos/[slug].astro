@@ -201,6 +201,12 @@ const captureNote =
 				<a href="/productos">← Volver a productos</a>
 				<span aria-hidden="true"> · </span>
 				<a href={archiveHref}>Ver este hito en Archivo</a>
+				{rec?.coordinates?.length ? (
+					<>
+						<span aria-hidden="true"> · </span>
+						<a href="/territorio">Ver operación territorial</a>
+					</>
+				) : null}
 			</nav>
 			<a class="gt-cta" href={conversarHref}>
 				{copy.ctaPrimary}
