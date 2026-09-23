@@ -41,3 +41,18 @@ jobs:
 
       - name: Prepublication SEO
         run: npm run check:prepublish
+
+      - name: Package verified cPanel release
+        if: github.event_name == 'push'
+        run: |
+          cd dist
+          zip -q -r ../geotactics-cpanel-release.zip .
+
+      - name: Upload cPanel release
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: geotactics-cpanel-release
+          path: corporate-v2/geotactics-cpanel-release.zip
+          if-no-files-found: error
+          retention-days: 14
