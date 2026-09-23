@@ -91,6 +91,7 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 	const root = canvas.closest<HTMLElement>('.gt-tm');
 	const buttons = [...(root?.querySelectorAll<HTMLButtonElement>('[data-territory-family]') ?? [])];
 	const allButton = root?.querySelector<HTMLButtonElement>('[data-territory-all]') ?? null;
+	const status = root?.querySelector<HTMLElement>('[data-territory-status]') ?? null;
 	const active = new Set<FamilyId>(
 		buttons.filter((button) => !button.disabled).map((button) => button.dataset.territoryFamily as FamilyId),
 	);
@@ -113,6 +114,17 @@ export function initTerritory(canvas: HTMLElement, pins: TerritoryPin[], hq: { l
 		const allOn = enabled.length > 0 && enabled.every((button) => active.has(button.dataset.territoryFamily as FamilyId));
 		allButton?.classList.toggle('is-active', allOn);
 		allButton?.setAttribute('aria-pressed', String(allOn));
+
+		if (status) {
+			const visiblePins = pins.filter((pin) => active.has(pin.family)).length;
+			const activeFamilies = enabled.filter((button) =>
+				active.has(button.dataset.territoryFamily as FamilyId),
+			).length;
+			status.textContent =
+				visiblePins === 1
+					? '1 punto visible en el mapa.'
+					: `${visiblePins} puntos visibles en ${activeFamilies} familias.`;
+		}
 	};
 
 	for (const family of active) familyLayers.get(family)?.addTo(map);
