@@ -10,7 +10,7 @@ const empty = published.length === 0;
 const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 'short', year: 'numeric' });
 ---
 
-<div class:list={['gt-signals', empty && 'gt-signals--empty']} aria-label="GeoTactics Signals">
+<div class:list={['gt-signals', empty && 'gt-signals--empty', published.length === 1 && 'gt-signals--single']} aria-label="GeoTactics Signals">
 	{
 		empty ? (
 			<div class="gt-signals__inner gt-container--wide">
@@ -33,16 +33,18 @@ const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 
 							</a>
 						))}
 					</div>
-					<div class="gt-signals__group" aria-hidden="true">
-						{published.map((entry, i) => (
-							<a class="gt-signals__item" href={`/noticias/${entry.data.slug}`} tabindex="-1">
-								<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
-								<span class="gt-signals__title">{entry.data.title}</span>
-								<time>{fmt(entry.data.date)}</time>
-								<span class="gt-signals__arrow">→</span>
-							</a>
-						))}
-					</div>
+					{published.length > 1 ? (
+						<div class="gt-signals__group" aria-hidden="true">
+							{published.map((entry, i) => (
+								<a class="gt-signals__item" href={`/noticias/${entry.data.slug}`} tabindex="-1">
+									<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
+									<span class="gt-signals__title">{entry.data.title}</span>
+									<time>{fmt(entry.data.date)}</time>
+									<span class="gt-signals__arrow">→</span>
+								</a>
+							))}
+						</div>
+					) : null}
 				</div>
 			</div>
 		)
@@ -89,6 +91,20 @@ const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 
 		min-width: 100%;
 		animation: gt-signals-marquee 34s linear infinite;
 		will-change: transform;
+	}
+
+	.gt-signals--single .gt-signals__track {
+		min-width: 0;
+		animation-name: gt-signals-marquee-single;
+		animation-duration: 20s;
+	}
+
+	.gt-signals--single .gt-signals__group {
+		min-width: max-content;
+	}
+
+	.gt-signals--single .gt-signals__item {
+		border-right: 0;
 	}
 
 	.gt-signals__group {
@@ -148,6 +164,11 @@ const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 
 	@keyframes gt-signals-marquee {
 		from { transform: translateX(0); }
 		to { transform: translateX(-50%); }
+	}
+
+	@keyframes gt-signals-marquee-single {
+		from { transform: translateX(100vw); }
+		to { transform: translateX(-100%); }
 	}
 
 	@media (prefers-reduced-motion: reduce) {
