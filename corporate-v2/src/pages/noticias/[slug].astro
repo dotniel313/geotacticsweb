@@ -2,6 +2,8 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { newsTypeLabels } from '../../data/news';
+import TerritorialGrid from '../../components/TerritorialGrid.astro';
+import launchLogo from '../../assets/brand/derived/geotactics-full-light.png';
 
 export async function getStaticPaths() {
 	const entries = (await getCollection('news')).filter((e) => e.data.publicationStatus === 'public');
@@ -31,6 +33,13 @@ const d = entry.data;
 			{d.location ? <span> · {d.location}</span> : null}
 		</p>
 		<p class="gt-nd__sum">{d.summary}</p>
+		{d.heroAsset === 'launch-web-3' ? (
+			<figure class="gt-nd__hero-visual">
+				<TerritorialGrid intensity="soft" />
+				<img src={launchLogo.src} width={launchLogo.width} height={launchLogo.height} alt="GeoTactics — Data / Warehouse - Mart" />
+				<figcaption>GeoTactics Web 3.0 · lanzamiento 25 de septiembre de 2026</figcaption>
+			</figure>
+		) : null}
 		<div class="gt-nd__body">
 			<Content />
 		</div>
@@ -63,6 +72,39 @@ const d = entry.data;
 	.gt-nd__sum {
 		margin: var(--gt-space-5) 0;
 		color: var(--gt-gray-800);
+	}
+
+	.gt-nd__hero-visual {
+		position: relative;
+		min-height: clamp(15rem, 34vw, 24rem);
+		margin: var(--gt-space-6) 0 var(--gt-space-8);
+		border: 1px solid var(--gt-border);
+		background: var(--gt-off-white);
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.gt-nd__hero-visual img {
+		position: relative;
+		z-index: 2;
+		width: min(64%, 24rem);
+		height: auto;
+		mix-blend-mode: multiply;
+	}
+
+	.gt-nd__hero-visual figcaption {
+		position: absolute;
+		z-index: 2;
+		left: var(--gt-space-4);
+		bottom: var(--gt-space-4);
+		margin: 0;
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.68rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--gt-coral);
 	}
 
 	.gt-nd__body {
