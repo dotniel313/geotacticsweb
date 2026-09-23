@@ -8,7 +8,12 @@ roleConfirmed: "Fundador/cofundador, CEO operativo. Activo."
 roleStatus: confirmed
 bio: "Dirige GeoTactics. En 2007, como Director Administrativo del GADP de Sucumbíos, enfrentó el problema de organización institucional que origina GOST. Autor del marco metodológico. La empresa incorpora especialistas por proyecto."
 bioStatus: confirmed
-photoStatus: missing
+historicalRole: "Fundador & CEO"
+historicalAlias: "Chuky"
+historicalBio: "Arquitecto de sistemas y fundador."
+historicalMetadataStatus: documented
+photo: "https://static.wixstatic.com/media/936075_7bb3e248ad45429d948446b51b8f9b88~mv2.jpg/v1/crop/x_254,y_0,w_774,h_774/fill/w_480,h_480,al_c,q_85/936075_7bb3e248ad45429d948446b51b8f9b88~mv2.jpg"
+photoStatus: publicable
 public: true
 founder: true
 currentActive: true

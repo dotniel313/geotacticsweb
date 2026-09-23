@@ -24,8 +24,8 @@ period:
   display: "2023"
   dateStatus: publish
 summary: "Implementación de O/T en el GAD Provincial de Sucumbíos. Planificación, seguimiento y control institucional."
-context: "Cliente: GAD Provincial de Sucumbíos. Año documentado: 2023. Distinto del caso PDOT. El PDOT puede ser marco institucional del cliente; no es el producto O/T."
-intervention: "Solución de planificación, seguimiento y control. Evidencia de POA, PAC, socialización, capacitación, CGA y Corposucumbíos."
+context: "GAD Provincial de Sucumbíos, 2023. O/T se implementa como una solución para fortalecer la planificación operativa, el seguimiento y el control institucional."
+intervention: "Implementación de O/T para planificación, seguimiento y control, con trabajo sobre POA y PAC y procesos de socialización y capacitación en distintas áreas de la institución."
 products:
   - ot
 methodologies:

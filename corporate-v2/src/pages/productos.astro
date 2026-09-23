@@ -1,7 +1,7 @@
 ---
 import ProductShowcase from '../components/ProductShowcase.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { conversarHref, copy, productsIntro, site } from '../config/site';
+import { conversarHref, copy, productsIntro } from '../config/site';
 
 const seoTitle = 'Productos | GeoTactics';
 const seoDescription =
@@ -20,16 +20,14 @@ const seoDescription =
 
 		<ProductShowcase mode="catalog" />
 
-		<footer class="gt-pp__cta gt-container--wide">
-			<p>
-				Si el problema está en territorio, gestión, operación, mercado o campo, conversemos.
-			</p>
-			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
-			<p class="gt-pp__colophon">
-				{site.originLine}
-				<span aria-hidden="true"> · </span>
-				{site.coordinates}
-			</p>
+		<footer class="gt-page-close">
+			<div class="gt-page-close__inner">
+				<p class="gt-page-close__kicker">GT / CONVERSAR</p>
+				<p class="gt-page-close__text">
+					¿Hay un proceso, territorio u operación que podría funcionar mejor? Conversemos sobre el problema.
+				</p>
+				<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
+			</div>
 		</footer>
 	</article>
 </BaseLayout>

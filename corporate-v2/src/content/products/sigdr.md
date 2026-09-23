@@ -19,7 +19,7 @@ primaryFamily: inteligencia-territorial
 problem: "Información rural —demográfica, productiva, organizativa— no estructurada para caracterizar territorio ni sostener decisiones públicas locales."
 origin: "Primera materialización tecnológica documentada de GOST (2017, Gualsaquí)."
 purpose: "Levantamiento demográfico rural, gestión de información territorial, seguimiento nominal de proyectos en comunidades, comunas, pueblos indígenas y juntas parroquiales. Web y móvil."
-gostRelation: "GOST → SIGDR → CAPTURE → base territorial → DataSucumbíos. DataSucumbíos no es SIGDR v2."
+gostRelation: "Primera materialización tecnológica documentada de GOST y antecedente de la línea territorial que posteriormente incorpora CAPTURE y DataSucumbíos."
 disciplines:
   - GIS
 relatedProducts:

@@ -4,7 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProductVisualFallback from '../../components/ProductVisualFallback.astro';
 import ProductStatus from '../../components/ProductStatus.astro';
 import { conversarHref, copy } from '../../config/site';
-import { ctaLabels, publicSurface } from '../../data/surfaces';
+import { ctaLabels, publicSurfaces } from '../../data/surfaces';
 import { casesForProduct } from '../../lib/cases';
 import { recordBySlug } from '../../data/records';
 import { familyById, type FamilyId } from '../../data/taxonomy';
@@ -26,9 +26,10 @@ const rec = recordBySlug(p.slug);
 const cases = casesForProduct(await getCollection('cases'), p.slug);
 const products = (await getCollection('products')).filter((e) => e.data.public);
 const related = products.filter((e) => (p.relatedProducts ?? rec?.relatedRecords ?? []).includes(e.data.slug));
-const surface = publicSurface(p.slug);
+const surfaces = publicSurfaces(p.slug);
 const family = rec ? familyById(rec.primaryFamily as FamilyId) : undefined;
 const yearLabel = p.yearLabel ?? (p.year != null ? String(p.year) : undefined);
+const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug}` : '/archivo';
 
 const problem = p.problem ?? rec?.problem;
 const origin = p.origin;
@@ -36,6 +37,16 @@ const purpose = p.purpose ?? rec?.solution;
 const how = p.howItWorks;
 const gost = p.gostRelation ?? rec?.gostRelation;
 const disciplines = (p.disciplines?.length ? p.disciplines : rec?.disciplines) ?? [];
+const breadcrumbJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://www.geotactics.com.ec/' },
+		{ '@type': 'ListItem', position: 2, name: 'Productos', item: 'https://www.geotactics.com.ec/productos' },
+		{ '@type': 'ListItem', position: 3, name: p.name, item: `https://www.geotactics.com.ec/productos/${p.slug}` },
+	],
+};
+
 const captureNote =
 	p.slug === 'datasucumbios' || p.slug === 'sigdr'
 		? 'CAPTURE es el componente de campo de SIGDR. En Sucumbíos se registraron 27.539 habitantes en 31 parroquias rurales, a partir de un levantamiento propio.'
@@ -43,6 +54,7 @@ const captureNote =
 ---
 
 <BaseLayout title={p.seoTitle} description={p.seoDescription} noindex={false}>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
 	<article class="gt-pd">
 		<header class="gt-pd__hero">
 			<div class="gt-pd__hero-inner gt-container--wide">
@@ -61,8 +73,16 @@ const captureNote =
 					{
 						rec && rec.assets.length > 0 ? (
 							<div class="gt-pd__fan">
-								{rec.assets.slice(0, 3).map((a) => (
-									<img src={a.thumb ?? a.src} alt={a.alt} width="640" height="400" />
+								{rec.assets.slice(0, 3).map((a, index) => (
+									<img
+										src={a.thumb ?? a.src}
+										alt={a.alt}
+										width="640"
+										height="400"
+										loading={index === 0 ? 'eager' : 'lazy'}
+										decoding="async"
+										fetchpriority={index === 0 ? 'high' : 'auto'}
+									/>
 								))}
 							</div>
 						) : (
@@ -166,25 +186,36 @@ const captureNote =
 			)
 		}
 		{
-			surface?.url && (
+			surfaces.length > 0 && (
 				<section class="gt-pd__block gt-container--wide">
-					<h2>Superficie digital</h2>
-					<p>
-						<a href={surface.url} rel="noopener noreferrer" target="_blank">
-							{surface.ctaType !== 'none' ? ctaLabels[surface.ctaType] : 'Abrir'}
-							<span class="visually-hidden"> (se abre en una ventana nueva)</span>
-						</a>
-					</p>
+					<h2>Explorar producto</h2>
+					<ul class="gt-pd__surfaces">
+						{surfaces.map((surface) => (
+							<li>
+								<a href={surface.url} rel="noopener noreferrer" target="_blank">
+									<strong>{surface.surfaceType === 'LANDING' ? 'Landing' : surface.label}</strong>
+									<span>{surface.ctaType !== 'none' ? ctaLabels[surface.ctaType] : 'Abrir'}</span>
+									<span class="visually-hidden"> (se abre en una ventana nueva)</span>
+								</a>
+							</li>
+						))}
+					</ul>
 				</section>
 			)
 		}
 
 		<footer class="gt-pd__cta gt-container--wide">
-			<p>
-				<a href="/productos">Catálogo</a>
+			<nav class="gt-pd__return" aria-label="Continuar explorando">
+				<a href="/productos">← Volver a productos</a>
 				<span aria-hidden="true"> · </span>
-				<a href="/archivo">Archivo</a>
-			</p>
+				<a href={archiveHref}>Ver este hito en Archivo</a>
+				{rec?.coordinates?.length ? (
+					<>
+						<span aria-hidden="true"> · </span>
+						<a href="/territorio">Ver operación territorial</a>
+					</>
+				) : null}
+			</nav>
 			<a class="gt-cta" href={conversarHref}>
 				{copy.ctaPrimary}
 			</a>
@@ -281,12 +312,56 @@ const captureNote =
 		border-top: 1px solid var(--gt-border);
 	}
 
+	.gt-pd__surfaces {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		max-width: 42rem;
+		display: grid;
+		gap: 0;
+	}
+
+	.gt-pd__surfaces li {
+		border-top: 1px solid var(--gt-border);
+	}
+
+	.gt-pd__surfaces a {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0.5rem 1rem;
+		padding: 0.75rem 0;
+		text-decoration: none;
+	}
+
+	.gt-pd__surfaces a:hover strong,
+	.gt-pd__surfaces a:focus-visible strong {
+		color: var(--gt-coral);
+	}
+
+	.gt-pd__surfaces span {
+		color: var(--gt-text-muted);
+		font-size: 0.88rem;
+	}
+
 	.gt-pd__cta {
 		padding-top: var(--gt-space-10);
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--gt-space-5);
 		align-items: center;
+	}
+
+	.gt-pd__return {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.55rem;
+		font-size: 0.82rem;
+	}
+
+	.gt-pd__return a {
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
 	}
 
 	@media (max-width: 720px) {

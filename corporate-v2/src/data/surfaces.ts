@@ -139,6 +139,106 @@ export const digitalSurfaces: DigitalSurface[] = [
 		publicationStatus: 'none',
 		note: 'HEAD 000.',
 	},
+
+	{
+		id: 'inq-landing',
+		product: 'inqui',
+		label: 'Inquilino',
+		url: 'http://www.inquilino.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
+	},
+	{
+		id: 'ea-landing',
+		product: 'ecuador-ancestral',
+		label: 'Ecuador Ancestral',
+		url: 'http://www.ecuadorancestral.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
+	},
+	{
+		id: 'nursego-landing',
+		product: 'nurse-go',
+		label: 'Nurse GO',
+		url: 'http://www.nursego.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026; la ficha corporativa completa sigue pendiente de reconciliación.',
+	},
+	{
+		id: 'mada-landing-owner',
+		product: 'madaradio',
+		label: 'MadaRadio',
+		url: 'http://www.madaradio.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER. Sustituye como superficie de marketing al dominio histórico roto.',
+	},
+	{
+		id: 'explora-app-landing',
+		product: 'explorasucumbios',
+		label: 'Explora App',
+		url: 'http://www.exploraapp.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing de marketing aportada y autorizada por OWNER; convive con la plataforma pública.',
+	},
+	{
+		id: 'termometro-landing-owner',
+		product: 'termometro-social',
+		label: 'Termómetro Social',
+		url: 'http://www.termometrosocial.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER el 22 sep 2026.',
+	},
+	{
+		id: 'rantiy-app-landing',
+		product: 'rantyi',
+		label: 'RANTYI App',
+		url: 'http://www.rantiyapp.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing aportada y autorizada por OWNER. El hostname conserva rantiyapp; el producto canónico es RANTYI.',
+	},
+	{
+		id: 'orange-app-landing',
+		product: 'orangemap',
+		label: 'Orange App',
+		url: 'http://www.orangeapp.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing de marketing aportada y autorizada por OWNER; convive con la plataforma pública OrangeMap.',
+	},
+	{
+		id: 'guanta-landing-owner',
+		product: 'guanta',
+		label: 'GUANTA',
+		url: 'http://www.guanta.geotactics.com.ec',
+		surfaceType: 'LANDING',
+		status: 'LIVE',
+		ctaType: 'conocer',
+		publicationStatus: 'publicable',
+		note: 'Landing de marketing aportada y autorizada por OWNER; separada del host de aplicación previamente no disponible.',
+	},
 	{
 		id: 'corp-prod',
 		product: 'corporate',
@@ -174,8 +274,8 @@ export function publicPlatform(productSlug: string) {
 	);
 }
 
-export function publicSurface(productSlug: string) {
-	return digitalSurfaces.find(
+export function publicSurfaces(productSlug: string) {
+	return digitalSurfaces.filter(
 		(s) =>
 			s.product === productSlug &&
 			s.status === 'LIVE' &&
@@ -183,6 +283,14 @@ export function publicSurface(productSlug: string) {
 			s.ctaType !== 'none' &&
 			Boolean(s.url),
 	);
+}
+
+export function publicSurface(productSlug: string) {
+	return publicSurfaces(productSlug)[0];
+}
+
+export function publicLanding(productSlug: string) {
+	return publicSurfaces(productSlug).find((s) => s.surfaceType === 'LANDING');
 }
 
 export const ctaLabels: Record<Exclude<CtaType, 'none'>, string> = {

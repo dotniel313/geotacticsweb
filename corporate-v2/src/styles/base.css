@@ -199,3 +199,62 @@ button {
 	color: var(--gt-text-muted);
 	max-width: 40rem;
 }
+
+
+/* 3.8 integrated composition: one closing rhythm across editorial pages. */
+.gt-page-close {
+	width: min(100% - 2 * var(--gt-gutter-x), var(--gt-container-wide));
+	margin-inline: auto;
+	padding: var(--gt-space-8) 0 var(--gt-space-4);
+	border-top: 1px solid var(--gt-border);
+}
+
+/* Pages with the shared closing CTA already have a visual close.
+   Avoid stacking page padding + footer margin into a large empty band. */
+main:has(.gt-page-close) > :first-child {
+	padding-bottom: var(--gt-space-6) !important;
+}
+
+.gt-page-close__inner {
+	max-width: 44rem;
+}
+
+.gt-page-close__kicker {
+	margin: 0 0 var(--gt-space-3);
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.62rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--gt-coral);
+}
+
+.gt-page-close__text {
+	font-size: var(--gt-fs-lg);
+	font-weight: 600;
+	margin-bottom: var(--gt-space-5);
+}
+
+.gt-page-close__meta {
+	margin-top: var(--gt-space-6);
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 0.68rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--gt-gray-500);
+}
+
+@media (max-width: 720px) {
+	.gt-page-close {
+		padding-top: var(--gt-space-6);
+	}
+
+	main:has(.gt-page-close) > :first-child {
+		padding-bottom: var(--gt-space-5) !important;
+	}
+}
+
+
+/* Semantic editorial emphasis. Apply sparingly during content reconciliation. */
+.gt-accent {
+	color: var(--gt-coral);
+}

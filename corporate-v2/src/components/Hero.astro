@@ -13,7 +13,11 @@ import { copy, site, conversarHref } from '../config/site';
 				<span>{site.originLine}</span>
 			</p>
 			<h1 id="gt-hero-title">{copy.h1}</h1>
-			<p class="gt-hero__support">{copy.supporting}</p>
+			<p class="gt-hero__support">
+				<span class="gt-accent">Entendemos primero el problema.</span> Después construimos la tecnología. Conectamos información,
+				territorio y procesos para convertir realidades complejas en sistemas útiles que ayuden a
+				<span class="gt-accent">gestionar mejor y tomar mejores decisiones.</span>
+			</p>
 			<div class="gt-hero__actions">
 				<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 				<a class="gt-cta gt-cta--ghost" href="/tecnologia">{copy.ctaSecondary}</a>

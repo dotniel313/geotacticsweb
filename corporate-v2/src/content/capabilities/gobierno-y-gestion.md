@@ -3,7 +3,7 @@ id: CAP-02
 slug: gobierno-y-gestion
 order: 2
 title: Gobierno y gestión
-shortDescription: Problemas de planificación, seguimiento, control e información institucional.
+shortDescription: Ayudamos a convertir procesos, planes e información institucional en una gestión que se pueda seguir, entender y mejorar.
 microcode: FAM-02
 status: active
 seoTitle: Gobierno y gestión | GeoTactics
@@ -12,6 +12,6 @@ cue: Institución + proceso
 visual: gov
 ---
 
-Sistemas para que una institución comprenda, planifique y controle.
+Cuando la información está dispersa y seguir un plan depende de archivos, personas o procesos desconectados, gestionar se vuelve más difícil. Diseñamos sistemas que ayudan a ordenar ese flujo, hacer seguimiento y convertir información institucional en decisiones de trabajo.
 
-Materializaciones: SIGC, YAKU, O/T, E-GPS (histórico), Observatorio (I+D+i). Casos: Pimampiro, EMAPAI, O/T GAD Provincial de Sucumbíos. La Victoria es una experiencia histórica parcial.
+SIGC, YAKU y O/T representan distintas etapas de esta línea de trabajo. E-GPS extendió esa experiencia hacia la interacción ciudadana, mientras Observatorio explora nuevas formas de organizar y presentar información pública. La trayectoria incluye experiencias con Pimampiro, EMAPAI y el GAD Provincial de Sucumbíos.

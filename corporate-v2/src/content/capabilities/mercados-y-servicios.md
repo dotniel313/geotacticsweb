@@ -3,7 +3,7 @@ id: CAP-05
 slug: mercados-y-servicios
 order: 5
 title: Mercados y servicios
-shortDescription: Problemas de encuentro entre oferta, demanda e información, con o sin dimensión territorial.
+shortDescription: Acercamos a quien necesita algo con quien puede ofrecerlo, usando información y territorio para hacer más simple el encuentro.
 microcode: FAM-05
 status: active
 seoTitle: Mercados y servicios | GeoTactics
@@ -12,8 +12,6 @@ cue: Oferta + demanda
 visual: market
 ---
 
-Conectar quien busca con quien ofrece. A veces el mapa es central (OrangeMap, RANTYI). A veces el oficio o el arriendo (Fixis, Inqui).
+Muchas veces la oferta existe y la necesidad también, pero no se encuentran. Diseñamos herramientas para reducir esa distancia y hacer más claro el encuentro entre personas, comercios y servicios. El territorio puede ser parte de la respuesta, junto con la disponibilidad, la información y el flujo del servicio.
 
-Quito aparece como origen conceptual de RANTYI y Fixis: observación, no pin de implementación operacional.
-
-Inqui es desarrollo propio no comercializado. Permanece en archivo.
+OrangeMap trabaja sobre descubrimiento de comercios y productos; RANTYI sobre intercambio entre personas; Fixis sobre servicios y oficios. Inqui forma parte de esta trayectoria como desarrollo experimental de gestión de arriendos.

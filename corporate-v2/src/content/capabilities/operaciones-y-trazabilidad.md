@@ -3,7 +3,7 @@ id: CAP-04
 slug: operaciones-y-trazabilidad
 order: 4
 title: Operaciones y trazabilidad
-shortDescription: Problemas de operación física o administrativa que requieren trazar un flujo de punta a punta.
+shortDescription: Hacemos visible el recorrido de una operación para saber qué ocurrió, cuándo, dónde y en qué estado se encuentra.
 microcode: FAM-04
 status: active
 seoTitle: Operaciones y trazabilidad | GeoTactics
@@ -12,6 +12,6 @@ cue: Flujo + registro
 visual: ops
 ---
 
-Cuando el problema es un despacho, un ticket o una cadena de registros, la familia no es «móvil» ni «mina»: es trazabilidad.
+Cuando una operación ocurre entre varios puntos, perder un registro significa perder visibilidad. Construimos sistemas que conectan cada movimiento —qué salió, cuándo, cuánto, hacia dónde y cuándo fue recibido— para que el proceso pueda seguirse de principio a fin.
 
-Materialización pública: GUANTA — trazabilidad digital punto a punto para despacho y recepción de materiales. En desarrollo.
+GUANTA aplica esta lógica al despacho y recepción de materiales mediante registro operativo y tickets digitales con QR.

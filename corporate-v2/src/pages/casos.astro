@@ -10,107 +10,48 @@ const entries = sortCases((await getCollection('cases')).filter(isPublicCase));
 
 <BaseLayout
 	title="Casos | GeoTactics"
-	description="Experiencias reales de GeoTactics en territorio, instituciones y planificación. No es un catálogo de productos."
+	description="Experiencias de GeoTactics en territorio, instituciones, gestión y operación."
 	noindex={false}
 >
 	<article class="gt-ci">
 		<header class="gt-ci__intro gt-container--wide">
 			<p class="gt-ci__micro">GT / CASES</p>
 			<h1>Casos</h1>
-			<p class="gt-ci__lead">Experiencias reales. No sistemas en abstracto.</p>
+			<p class="gt-ci__lead">Cada caso comenzó con una realidad que necesitaba cambiar.</p>
 			<p class="gt-ci__support">
-				Un caso es una aplicación concreta: un lugar, un período, un problema y los sistemas que
-				participaron. El producto explica la tecnología. El caso explica lo que ocurrió. El Archivo cruza
-				casos y productos en el tiempo y el territorio.
-			</p>
-			<p>
-				<a class="gt-cta gt-cta--ghost" href="/archivo">Explorar archivo</a>
+				No partimos de una solución prefabricada. Entramos al territorio, entendemos el proceso y construimos sistemas alrededor de lo que realmente ocurre. Estas experiencias muestran ese recorrido.
 			</p>
 		</header>
 
 		<section class="gt-ci__list gt-container--wide" aria-labelledby="gt-ci-list">
-			<h2 id="gt-ci-list">Casos</h2>
+			<h2 id="gt-ci-list">Experiencias</h2>
 			<div class="gt-ci__grid">
 				{entries.map((entry) => <CaseCard entry={entry} />)}
 			</div>
 		</section>
 
-		<footer class="gt-ci__cta gt-container--wide">
-			<p>Si el problema está en territorio, gestión o operación, conversemos.</p>
+		<footer class="gt-page-close">
+			<div class="gt-page-close__inner">
+			<p class="gt-page-close__text">Si hay una realidad que necesitas entender, ordenar o hacer funcionar mejor, conversemos.</p>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
-		</footer>
+		
+			</div></footer>
 	</article>
 </BaseLayout>
 
 <style>
-	.gt-ci {
-		padding-bottom: var(--gt-space-12);
-		min-width: 0;
-		max-width: 100%;
-	}
-
-	.gt-ci__intro {
-		padding: var(--gt-space-10) 0 var(--gt-space-8);
-		border-bottom: 1px solid var(--gt-border);
-	}
-
-	.gt-ci__micro {
-		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-		font-size: 0.62rem;
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		color: var(--gt-gray-400);
-		margin-bottom: 0.5rem;
-	}
-
-	.gt-ci h1 {
-		font-size: var(--gt-fs-xl);
-		margin-bottom: var(--gt-space-4);
-		max-width: 18rem;
-	}
-
-	.gt-ci__lead {
-		font-size: var(--gt-fs-lg);
-		font-weight: 600;
-		max-width: 28rem;
-		margin-bottom: var(--gt-space-4);
-	}
-
-	.gt-ci__support {
-		max-width: 40rem;
-		color: var(--gt-text-muted);
-	}
-
-	.gt-ci__list {
-		padding: var(--gt-space-10) 0;
-	}
-
-	.gt-ci__list h2 {
-		font-size: var(--gt-fs-lg);
-		margin-bottom: var(--gt-space-6);
-	}
-
-	.gt-ci__grid > :first-child {
-		grid-column: 1 / -1;
-	}
-
-	.gt-ci__cta {
-		padding-top: var(--gt-space-8);
-		max-width: 40rem;
-	}
-
-	.gt-ci__cta p {
-		margin-bottom: var(--gt-space-5);
-	}
-
-	@media (max-width: 720px) {
-		.gt-ci h1,
-		.gt-ci__lead {
-			max-width: none;
-		}
-
-		.gt-ci__grid {
-			grid-template-columns: 1fr;
-		}
-	}
+	.gt-ci { padding-bottom: var(--gt-space-12); min-width: 0; max-width: 100%; }
+	.gt-ci__intro { padding: var(--gt-space-10) 0 var(--gt-space-8); border-bottom: 1px solid var(--gt-border); }
+	.gt-ci__micro { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gt-gray-400); margin-bottom: .5rem; }
+	.gt-ci h1 { font-size: var(--gt-fs-xl); margin-bottom: var(--gt-space-4); max-width: 18rem; }
+	.gt-ci__lead { font-size: var(--gt-fs-lg); font-weight: 600; max-width: 34rem; margin-bottom: var(--gt-space-4); }
+	.gt-ci__support { max-width: 44rem; color: var(--gt-text-muted); }
+	.gt-ci__list { padding: var(--gt-space-8) 0; }
+	.gt-ci__list h2 { font-size: var(--gt-fs-lg); margin-bottom: var(--gt-space-5); }
+	.gt-ci__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); align-items: stretch; }
+	.gt-ci__grid > :first-child { grid-column: auto; }
+	.gt-ci__cta { padding-top: var(--gt-space-8); max-width: 40rem; }
+	.gt-ci__cta p { margin-bottom: var(--gt-space-5); }
+	@media (max-width:1024px){ .gt-ci__grid{grid-template-columns:repeat(2,minmax(0,1fr))} }
+	@media (max-width:720px){ .gt-ci h1,.gt-ci__lead{max-width:none}.gt-ci__grid{grid-template-columns:1fr} }
 </style>

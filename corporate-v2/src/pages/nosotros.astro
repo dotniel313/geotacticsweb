@@ -25,10 +25,13 @@ const seoDescription =
 				<div>
 					<p class="gt-ns__micro">{identity.microcode}</p>
 					<h1 id="gt-ns-title">{identity.heroHeadline}</h1>
-					<p class="gt-ns__lead">{identity.heroSupport}</p>
+					<p class="gt-ns__lead">
+						Somos una empresa ecuatoriana de tecnología. <span class="gt-accent">Las herramientas han cambiado; nuestra forma de empezar no.</span>
+						Entendemos primero la realidad y construimos después. Nacimos en Ibarra, hoy tenemos nuestra base en Nueva Loja,
+						Sucumbíos, y desde Ecuador seguimos llevando esa manera de trabajar hacia nuevos problemas.
+					</p>
 				</div>
 				<aside class="gt-ns__hero-aside" aria-label="Origen y base">
-					<p class="gt-ns__coord">{site.coordinates}</p>
 					<p>
 						<span class="gt-ns__k">ORIGEN</span>
 						Ibarra, Ecuador
@@ -54,7 +57,7 @@ const seoDescription =
 				<p class="gt-ns__micro">B · {identity.purposeLabel}</p>
 				<h2 id="gt-ns-purpose">{identity.purposeLabel}</h2>
 				<blockquote>
-					<p>{identity.purpose}</p>
+					<p>Hacer que la tecnología ayude a las organizaciones a <span class="gt-accent">funcionar mejor</span> y a las personas a <span class="gt-accent">vivir mejor</span>.</p>
 				</blockquote>
 			</div>
 		</section>
@@ -134,8 +137,12 @@ const seoDescription =
 					.filter((e) => e.data.currentActive)
 					.map((entry) => (
 						<article class="gt-ns__person" id={entry.data.slug}>
-							<div class="gt-ns__photo" aria-hidden="true">
-								<span />
+							<div class="gt-ns__photo">
+								{entry.data.photo && entry.data.photoStatus === 'publicable' ? (
+									<img src={entry.data.photo} alt={`Retrato histórico de ${entry.data.publicName}`} width="480" height="480" loading="lazy" decoding="async" />
+								) : (
+									<span aria-hidden="true" />
+								)}
 							</div>
 							<div>
 								<p class="gt-ns__code">{entry.data.id}</p>
@@ -146,15 +153,19 @@ const seoDescription =
 						</article>
 					))
 			}
-			<h3 class="gt-ns__sub">Fundadores</h3>
+			<h3 class="gt-ns__sub">Fundadores históricos</h3>
 			<ul class="gt-ns__founders">
 				{
 					people
-						.filter((e) => e.data.founder)
+						.filter((e) => e.data.founder && !e.data.currentActive)
 						.map((entry) => (
 							<li class:list={['gt-ns__founder', entry.data.currentActive && 'is-active']}>
-								<div class="gt-ns__photo" aria-hidden="true">
-									<span />
+								<div class="gt-ns__photo">
+									{entry.data.photo && entry.data.photoStatus === 'publicable' ? (
+										<img src={entry.data.photo} alt={`Retrato histórico de ${entry.data.publicName}`} width="480" height="480" loading="lazy" decoding="async" />
+									) : (
+										<span aria-hidden="true" />
+									)}
 								</div>
 								<div>
 									<p class="gt-ns__code">
@@ -184,15 +195,15 @@ const seoDescription =
 								<span> · {office.data.region}</span>
 							</h3>
 							<p>{office.data.note}</p>
-							{office.data.coordinates && (
+							{office.data.coordinates ? (
 								<p class="gt-ns__coord gt-ns__coord--inline">{office.data.coordinates}</p>
-							)}
+							) : null}
 						</article>
 					))
 				}
 			</div>
 			<p class="gt-ns__teaser">
-				<a href="/archivo">{identity.presenceTeaser}</a>
+				<a class="gt-cta gt-cta--ghost" href="/territorio">Ver operación territorial</a>
 			</p>
 		</section>
 
@@ -200,20 +211,26 @@ const seoDescription =
 			<p class="gt-ns__micro">J · RUMBO</p>
 			<h2 id="gt-ns-div">{identity.diversificationHeadline}</h2>
 			<div class="gt-ns__prose">
-				<p>{identity.diversification}</p>
+				<p>
+					Los <span class="gt-accent">productos propios</span> nos llevaron a nuevos problemas —operación, mercados, servicios,
+					turismo y participación— y cada uno amplió lo que sabemos hacer. No dejamos atrás nuestra historia:
+					la usamos para construir la siguiente solución.
+				</p>
 			</div>
 		</section>
 
-		<footer class="gt-ns__cta gt-container--wide">
+		<footer class="gt-page-close">
+			<div class="gt-page-close__inner">
 			<p class="gt-ns__micro">K · CIERRE</p>
-			<p class="gt-ns__cta-text">{identity.cta}</p>
+			<p class="gt-page-close__text">{identity.cta}</p>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
-			<p class="gt-ns__colophon">
+			<p class="gt-page-close__meta">
 				{site.originLine}
 				<span aria-hidden="true"> · </span>
 				{site.coordinates}
 			</p>
-		</footer>
+		
+			</div></footer>
 	</article>
 </BaseLayout>
 
@@ -458,19 +475,32 @@ const seoDescription =
 	.gt-ns__person,
 	.gt-ns__founder {
 		display: grid;
-		grid-template-columns: 7.5rem minmax(0, 1fr);
-		gap: var(--gt-space-6);
+		grid-template-columns: 7rem minmax(0, 1fr);
+		gap: var(--gt-space-5);
 		align-items: start;
 		max-width: 46rem;
+	}
+
+	.gt-ns__person {
+		margin-bottom: var(--gt-space-8);
+	}
+
+	.gt-ns__sub {
+		margin-top: var(--gt-space-8);
+		margin-bottom: var(--gt-space-5);
 	}
 
 	.gt-ns__founders {
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--gt-space-6);
+		display: grid;
+		gap: var(--gt-space-5);
+	}
+
+	.gt-ns__founder {
+		padding-top: var(--gt-space-5);
+		border-top: 1px solid var(--gt-border);
 	}
 
 	.gt-ns__founder.is-active {
@@ -484,7 +514,10 @@ const seoDescription =
 	}
 
 	.gt-ns__photo {
+		width: 7rem;
+		height: 7rem;
 		aspect-ratio: 1;
+		overflow: hidden;
 		border: 1px solid var(--gt-border);
 		background:
 			linear-gradient(to right, color-mix(in srgb, var(--gt-coffee) 10%, transparent) 1px, transparent 1px),
@@ -492,6 +525,13 @@ const seoDescription =
 		background-size: 16px 16px;
 		background-color: var(--gt-white);
 		position: relative;
+	}
+
+	.gt-ns__photo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
 	}
 
 	.gt-ns__photo span {
@@ -605,6 +645,11 @@ const seoDescription =
 
 		.gt-ns__photo {
 			width: 5.5rem;
+			height: 5.5rem;
+		}
+
+		.gt-ns__sub {
+			margin-top: var(--gt-space-6);
 		}
 
 		.gt-ns__spine li,

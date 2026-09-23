@@ -28,7 +28,8 @@ const projectHrefFor = (slug: string) => {
 const operation = sortProducts(source.filter((e) => e.data.group === 'operation'));
 const next = sortProducts(source.filter((e) => e.data.group === 'next'));
 const lineage = sortProducts(source.filter((e) => e.data.group === 'lineage'));
-const catalog = sortProducts(source.filter((e) => e.data.group === 'catalog'));
+const currentCatalog = sortProducts(source.filter((e) => e.data.group === 'catalog'));
+const catalog = currentCatalog;
 
 ---
 
@@ -82,24 +83,16 @@ const catalog = sortProducts(source.filter((e) => e.data.group === 'catalog'));
 		</div>
 	</div>
 
-	<div class="gt-prod__band gt-prod__band--ln gt-container--wide">
-		<p class="gt-prod__gcode">{groupCopy.lineage.micro}</p>
-		{
-			mode === 'catalog' ? (
-				<h2 class="gt-prod__glabel" id={groupCopy.lineage.id}>
-					{groupCopy.lineage.label}
-				</h2>
-			) : (
-				<p class="gt-prod__glabel">{groupCopy.lineage.label}</p>
-			)
-		}
-		<p class="gt-prod__glead">{groupCopy.lineage.lead}</p>
-		<div class="gt-prod-grid gt-prod-grid--ln">
-			{lineage.map((entry) => (
-				<ProductCard entry={entry} variant="lineage" mode={mode} projectHref={projectHrefFor(entry.data.slug)} />
-			))}
-		</div>
-	</div>
+	{
+		mode === 'catalog' && lineage.length > 0 && (
+			<div class="gt-prod__heritage gt-container--wide">
+				<p class="gt-prod__gcode">TRAYECTORIA</p>
+				<h2 class="gt-prod__glabel">Sistemas que abrieron camino</h2>
+				<p class="gt-prod__glead">SIGDR, SIGC, YAKU y O/T forman parte de la trayectoria tecnológica de GeoTactics. Su historia completa vive en el Archivo.</p>
+				<a class="gt-cta gt-cta--ghost" href="/archivo">Explorar trayectoria</a>
+			</div>
+		)
+	}
 
 	{
 		mode === 'catalog' && catalog.length > 0 && (
@@ -217,9 +210,7 @@ const catalog = sortProducts(source.filter((e) => e.data.group === 'catalog'));
 		gap: 1rem;
 	}
 
-	.gt-prod-grid--ln {
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-	}
+	.gt-prod__heritage { margin-top: var(--gt-space-10); padding: var(--gt-space-8) 0; border-block: 1px solid var(--gt-border); }
 
 	.gt-prod-grid--cat {
 		grid-template-columns: repeat(2, minmax(0, 1fr));

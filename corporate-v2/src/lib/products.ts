@@ -7,6 +7,9 @@ export const statusLabels = {
 	prelanzamiento: 'Prelanzamiento',
 	trayectoria: 'Trayectoria',
 	desarrollado: 'Desarrollado',
+	prototipo: 'Prototipo',
+	desarrollo_pausado: 'Desarrollo pausado',
+	no_comercializado: 'No comercializado',
 } as const;
 
 export const groupCopy = {
@@ -14,25 +17,25 @@ export const groupCopy = {
 		id: 'en-operacion',
 		label: 'En operación',
 		micro: 'A · OPERACIÓN',
-		lead: 'Sistemas en operación, disponibles o utilizados en contextos reales.',
+		lead: 'Sistemas que ya están convirtiendo información, territorio y procesos en herramientas de trabajo.',
 	},
 	next: {
 		id: 'nueva-generacion',
 		label: 'Nueva generación',
 		micro: 'B · EVOLUCIÓN',
-		lead: 'Productos propios en desarrollo o prelanzamiento. El estado de cada uno se indica en su ficha.',
+		lead: 'Nuevas respuestas a problemas que encontramos en operaciones, servicios, participación y mercados.',
 	},
 	lineage: {
 		id: 'trayectoria',
 		label: 'Trayectoria',
 		micro: 'C · TRAYECTORIA',
-		lead: 'Sistemas que forman parte de la evolución tecnológica de GeoTactics.',
+		lead: 'Sistemas que resolvieron problemas concretos, nos obligaron a aprender y abrieron el camino hacia lo que GeoTactics es hoy.',
 	},
 	catalog: {
 		id: 'otros',
 		label: 'Otros productos',
 		micro: 'CATÁLOGO',
-		lead: 'Otros desarrollos publicables de GeoTactics.',
+		lead: 'Otras ideas y sistemas nacidos de necesidades concretas que ampliaron nuestra forma de resolver problemas.',
 	},
 } as const;
 

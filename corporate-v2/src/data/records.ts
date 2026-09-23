@@ -1,4 +1,26 @@
 import { type FamilyId, families } from './taxonomy';
+import p10Url from '../assets/history/pdyot-sucumbios/p10.jpg?url';
+import p19Url from '../assets/history/pdyot-sucumbios/p19.jpg?url';
+import p24Url from '../assets/history/pdyot-sucumbios/p24.jpg?url';
+import d01Url from '../assets/history/dayuma-ines-arango/d01.jpeg?url';
+import d19Url from '../assets/history/dayuma-ines-arango/d19.jpeg?url';
+import d24Url from '../assets/history/dayuma-ines-arango/d24.jpeg?url';
+import e14Url from '../assets/history/emapai-yaku/e14.jpeg?url';
+import e35Url from '../assets/history/emapai-yaku/e35.jpeg?url';
+import e58Url from '../assets/history/emapai-yaku/e58.jpeg?url';
+import pi02Url from '../assets/history/pimampiro-sigc/pi02.jpg?url';
+import pi13Url from '../assets/history/pimampiro-sigc/pi13.jpg?url';
+import pi18Url from '../assets/history/pimampiro-sigc/pi18.jpg?url';
+import g06Url from '../assets/history/gualsaqui-sigdr/g06.jpg?url';
+import g11Url from '../assets/history/gualsaqui-sigdr/g11.jpg?url';
+import g14Url from '../assets/history/gualsaqui-sigdr/g14.jpg?url';
+import v02Url from '../assets/history/vacas-galindo-sigdr/v02.jpg?url';
+import v06Url from '../assets/history/vacas-galindo-sigdr/v06.jpg?url';
+import v14Url from '../assets/history/vacas-galindo-sigdr/v14.jpg?url';
+import ot05Url from '../assets/history/ot-gadps/ot05.jpg?url';
+import ot14Url from '../assets/history/ot-gadps/ot14.jpg?url';
+import ot19Url from '../assets/history/ot-gadps/ot19.jpeg?url';
+
 
 /** Shared knowledge graph for Archive, Territory, and detail pages. */
 
@@ -42,9 +64,11 @@ export type GeoTacticsRecord = {
 	coordinates?: {
 		lat: number;
 		lng: number;
-		status: 'confirmed' | 'verified_source';
+		status: 'confirmed' | 'verified_source' | 'historical_reference';
 		note: string;
-	};
+		label?: string;
+	}[];
+
 	problem: string;
 	solution: string;
 	gostRelation: string;
@@ -61,6 +85,7 @@ export type GeoTacticsRecord = {
 	relatedRecords: string[];
 	detailHref?: string;
 	archivePublic: boolean;
+	mapPublic?: boolean;
 };
 
 export const statusLabels: Record<RecordStatus, string> = {
@@ -111,6 +136,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-GUAL',
 		slug: 'gualsaqui',
+		coordinates: [{
+			lat: 0.2546,
+			lng: -78.2631,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		}],
 		title: 'Gualsaquí',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -120,13 +151,17 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: '2017',
 		territory: 'Comuna Gualsaquí · Otavalo, Imbabura',
 		problem: 'Necesidad de estructurar información comunal para caracterización y gestión territorial.',
-		solution: 'Primera instancia documentada de SIGDR. Levantamiento territorial.',
+		solution: 'Aplicación de SIGDR para levantar y estructurar información orientada a la caracterización y gestión territorial.',
 		gostRelation: 'Aplicación de GOST vía SIGDR.',
 		technologies: ['SIGDR'],
 		disciplines: ['GIS'],
 		products: ['sigdr'],
 		cases: ['gualsaqui'],
-		assets: [],
+		assets: [
+			{ id: 'G06', src: g06Url, alt: 'Trabajo de planificación territorial en Gualsaquí.' },
+			{ id: 'G11', src: g11Url, alt: 'Levantamiento de información en territorio durante la implementación de SIGDR en Gualsaquí.' },
+			{ id: 'G14', src: g14Url, alt: 'Trabajo de campo con población durante la implementación de SIGDR en Gualsaquí.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -138,6 +173,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-VG',
 		slug: 'vacas-galindo',
+		coordinates: [{
+			lat: 0.2285,
+			lng: -78.6042,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		}],
 		title: 'Vacas Galindo',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -153,7 +194,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['GIS'],
 		products: ['sigdr'],
 		cases: ['vacas-galindo'],
-		assets: [],
+		assets: [
+			{ id: 'V02', src: v02Url, alt: 'Socialización de la implementación de SIGDR en Vacas Galindo.' },
+			{ id: 'V06', src: v06Url, alt: 'Planificación territorial durante la experiencia SIGDR en Vacas Galindo.' },
+			{ id: 'V14', src: v14Url, alt: 'Levantamiento de información en campo en Vacas Galindo.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -192,6 +237,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-PIMA',
 		slug: 'pimampiro',
+		coordinates: [{
+			lat: 0.3923,
+			lng: -77.9405,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		}],
 		title: 'Pimampiro (JAAPP)',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
@@ -201,13 +252,17 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: '2018',
 		territory: 'Pimampiro, Imbabura',
 		problem: 'Organizar información nominal y financiera de una junta de agua.',
-		solution: 'Primera instancia documentada de SIGC. Junta de Aguas del Pueblo de Pimampiro (JAAPP).',
+		solution: 'Aplicación de SIGC en la Junta de Aguas del Pueblo de Pimampiro (JAAPP) para organizar cartera e información de gestión.',
 		gostRelation: 'Aplicación SIGC.',
 		technologies: ['SIGC'],
 		disciplines: ['gestión'],
 		products: ['sigc'],
 		cases: ['pimampiro'],
-		assets: [],
+		assets: [
+			{ id: 'PI02', src: pi02Url, alt: 'Levantamiento de información para la implementación de SIGC en Pimampiro.' },
+			{ id: 'PI13', src: pi13Url, alt: 'Planificación del trabajo institucional para SIGC en Pimampiro.' },
+			{ id: 'PI18', src: pi18Url, alt: 'Capacitación vinculada a la implementación de SIGC en Pimampiro.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -219,6 +274,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-LV',
 		slug: 'la-victoria',
+		coordinates: [{
+			lat: 0.3315,
+			lng: -78.2148,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica del mapa corporativo histórico.',
+		}],
 		title: 'La Victoria (JALV)',
 		kind: 'experience',
 		primaryFamily: 'gobierno-y-gestion',
@@ -229,7 +290,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'La Victoria · Antonio Ante, Imbabura',
 		problem: 'Gestión de cartera en junta de aguas (JALV).',
 		solution:
-			'Experiencia SIGC interrumpida por la pandemia. Hubo conversaciones y capacitación. No se presenta al mismo nivel que Pimampiro.',
+			'Experiencia SIGC con conversaciones y capacitación para gestión de cartera. El proceso quedó interrumpido durante la pandemia.',
 		gostRelation: 'Aplicación parcial de SIGC.',
 		technologies: ['SIGC'],
 		disciplines: ['gestión'],
@@ -273,6 +334,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EMAPAI',
 		slug: 'emapai-yaku',
+		coordinates: [{
+			lat: 0.351,
+			lng: -78.1215,
+			status: 'historical_reference',
+			note: 'Referencia cartográfica de Ibarra usada en el mapa corporativo histórico.',
+		}],
 		title: 'EMAPAI',
 		kind: 'case',
 		primaryFamily: 'gobierno-y-gestion',
@@ -282,13 +349,17 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: '2018–2019',
 		territory: 'Ibarra, Imbabura',
 		problem: 'Modernizar gestión comercial y explotar analíticamente la operación del agua potable.',
-		solution: 'SIGC (2018) y YAKU (~2019) en la misma trayectoria de cliente. Informes de diagnóstico, diseño y socialización.',
+		solution: 'Trayectoria institucional que comienza con SIGC y evoluciona hacia YAKU, ampliando la gestión comercial con planificación, seguimiento y análisis multidimensional.',
 		gostRelation: 'Aplicación SIGC/YAKU. Historias de usuario (xP) en el expediente histórico.',
 		technologies: ['SIGC', 'YAKU'],
 		disciplines: ['OLAP', 'gestión'],
 		products: ['sigc', 'yaku'],
 		cases: ['emapai-yaku'],
-		assets: [],
+		assets: [
+			{ id: 'E14', src: e14Url, alt: 'Trabajo institucional durante la trayectoria SIGC y YAKU en EMAPAI.' },
+			{ id: 'E35', src: e35Url, alt: 'Evidencia tecnológica del proceso de modernización desarrollado con EMAPAI.' },
+			{ id: 'E58', src: e58Url, alt: 'Trabajo técnico vinculado a la implementación de YAKU en EMAPAI.' },
+		],
 		documents: [{ title: 'Informes EMAPAI 0–9 (Wix)', year: '2018–19' }],
 		surfaceStatus: 'restricted',
 		surfaceCta: 'none',
@@ -300,6 +371,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-MADA',
 		slug: 'madaradio',
+		coordinates: [{
+			lat: 0.090,
+			lng: -76.883,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Manabí y Velasco Ibarra esquina. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'MadaRadio',
 		kind: 'product',
 		primaryFamily: 'sociedad-y-participacion',
@@ -312,7 +390,7 @@ export const records: GeoTacticsRecord[] = [
 			'Ciudadanía en territorios rurales dispersos con limitada capacidad de hacer visibles problemas y necesidades.',
 		solution:
 			'La radio es canal, no el problema central. Radio + aplicación + participación + georreferenciación + información para conectar ciudadanía, territorio y comunicación. Cliente histórico: Oreja Multimedia. Evolución de app en 2025.',
-		gostRelation: 'Fundamento ontológico GOST. No es GOST-software.',
+		gostRelation: 'GOST como fundamento para relacionar ciudadanía, información y territorio.',
 		technologies: ['web', 'mobile', 'radio'],
 		disciplines: ['GIS', 'participación'],
 		products: ['madaradio'],
@@ -329,6 +407,22 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-DAYUMA',
 		slug: 'dayuma-ines-arango',
+		coordinates: [
+			{
+				lat: -0.6548,
+				lng: -76.8839,
+				status: 'historical_reference',
+				label: 'Dayuma',
+				note: 'Parroquia Dayuma · levantamiento territorial.',
+			},
+			{
+				lat: -0.5521,
+				lng: -76.95,
+				status: 'historical_reference',
+				label: 'Inés Arango',
+				note: 'Parroquia Inés Arango · levantamiento territorial.',
+			},
+		],
 		title: 'Dayuma + Inés Arango',
 		kind: 'case',
 		primaryFamily: 'inteligencia-territorial',
@@ -346,7 +440,11 @@ export const records: GeoTacticsRecord[] = [
 		disciplines: ['GIS', 'captura'],
 		products: ['sigdr'],
 		cases: ['dayuma-ines-arango'],
-		assets: [],
+		assets: [
+			{ id: 'D01', src: d01Url, alt: 'Socialización del levantamiento territorial en Dayuma e Inés Arango.' },
+			{ id: 'D19', src: d19Url, alt: 'Levantamiento de información territorial en Dayuma e Inés Arango.' },
+			{ id: 'D24', src: d24Url, alt: 'Trabajo de campo para el proyecto técnico Dayuma e Inés Arango.' },
+		],
 		documents: [{ title: 'Informes Dayuma 2–5 (Wix)', year: '2022' }],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -393,20 +491,24 @@ export const records: GeoTacticsRecord[] = [
 		year: 2023,
 		yearLabel: '2023',
 		territory: 'Nueva Loja, Sucumbíos',
-		coordinates: {
+		coordinates: [{
 			lat: 0.091,
 			lng: -76.89,
 			status: 'verified_source',
 			note: 'Sede Nueva Loja documentada. No es polígono provincial.',
-		},
+		}],
 		problem: 'Planificación operativa y contratación sin sistema de resultados.',
-		solution: 'Implementación O/T 2023. Distinta del caso PDOT.',
+		solution: 'Implementación de O/T en 2023 para planificación, seguimiento y control institucional.',
 		gostRelation: 'Aplicación O/T.',
 		technologies: ['O/T'],
 		disciplines: ['gestión'],
 		products: ['ot'],
 		cases: ['ot-gad-sucumbios'],
-		assets: [],
+		assets: [
+			{ id: 'OT05', src: ot05Url, alt: 'Capacitación durante la implementación de O/T en el GAD Provincial de Sucumbíos.' },
+			{ id: 'OT14', src: ot14Url, alt: 'Trabajo institucional de planificación y seguimiento con O/T.' },
+			{ id: 'OT19', src: ot19Url, alt: 'Implementación y socialización de O/T en Sucumbíos.' },
+		],
 		documents: [],
 		surfaceStatus: 'none',
 		surfaceCta: 'none',
@@ -418,6 +520,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EGPS',
 		slug: 'e-gps',
+		coordinates: [{
+			lat: 0.06,
+			lng: -77.1,
+			status: 'historical_reference',
+			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
+		}],
 		title: 'E-GPS',
 		kind: 'product',
 		primaryFamily: 'gobierno-y-gestion',
@@ -428,7 +536,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Ciudadanía e institución sin un canal móvil para trámites, noticias y seguimiento de proyectos.',
 		solution:
-			'Aplicación móvil histórica: trámites, noticias, actualizaciones, localización e información de progreso. Integración/extensión de O/T, no sucesor tecnológico. Continuidad actual en el GADP: desconocida. Se usa pasado.',
+			'Aplicación móvil implementada como extensión funcional de O/T para acercar trámites, noticias, localización e información sobre proyectos a la ciudadanía.',
 		gostRelation: 'Relacionado funcionalmente con O/T.',
 		technologies: ['mobile'],
 		disciplines: ['gestión'],
@@ -445,6 +553,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-CAPTURE',
 		slug: 'capture',
+		coordinates: [{
+			lat: 0.091,
+			lng: -76.885,
+			status: 'historical_reference',
+			note: 'Referencia provincial usada en el mapa corporativo histórico para CAPTURE.'
+		}],
 		title: 'CAPTURE',
 		kind: 'component',
 		primaryFamily: 'inteligencia-territorial',
@@ -455,7 +569,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: '31 parroquias rurales · Sucumbíos',
 		problem: 'Levantamiento de campo para construir una base territorial usable.',
 		solution:
-			'Componente móvil de campo de SIGDR. 27.539 habitantes registrados en la base GeoTactics en 31 parroquias rurales del levantamiento.',
+			'Componente móvil de campo asociado a SIGDR para levantar información territorial. En Sucumbíos contribuyó a una base de 27.539 habitantes registrados en 31 parroquias rurales.',
 		gostRelation: 'GOST → SIGDR → CAPTURE → base territorial → DataSucumbíos.',
 		technologies: ['mobile'],
 		disciplines: ['captura', 'GIS'],
@@ -479,23 +593,27 @@ export const records: GeoTacticsRecord[] = [
 		facets: ['bi', 'plan'],
 		status: 'implementacion_historica',
 		year: 2023,
-		yearLabel: '2023–2038',
+		yearLabel: '2023',
 		territory: 'Sucumbíos / Ecuador',
-		coordinates: {
+		coordinates: [{
 			lat: 0.091,
 			lng: -76.89,
 			status: 'verified_source',
 			note: 'Sede Nueva Loja. No es polígono provincial.',
-		},
+		}],
 		problem: 'Estructurar información territorial y de gestión para el plan de desarrollo y ordenamiento territorial provincial.',
 		solution:
-			'Dos ramas. A · Inteligencia territorial: SIGDR + CAPTURE → base → BI → DataSucumbíos. B · Gestión del plan: YAKU → O/T → POA/PAC → seguimiento. 27.539 habitantes registrados · 31 parroquias rurales. Base territorial construida mediante levantamiento de información en campo.',
-		gostRelation: 'Caso que articula ambas genealogías GOST sin fusionar productos.',
+			'Dos líneas complementarias: inteligencia territorial —SIGDR, CAPTURE, base de información, BI y DataSucumbíos— y gestión del plan —experiencia YAKU/O/T, planificación y seguimiento—. La base territorial reúne 27.539 habitantes registrados mediante trabajo de campo en 31 parroquias rurales.',
+		gostRelation: 'GOST articula las líneas de inteligencia territorial y gestión institucional dentro de un mismo problema de planificación.',
 		technologies: ['CAPTURE', 'DataSucumbíos', 'O/T'],
 		disciplines: ['BI', 'GIS', 'gestión'],
 		products: ['datasucumbios', 'ot'],
 		cases: ['pdot-sucumbios'],
-		assets: [],
+		assets: [
+			{ id: 'P10', src: p10Url, alt: 'Trabajo técnico de planificación territorial para el PDOT de Sucumbíos.' },
+			{ id: 'P19', src: p19Url, alt: 'Levantamiento de información en territorio para el PDOT de Sucumbíos.' },
+			{ id: 'P24', src: p24Url, alt: 'Trabajo comunitario durante el proceso territorial del PDOT de Sucumbíos.' },
+		],
 		documents: [{ title: 'Informes PDyOT 0–6 (Wix)', year: '2024' }],
 		surfaceUrl: 'https://www.datasucumbios.tech',
 		surfaceStatus: 'live',
@@ -508,6 +626,12 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-DS',
 		slug: 'datasucumbios',
+		coordinates: [{
+			lat: 0.05,
+			lng: -77.0,
+			status: 'historical_reference',
+			note: 'Referencia general de Sucumbíos usada en el mapa corporativo histórico.'
+		}],
 		title: 'DataSucumbíos',
 		kind: 'product',
 		primaryFamily: 'inteligencia-territorial',
@@ -518,7 +642,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Información territorial no integrada para observarla, analizar indicadores y apoyar decisión.',
 		solution:
-			'Producto GeoTactics de inteligencia territorial (GIS, BI, OLAP). No es GeoTactics. No es SIGDR v2. Consume la base territorial de CAPTURE. BI confirmado aquí y en monitoreo PDOT.',
+			'Plataforma GeoTactics de inteligencia territorial que integra GIS, BI y OLAP para observar información, explorar indicadores y apoyar la gestión y la decisión.',
 		gostRelation: 'Descendiente conceptual: GOST → SIGDR → CAPTURE → base → DataSucumbíos.',
 		technologies: ['web'],
 		disciplines: ['BI', 'GIS', 'OLAP', 'indicadores'],
@@ -547,7 +671,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Observar opinión y territorio en un contexto electoral sin tratar resultados preliminares como oficiales.',
 		solution:
-			'I+D+i de origen electoral: georreferenciación, investigación de opinión, territorialización, observación/reportes. No es herramienta de persuasión partidista. Padre conceptual de Termómetro Social.',
+			'Exploración I+D+i orientada al análisis territorial de información electoral, investigación de opinión y observación de reportes. Antecedente conceptual de Termómetro Social.',
 		gostRelation: 'GOST → Predicción → Termómetro Social (I+D+i / spin-off).',
 		technologies: ['mobile', 'GIS'],
 		disciplines: ['GIS', 'encuestas'],
@@ -564,6 +688,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-TS',
 		slug: 'termometro-social',
+		coordinates: [{
+			lat: 0.088,
+			lng: -76.887,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. José María Urbina y Venezuela. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Termómetro Social',
 		kind: 'product',
 		primaryFamily: 'sociedad-y-participacion',
@@ -574,10 +705,10 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Levantamientos de opinión y campo sin instrumento georreferenciado reutilizable.',
 		solution:
-			'Producto propio: encuestas, respuestas georreferenciadas, roles, configuración, seguimiento de campo y análisis territorial. Modelo de arrendamiento. ES AHORA usó la herramienta; no es propietario ni identidad del producto.',
+			'Producto propio para encuestas georreferenciadas, configuración de instrumentos, roles de trabajo, seguimiento de campo y análisis territorial. Disponible bajo modelo de arrendamiento.',
 		gostRelation: 'Spin-off funcional de Predicción.',
 		technologies: ['mobile', 'web'],
-		disciplines: ['GIS', 'BI', 'encuestas'],
+		disciplines: ['GIS', 'encuestas'],
 		products: ['termometro-social'],
 		cases: [],
 		assets: [],
@@ -592,6 +723,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-OM',
 		slug: 'orangemap',
+		coordinates: [{
+			lat: 0.088,
+			lng: -76.882,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. José María Urbina e Ilinizas. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'OrangeMap',
 		kind: 'product',
 		primaryFamily: 'mercados-y-servicios',
@@ -602,7 +740,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Ecuador',
 		problem: 'Saber dónde existe un producto o servicio cercano (origen: búsqueda de cartulina de noche).',
 		solution:
-			'Mapa, comercios, productos, autoregistro, búsqueda y direccionamiento al negocio. No reemplaza un catastro.',
+			'Registro de comercios y productos, búsqueda territorial y direccionamiento hacia el negocio donde puede encontrarse la oferta.',
 		gostRelation: 'Fundamento ontológico GOST. Vertical hacia ExploraSucumbíos.',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -621,6 +759,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EX',
 		slug: 'explorasucumbios',
+		coordinates: [{
+			lat: 0.083,
+			lng: -76.886,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. 20 de Junio y Venezuela. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'ExploraSucumbíos',
 		kind: 'product',
 		primaryFamily: 'turismo-y-territorio',
@@ -631,7 +776,7 @@ export const records: GeoTacticsRecord[] = [
 		territory: 'Sucumbíos / Ecuador',
 		problem: 'Destinos y operadores turísticos sin una superficie de descubrimiento territorial.',
 		solution:
-			'Producto propio, web y móvil, derivado conceptualmente de OrangeMap. El GADP de Sucumbíos es interlocutor potencial.',
+			'Producto propio web y móvil que traslada al turismo la lógica de descubrimiento territorial explorada previamente en OrangeMap.',
 		gostRelation: 'GOST → OrangeMap → ExploraSucumbíos (vertical lógica).',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -650,6 +795,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-EA',
 		slug: 'ecuador-ancestral',
+		coordinates: [{
+			lat: 0.092,
+			lng: -76.880,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Circunvalación y Manabí esquina. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Ecuador Ancestral',
 		kind: 'prototype',
 		primaryFamily: 'turismo-y-territorio',
@@ -676,6 +828,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-GU',
 		slug: 'guanta',
+		coordinates: [{
+			lat: 0.100,
+			lng: -76.860,
+			status: 'confirmed',
+			label: 'Vía Guanta Km 2',
+			note: 'Nueva Loja. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'GUANTA',
 		kind: 'product',
 		primaryFamily: 'operaciones-y-trazabilidad',
@@ -705,6 +864,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-RA',
 		slug: 'rantyi',
+		coordinates: [{
+			lat: -0.136,
+			lng: -78.498,
+			status: 'confirmed',
+			label: 'San Carlos · Quito',
+			note: 'Sector central de San Carlos. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'RANTYI',
 		kind: 'product',
 		primaryFamily: 'mercados-y-servicios',
@@ -716,7 +882,7 @@ export const records: GeoTacticsRecord[] = [
 		problem:
 			'Personas que desean vender objetos en desuso y buscan un encuentro más territorial entre oferta y demanda.',
 		solution:
-			'Marketplace georreferenciado entre personas: publicación, mapa y ficha, y desbloqueo de contacto.',
+			'Aplicación web y móvil de marketplace georreferenciado entre personas: publicación, mapa y ficha, y desbloqueo de contacto.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['web', 'mobile'],
 		disciplines: ['GIS'],
@@ -743,9 +909,9 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: 'Prelanzamiento',
 		territory: 'Ecuador (origen conceptual: Quito periurbano)',
 		problem:
-			'Oferta de oficios visible en espera (Valle de los Chillos, Carapungo, Chillogallo) sin información estructurada para conectarla con demanda. Quito es origen conceptual, no pin de implementación.',
+			'Oferta de profesionales y oficios que necesita una forma estructurada de encontrarse con personas que requieren sus servicios.',
 		solution:
-			'Base organizada de profesionales/oficios y matching. Fixis / Fixis PRO según arquitectura. Superficie en desarrollo en fixis.geotactics.com.ec.',
+			'Ecosistema para organizar profesionales y oficios y conectar solicitudes de servicio con quienes pueden atenderlas, mediante experiencias complementarias para cliente y profesional.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['web'],
 		disciplines: [],
@@ -764,6 +930,13 @@ export const records: GeoTacticsRecord[] = [
 	{
 		id: 'R-INQUI',
 		slug: 'inqui',
+		coordinates: [{
+			lat: 0.078,
+			lng: -76.884,
+			status: 'confirmed',
+			label: 'Nueva Loja',
+			note: 'Av. Quito Km 2 1/2. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
 		title: 'Inqui',
 		kind: 'prototype',
 		primaryFamily: 'mercados-y-servicios',
@@ -773,7 +946,7 @@ export const records: GeoTacticsRecord[] = [
 		yearLabel: 'Desarrollado',
 		territory: 'Ecuador',
 		problem: 'Administrar inmuebles en arriendo: mantenimiento, pagos, atrasos, cambios de arrendatarios.',
-		solution: 'Aplicación de administración de arriendos. Desarrollo propio inicial para un amigo. Desarrollado. No comercializado.',
+		solution: 'Aplicación desarrollada para organizar inmuebles, mantenimiento, pagos, atrasos y cambios de arrendatarios. Proyecto experimental no comercializado.',
 		gostRelation: 'Fundamento ontológico GOST.',
 		technologies: ['mobile'],
 		disciplines: [],
@@ -786,6 +959,40 @@ export const records: GeoTacticsRecord[] = [
 		evidenceStatus: 'owner',
 		relatedRecords: ['fixis'],
 		archivePublic: true,
+	},
+	{
+		id: 'R-NURSE',
+		slug: 'nurse-go',
+		title: 'Nurse GO',
+		kind: 'prototype',
+		primaryFamily: 'mercados-y-servicios',
+		facets: ['mobile'],
+		status: 'en_desarrollo',
+		year: 2026,
+		yearLabel: 'En desarrollo',
+		territory: 'Quito, Pichincha',
+		coordinates: [{
+			lat: -0.211,
+			lng: -78.516,
+			status: 'confirmed',
+			label: 'El Tejar · Quito',
+			note: 'Joel Monroy OE 11-89, Ciudadela Amazonas, El Tejar. Coordenadas proporcionadas por OWNER el 22 sep 2026.',
+		}],
+		problem: 'Producto propio en revisión editorial.',
+		solution: 'Desarrollo GeoTactics con experiencia móvil. La descripción funcional pública se mantiene pendiente de reconciliación.',
+		gostRelation: 'Fundamento ontológico GOST.',
+		technologies: ['mobile'],
+		disciplines: [],
+		products: [],
+		cases: [],
+		assets: [],
+		documents: [],
+		surfaceStatus: 'review',
+		surfaceCta: 'none',
+		evidenceStatus: 'owner',
+		relatedRecords: [],
+		archivePublic: false,
+		mapPublic: true,
 	},
 	{
 		id: 'R-OB',
@@ -831,7 +1038,7 @@ export function recordBySlug(slug: string) {
 }
 
 export function mappableRecords() {
-	return publicRecords().filter((r) => r.coordinates);
+	return records.filter((r) => r.coordinates?.length && (r.archivePublic || r.mapPublic));
 }
 
 export { families };

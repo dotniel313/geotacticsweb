@@ -2,18 +2,18 @@
 **Regla:** ninguna foto histórica se publica automáticamente. Pipeline: DISCOVERED → NEEDS_REVIEW → APPROVED → PUBLICABLE.  
 **PhotoFan:** el componente consume `record.assets[]` (máx. 3). Hoy el array está vacío → fallback geométrico Corporate 2.0. Inyectar PUBLICABLE no exige cambiar el componente.
 
-**Conteos (2026-09-19):**
+**Conteos actualizados (2026-09-22):**
 
 | Estado | Cantidad | Notas |
 |---|---|---|
-| PUBLICABLE | 1 | Logo header G_L_2024 (`AAQ-LOGO-2024`) |
-| APPROVED (no foto de hito) | 0 fotos de producto/caso | — |
-| NEEDS_REVIEW | 9 | Galerías Wix, dossier, .key |
+| PUBLICABLE / integrado | 25 | Logo header + 21 fotos históricas de casos + 4 retratos de fundadores actualmente servidos desde Wix CDN |
+| APPROVED / no publicado | 3 | EQ05 María José Trujillo · EQ06 Geovanny Romero · EQ07 Marcos Landy |
+| NEEDS_REVIEW | 5 grupos | videos SIGDR/SIGC, dossier, .key y material histórico aún no reconciliado |
 | DO_NOT_USE | 1 | Unsplash Index1 |
 
 Prioridad de revisión visual futura: SIGDR · SIGC · YAKU · DataSucumbíos · PDOT/CAPTURE · Dayuma–Inés Arango · O/T · resto.
 
-Estado de ítems fotográficos de caso: **NEEDS_REVIEW**.
+Estado de los 21 ítems fotográficos de caso seleccionados por OWNER: **PUBLICABLE / INTEGRADOS**. El manifiesto técnico vigente está en `corporate-v2/src/assets/history/manifest-3.9.csv`.
 
 
 | ID | Proyecto / caso | Source | Fecha | Descripción | Calidad técnica | Posible duplicado | Derechos / status | Uso recomendado | Estado |
@@ -31,3 +31,13 @@ Estado de ítems fotográficos de caso: **NEEDS_REVIEW**.
 | AAQ-RANTYI-KEY | rantyi | `.key` local | — | diseño no analizado | — | — | OWNER | no publicar | NEEDS_REVIEW |
 
 **3.8 no se detiene por falta de fotografías.** Tras aprobación OWNER, copiar solo PUBLICABLE a `record.assets[]`.
+
+
+## Estado real — equipo histórico
+
+El mapeo OWNER EQ01–EQ07 ya está preservado en:
+`corporate-v2/src/assets/history/team-historical/manifest-team-3.9.csv`.
+
+- EQ01–EQ04: PUBLICABLE y visibles en `/nosotros` mediante Wix CDN.
+- EQ05–EQ07: APPROVED, no publicados hasta cerrar rol/periodo/contexto editorial.
+- Pendiente técnico: copiar los siete originales al repositorio y sustituir dependencia Wix CDN sin cambiar el layout.

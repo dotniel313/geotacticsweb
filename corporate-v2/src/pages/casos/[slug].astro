@@ -28,9 +28,22 @@ const liveLinks = c.externalLinks.filter((l) => l.status === 'live');
 const period = periodLabel(entry);
 const place = placeLabel(entry);
 const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
+const coordinates = rec?.coordinates ?? [];
+const formatCoord = (value: number) => value.toFixed(4).replace('-', '−');
+const breadcrumbJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: [
+		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://www.geotactics.com.ec/' },
+		{ '@type': 'ListItem', position: 2, name: 'Casos', item: 'https://www.geotactics.com.ec/casos' },
+		{ '@type': 'ListItem', position: 3, name: c.title, item: `https://www.geotactics.com.ec/casos/${c.slug}` },
+	],
+};
+const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug}` : '/archivo';
 ---
 
 <BaseLayout title={c.seoTitle} description={c.seoDescription} noindex={false}>
+	<script slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
 	<article class="gt-cd">
 		<header class="gt-cd__hero">
 			<div class="gt-cd__hero-inner gt-container--wide">
@@ -43,8 +56,16 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 					{
 						rec && rec.assets.length > 0 ? (
 							<div class="gt-cd__fan">
-								{rec.assets.slice(0, 3).map((a) => (
-									<img src={a.thumb ?? a.src} alt={a.alt} width="640" height="400" />
+								{rec.assets.slice(0, 3).map((a, index) => (
+									<img
+										src={a.thumb ?? a.src}
+										alt={a.alt}
+										width="640"
+										height="400"
+										loading={index === 0 ? 'eager' : 'lazy'}
+										decoding="async"
+										fetchpriority={index === 0 ? 'high' : 'auto'}
+									/>
 								))}
 							</div>
 						) : (
@@ -73,6 +94,21 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 					<div>
 						<dt>Organización</dt>
 						<dd>{c.client}</dd>
+					</div>
+				)
+			}
+			{
+				coordinates.length > 0 && (
+					<div class="gt-cd__geo">
+						<dt>Coordenadas</dt>
+						<dd>
+							{coordinates.map((coordinate) => (
+								<span>
+									{coordinate.label && <b>{coordinate.label}</b>}
+									<code>{formatCoord(coordinate.lat)}, {formatCoord(coordinate.lng)}</code>
+								</span>
+							))}
+						</dd>
 					</div>
 				)
 			}
@@ -200,7 +236,10 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 					<ul>
 						{liveLinks.map((link) => (
 							<li>
-								<a href={link.url}>{link.label}</a>
+								<a href={link.url} target="_blank" rel="noopener noreferrer">
+									{link.label}
+									<span class="visually-hidden"> (se abre en una ventana nueva)</span>
+								</a>
 							</li>
 						))}
 					</ul>
@@ -225,9 +264,17 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 		}
 
 		<footer class="gt-cd__cta gt-container--wide">
-			<p>
-				<a href="/casos">Archivo de casos</a>
-			</p>
+			<nav class="gt-cd__return" aria-label="Continuar explorando">
+				<a href="/casos">← Volver a casos</a>
+				<span aria-hidden="true"> · </span>
+				<a href={archiveHref}>Ver este hito en Archivo</a>
+				{coordinates.length > 0 ? (
+					<>
+						<span aria-hidden="true"> · </span>
+						<a href="/territorio">Ver operación territorial</a>
+					</>
+				) : null}
+			</nav>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 		</footer>
 	</article>
@@ -249,7 +296,7 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 		display: grid;
 		grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
 		gap: var(--gt-space-8);
-		align-items: end;
+		align-items: center;
 	}
 
 	.gt-cd__micro,
@@ -281,18 +328,25 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 		border: 1px solid var(--gt-border);
 	}
 
+	.gt-cd__fan {
+		display: grid;
+		grid-template-rows: repeat(3, clamp(7.25rem, 9vw, 9.5rem));
+	}
+
 	.gt-cd__fan img {
 		width: 100%;
-		height: auto;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
 		display: block;
 	}
 
 	.gt-cd__facts {
 		display: grid;
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
 		gap: var(--gt-space-6);
-		margin: 0;
-		padding: var(--gt-space-8) 0;
+		margin: 0 auto;
+		padding: var(--gt-space-8) var(--gt-gutter-x);
 		border-bottom: 1px solid var(--gt-border);
 	}
 
@@ -309,8 +363,36 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 		font-weight: 600;
 	}
 
+	.gt-cd__geo dd {
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.gt-cd__geo span {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.65rem;
+		align-items: baseline;
+	}
+
+	.gt-cd__geo b {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--gt-gray-600);
+	}
+
+	.gt-cd__geo code {
+		font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+		font-size: 0.76rem;
+		letter-spacing: 0.08em;
+		color: var(--gt-coral);
+		background: transparent;
+		padding: 0;
+	}
+
 	.gt-cd__block {
-		padding: var(--gt-space-8) 0;
+		padding: var(--gt-space-8) var(--gt-gutter-x);
 		border-bottom: 1px solid var(--gt-border);
 	}
 
@@ -374,11 +456,23 @@ const componentLabels: Record<string, string> = { capture: 'CAPTURE' };
 	}
 
 	.gt-cd__cta {
-		padding-top: var(--gt-space-10);
+		padding: var(--gt-space-10) var(--gt-gutter-x) 0;
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--gt-space-5);
 		align-items: center;
+	}
+
+	.gt-cd__return {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem 0.55rem;
+		font-size: 0.82rem;
+	}
+
+	.gt-cd__return a {
+		text-decoration-thickness: 1px;
+		text-underline-offset: 0.18em;
 	}
 
 	@media (max-width: 720px) {

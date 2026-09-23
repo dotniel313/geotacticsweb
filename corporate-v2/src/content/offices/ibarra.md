@@ -6,7 +6,8 @@ place: Ibarra
 region: Imbabura
 country: Ecuador
 kind: origin
-note: Origen empresarial e histórico. GeoTactics es una empresa ecuatoriana de tecnología, no una empresa de Ibarra.
+coordinates: '0.349, −78.125'
+note: Aquí comienza la historia empresarial de GeoTactics y una forma de trabajo que después evolucionaría a través de distintos territorios y proyectos.
 order: 1
 public: true
 ---

@@ -58,9 +58,9 @@ const year = new Date().getFullYear();
 
 <style>
 	.gt-foot {
-		margin-top: var(--gt-space-8);
-		padding: var(--gt-space-10) 0 var(--gt-space-6);
-		border-top: 1px solid var(--gt-border);
+		margin-top: clamp(4.5rem, 8vw, 8rem);
+		padding: clamp(4rem, 6vw, 6rem) 0 var(--gt-space-6);
+		border-top: 1px solid color-mix(in srgb, var(--gt-border) 72%, transparent);
 		background: var(--gt-white);
 		color: var(--gt-gray-800);
 	}
@@ -68,7 +68,8 @@ const year = new Date().getFullYear();
 	.gt-foot__grid {
 		display: grid;
 		grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(0, 1fr));
-		gap: var(--gt-space-8);
+		column-gap: clamp(3rem, 7vw, 7rem);
+		row-gap: var(--gt-space-8);
 		align-items: start;
 	}
 
@@ -161,9 +162,20 @@ const year = new Date().getFullYear();
 	}
 
 	@media (max-width: 720px) {
+		.gt-foot {
+			margin-top: var(--gt-space-10);
+			padding-top: var(--gt-space-10);
+		}
+
 		.gt-foot__grid {
 			grid-template-columns: 1fr;
 			gap: var(--gt-space-6);
 		}
 	}
+
+	/* A page-level closing CTA already provides the separation before the footer. */
+	:global(main:has(.gt-page-close) + .gt-foot) {
+		margin-top: 0;
+	}
+
 </style>

@@ -48,8 +48,15 @@ const year = yearStatus === 'publish' && yearLabel ? yearLabel : null;
 	}
 
 	.gt-prod-status__mark[data-status='trayectoria'],
-	.gt-prod-status__mark[data-status='desarrollado'] {
+	.gt-prod-status__mark[data-status='desarrollado'],
+	.gt-prod-status__mark[data-status='no_comercializado'] {
 		background: var(--gt-coffee);
+	}
+
+	.gt-prod-status__mark[data-status='prototipo'],
+	.gt-prod-status__mark[data-status='desarrollo_pausado'] {
+		background: transparent;
+		box-shadow: inset 0 0 0 1.5px var(--gt-coffee);
 	}
 
 	.gt-prod-status__year {

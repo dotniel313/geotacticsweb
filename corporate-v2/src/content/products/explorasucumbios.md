@@ -16,7 +16,7 @@ capabilities:
   - turismo-y-territorio
 primaryFamily: turismo-y-territorio
 problem: "Destinos y operadores turísticos sin superficie de descubrimiento territorial."
-purpose: "Producto propio, web y móvil. Derivado conceptualmente de OrangeMap. El GADP de Sucumbíos es interlocutor potencial."
+purpose: "Experiencia web y móvil para descubrir lugares y operadores turísticos de Sucumbíos. Traslada al turismo la lógica territorial explorada previamente en OrangeMap."
 gostRelation: "GOST → OrangeMap → ExploraSucumbíos."
 relatedProducts:
   - orangemap

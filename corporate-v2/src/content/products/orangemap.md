@@ -17,7 +17,7 @@ capabilities:
 primaryFamily: mercados-y-servicios
 origin: "Experiencia personal buscando cartulina tarde/noche."
 problem: "Saber dónde existe un producto o servicio cercano."
-purpose: "Mapa, comercios, productos, autoregistro, búsqueda y direccionamiento al negocio. No reemplaza un catastro."
+purpose: "Permite registrar comercios y productos, buscarlos territorialmente y dirigir a la persona hacia el negocio donde puede encontrarlos."
 gostRelation: "Fundamento ontológico GOST. Vertical hacia ExploraSucumbíos."
 relatedProducts:
   - explorasucumbios

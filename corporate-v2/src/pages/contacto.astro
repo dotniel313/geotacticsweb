@@ -56,27 +56,27 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 
 		<section class="gt-ct__form-wrap gt-container--wide" aria-labelledby="gt-ct-form">
 			<h2 id="gt-ct-form">Escribir</h2>
-			<form class="gt-ct__form" data-gt-mail>
-				<label>
-					Nombre
-					<input type="text" name="nombre" autocomplete="name" />
-				</label>
-				<label>
-					Correo
-					<input type="email" name="email" autocomplete="email" />
-				</label>
-				<label>
-					Motivo
-					<select name="motivo">
-						{contact.motives.map((m) => (
-							<option value={m.label}>{m.label}</option>
-						))}
-					</select>
-				</label>
-				<label>
-					Mensaje
-					<textarea name="mensaje" rows="6"></textarea>
-				</label>
+			<form class="gt-ct__form" data-gt-mail aria-describedby="gt-ct-mail-note">
+				<label for="gt-ct-name">Nombre</label>
+				<input id="gt-ct-name" type="text" name="nombre" autocomplete="name" required />
+
+				<label for="gt-ct-email">Correo</label>
+				<input id="gt-ct-email" type="email" name="email" autocomplete="email" inputmode="email" required />
+
+				<label for="gt-ct-reason">Motivo</label>
+				<select id="gt-ct-reason" name="motivo" required>
+					{contact.motives.map((m) => (
+						<option value={m.label}>{m.label}</option>
+					))}
+				</select>
+
+				<label for="gt-ct-message">Mensaje</label>
+				<textarea id="gt-ct-message" name="mensaje" rows="6" spellcheck="true" required></textarea>
+
+				<p id="gt-ct-mail-note" class="visually-hidden">
+					Al continuar se abrirá tu aplicación de correo con el mensaje preparado.
+				</p>
+				<p class="visually-hidden" data-gt-mail-status aria-live="polite"></p>
 				<button class="gt-cta" type="submit">Continuar por correo</button>
 			</form>
 		</section>
@@ -85,8 +85,13 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 
 <script>
 	const form = document.querySelector<HTMLFormElement>('[data-gt-mail]');
+	const status = document.querySelector<HTMLElement>('[data-gt-mail-status]');
 	form?.addEventListener('submit', (event) => {
 		event.preventDefault();
+		if (!form.checkValidity()) {
+			form.reportValidity();
+			return;
+		}
 		const data = new FormData(form);
 		const nombre = String(data.get('nombre') ?? '').trim();
 		const email = String(data.get('email') ?? '').trim();
@@ -98,6 +103,7 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 				.filter(Boolean)
 				.join('\n'),
 		);
+		if (status) status.textContent = 'Abriendo tu aplicación de correo.';
 		window.location.href = `mailto:info@geotactics.com.ec?subject=${subject}&body=${body}`;
 	});
 </script>
@@ -199,9 +205,8 @@ import { contact, mailtoHref, whatsappHref } from '../data/contact';
 	}
 
 	.gt-ct__form label {
-		display: grid;
-		gap: 0.35rem;
 		font-size: var(--gt-fs-sm);
+		margin-bottom: -0.15rem;
 	}
 
 	.gt-ct__form input,

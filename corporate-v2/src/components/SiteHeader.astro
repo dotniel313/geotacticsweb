@@ -1,5 +1,5 @@
 ---
-import headerLogo from '../assets/brand/derived/geotactics-header.png';
+import headerLogo from '../assets/brand/derived/geotactics-full-light.png';
 import { conversarHref, conversarLabel, navItems } from '../config/site';
 
 interface Props {
@@ -18,7 +18,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 				src={headerLogo.src}
 				width={headerLogo.width}
 				height={headerLogo.height}
-				alt="GeoTactics"
+				alt="GeoTactics — Data / Warehouse - Mart"
 			/>
 		</a>
 
@@ -62,7 +62,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 				{
 					navItems.map((item) => (
 						<li>
-							<a class="gt-mobile__link" href={item.href}>
+							<a class:list={['gt-mobile__link', isActive(item.href) && 'is-active']} href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
 								{item.label}
 							</a>
 						</li>
@@ -107,6 +107,14 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 			}
 		});
 
+		panel.addEventListener('click', (e) => {
+			if (e.target === panel) setOpen(false);
+		});
+
+		panel.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+			link.addEventListener('click', () => setOpen(false));
+		});
+
 		panel.addEventListener('keydown', (e) => {
 			if (e.key !== 'Tab' || panel.hidden) return;
 			const focusable = [...panel.querySelectorAll<HTMLElement>('a, button')];
@@ -129,8 +137,9 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 		position: sticky;
 		top: 0;
 		z-index: var(--gt-z-header);
-		background: color-mix(in srgb, var(--gt-off-white) 92%, transparent);
-		backdrop-filter: blur(8px);
+		background: color-mix(in srgb, var(--gt-off-white) 94%, transparent);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
 		border-bottom: var(--gt-border-w) solid var(--gt-border);
 	}
 
@@ -141,6 +150,7 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 		min-height: var(--gt-header-h);
 		min-width: 0;
 		max-width: 100%;
+		padding-block: 0.45rem;
 	}
 
 	.gt-brand {
@@ -154,9 +164,12 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 
 	.gt-brand img {
 		display: block;
-		height: 41px;
+		height: 58px;
 		width: auto;
 		max-width: 100%;
+		/* The recovered historical lockup is a flattened raster with a white matte.
+		   Blend that matte into the header surface without altering the logo artwork. */
+		mix-blend-mode: multiply;
 	}
 
 	.gt-nav {
@@ -281,8 +294,12 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 			max-width: calc(100% - 3.75rem);
 		}
 
+		.gt-header__bar {
+			padding-block: 0.3rem;
+		}
+
 		.gt-brand img {
-			height: 32px;
+			height: 46px;
 		}
 	}
 </style>

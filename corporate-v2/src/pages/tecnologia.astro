@@ -2,28 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TerritorialGrid from '../components/TerritorialGrid.astro';
 import LineageGraph from '../components/LineageGraph.astro';
-import EvolutionTimeline from '../components/EvolutionTimeline.astro';
 import { conversarHref, copy } from '../config/site';
-import { adn, gost, methodFlow, rdFlow } from '../data/method';
+import { adn, gost, methodFlow } from '../data/method';
 import { disciplines } from '../data/disciplines';
-
-const relatedCases = [
-	{ href: '/casos/gualsaqui', label: 'SIGDR → Gualsaquí' },
-	{ href: '/casos/pimampiro', label: 'SIGC → Pimampiro' },
-	{ href: '/casos/emapai-yaku', label: 'YAKU → EMAPAI' },
-	{ href: '/casos/ot-gad-sucumbios', label: 'O/T → GAD Provincial de Sucumbíos' },
-	{ href: '/casos/pdot-sucumbios', label: 'Data / BI → PDOT Sucumbíos' },
-	{ href: '/casos/dayuma-ines-arango', label: 'SIGDR → Dayuma–Inés Arango' },
-];
-
-const relatedProducts = [
-	{ href: '/productos/sigdr', label: 'SIGDR' },
-	{ href: '/productos/sigc', label: 'SIGC' },
-	{ href: '/productos/yaku', label: 'YAKU' },
-	{ href: '/productos/ot', label: 'O/T' },
-	{ href: '/productos/datasucumbios', label: 'DataSucumbíos' },
-	{ href: '/productos/madaradio', label: 'MadaRadio' },
-];
 
 const seoTitle = 'Tecnología | GeoTactics';
 const seoDescription =
@@ -36,10 +17,9 @@ const seoDescription =
 			<TerritorialGrid intensity="hero" />
 			<div class="gt-tec__hero-inner gt-container--wide">
 				<p class="gt-tec__micro">GT / TECHNOLOGY · METHOD · EVOLUTION</p>
-				<h1>Cómo estructuramos problemas.</h1>
+				<h1>La tecnología viene después de entender el problema.</h1>
 				<p class="gt-tec__lead">
-					Cómo piensa y construye GeoTactics: un problema real, un marco para estructurarlo, las
-					disciplinas que el caso requiere y un sistema que se pone a prueba.
+					Así ha evolucionado GeoTactics: <span class="gt-accent">entender primero la realidad</span>, ordenar el problema y elegir después las herramientas necesarias para construir <span class="gt-accent">un sistema que funcione en ella</span>.
 				</p>
 			</div>
 		</header>
@@ -48,7 +28,7 @@ const seoDescription =
 			<p class="gt-tec__micro">A · ABORDAJE</p>
 			<h2 id="gt-tec-flow">Cómo abordamos un problema</h2>
 			<p class="gt-tec__support">
-				Un recorrido frecuente. No todos los desarrollos recorren cada etapa de la misma manera.
+				No comenzamos preguntando qué software usar. Comenzamos preguntando qué está pasando, por qué y qué tendría que cambiar.
 			</p>
 			<ol class="gt-tec__flow">
 				{
@@ -62,22 +42,10 @@ const seoDescription =
 			</ol>
 		</section>
 
-		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-rd">
-			<p class="gt-tec__micro">A2 · I+D+i</p>
-			<h2 id="gt-tec-rd">Cuando el problema es exploración</h2>
-			<p class="gt-tec__support">
-				I+D+i es una capa transversal, no una séptima familia. Predicción, Observatorio, Inqui y Ecuador Ancestral pueden llevar este facet.
-			</p>
-			<ol class="gt-tec__flow">
-				{
-					rdFlow.map((step, i) => (
-						<li>
-							<span>{String(i + 1).padStart(2, '0')}</span>
-							{step.title}
-						</li>
-					))
-				}
-			</ol>
+		<section class="gt-tec__rd gt-container--wide" aria-labelledby="gt-tec-rd">
+			<p class="gt-tec__micro">I+D+i · CAPA TRANSVERSAL</p>
+			<h2 id="gt-tec-rd">Cuando la respuesta no existe, hay que construirla.</h2>
+			<p class="gt-tec__support">Muchos de nuestros productos comenzaron como una pregunta. <span class="gt-accent">Investigamos, prototipamos y probamos</span> hasta encontrar una respuesta que pueda convertirse en sistema.</p>
 		</section>
 
 		<section class="gt-tec__gost" id="gost" aria-labelledby="gt-tec-gost">
@@ -110,7 +78,7 @@ const seoDescription =
 			<p class="gt-tec__micro">C · CAPAS</p>
 			<h2 id="gt-tec-layers">Disciplinas</h2>
 			<p class="gt-tec__support">
-				Herramientas y capas utilizadas cuando el problema lo requiere. No son un checklist universal.
+				No usamos todas las herramientas en todos los proyectos. Elegimos y combinamos las que ayudan a resolver el problema que tenemos delante.
 			</p>
 			<ul class="gt-tec__layers">
 				{
@@ -121,7 +89,7 @@ const seoDescription =
 							<h3>{d.title}</h3>
 							<p>{d.role}</p>
 							{d.confirmed.length > 0 ? (
-								<p class="gt-tec__ev">Ejemplos documentados: {d.confirmed.join(' · ')}</p>
+								<p class="gt-tec__ev">Aplicaciones: {d.confirmed.join(' · ')}</p>
 							) : null}
 						</li>
 					))
@@ -132,7 +100,7 @@ const seoDescription =
 		<section class="gt-tec__band" id="bi" aria-labelledby="gt-tec-bi">
 			<div class="gt-container--wide">
 				<p class="gt-tec__micro">D · BUSINESS INTELLIGENCE</p>
-				<h2 id="gt-tec-bi">BI tiene función propia</h2>
+				<h2 id="gt-tec-bi">De los datos a una decisión que se puede tomar</h2>
 				<ol class="gt-tec__chain">
 					<li>Datos</li>
 					<li>Análisis</li>
@@ -142,7 +110,7 @@ const seoDescription =
 					<li>Decisión</li>
 				</ol>
 				<p class="gt-tec__support">
-					Fundamento histórico de la empresa y disciplina vigente donde está documentada —por ejemplo en
+					<span class="gt-accent">Fundamento histórico de la empresa</span> y disciplina vigente en sistemas como
 					DataSucumbíos y el monitoreo del PDOT.
 				</p>
 			</div>
@@ -151,29 +119,28 @@ const seoDescription =
 		<section class="gt-tec__split gt-container--wide" aria-labelledby="gt-tec-gis">
 			<div>
 				<p class="gt-tec__micro">E · TERRITORIO</p>
-				<h2 id="gt-tec-gis">GIS cuando hay dimensión espacial</h2>
+				<h2 id="gt-tec-gis">Cuando el lugar cambia la respuesta</h2>
 				<p>
 					Cuando el problema tiene una dimensión espacial, integramos herramientas geográficas para
-					capturar, analizar y comprender el territorio.
+					<span class="gt-accent">capturar, analizar y comprender el territorio</span>.
 				</p>
-				<p class="gt-tec__ev">Ejemplos documentados: CAPTURE · DataSucumbíos · Termómetro Social · MadaRadio.</p>
+				<p class="gt-tec__ev">Aplicaciones: CAPTURE · DataSucumbíos · Termómetro Social · MadaRadio.</p>
 			</div>
 			<div>
 				<p class="gt-tec__micro">F · DATOS</p>
-				<h2 id="gt-tec-dw">Data / Warehouse - Mart</h2>
+				<h2 id="gt-tec-dw">Una herencia que aprendió a evolucionar</h2>
 				<p>
-					Forma parte de la identidad histórica de GeoTactics. Es una herencia intelectual, no una
-					afirmación de que cada sistema implemente un almacén de datos.
+					Forma parte de la identidad histórica de GeoTactics y de la evolución de nuestra forma de organizar y explotar información.
 				</p>
-				<p class="gt-tec__ev">OLAP aparece documentado en YAKU y DataSucumbíos.</p>
+				<p class="gt-tec__ev">OLAP forma parte de la experiencia desarrollada en YAKU y DataSucumbíos.</p>
 			</div>
 		</section>
 
 		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-ind">
 			<p class="gt-tec__micro">G · INDICADORES</p>
-			<h2 id="gt-tec-ind">Dato → indicador → gestión</h2>
+			<h2 id="gt-tec-ind">Un dato sirve cuando ayuda a actuar</h2>
 			<p class="gt-tec__support">
-				Un patrón frecuente: el dato se vuelve indicador, y el indicador sostiene la gestión.
+				Convertimos datos en indicadores que permiten leer una situación, seguir su evolución y sostener decisiones de gestión.
 			</p>
 		</section>
 
@@ -195,39 +162,12 @@ const seoDescription =
 		</section>
 
 		<LineageGraph />
-		<EvolutionTimeline mode="method" heading="Evolución conceptual" />
 
-		<section class="gt-tec__block gt-container--wide" aria-labelledby="gt-tec-rel">
-			<p class="gt-tec__micro">I · TRAYECTORIA</p>
-			<h2 id="gt-tec-rel">Casos y productos relacionados</h2>
-			<p class="gt-tec__support">Algunas materializaciones donde esta forma de pensar se volvió sistema.</p>
-			<div class="gt-tec__rel">
-				<div>
-					<h3>Casos</h3>
-					<ul>
-						{relatedCases.map((item) => (
-							<li>
-								<a href={item.href}>{item.label}</a>
-							</li>
-						))}
-					</ul>
-				</div>
-				<div>
-					<h3>Productos</h3>
-					<ul>
-						{relatedProducts.map((item) => (
-							<li>
-								<a href={item.href}>{item.label}</a>
-							</li>
-						))}
-					</ul>
-				</div>
+		<footer class="gt-page-close">
+			<div class="gt-page-close__inner">
+				<p class="gt-page-close__text">Cuéntanos qué necesita funcionar mejor. La tecnología la definimos después.</p>
+				<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 			</div>
-		</section>
-
-		<footer class="gt-tec__cta gt-container--wide">
-			<p>Si el problema está en territorio, gestión u operación, conversemos.</p>
-			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 		</footer>
 	</article>
 </BaseLayout>
@@ -277,8 +217,10 @@ const seoDescription =
 		font-size: var(--gt-fs-sm);
 	}
 
+	.gt-tec__rd { padding: 2.75rem 0; border-bottom: 1px solid var(--gt-border); }
+
 	.gt-tec__block {
-		padding: var(--gt-space-10) 0;
+		padding: 3rem 0;
 		border-bottom: 1px solid var(--gt-border);
 	}
 
@@ -420,7 +362,7 @@ const seoDescription =
 	}
 
 	.gt-tec__band {
-		padding: var(--gt-space-10) 0;
+		padding: 3rem 0;
 		border-bottom: 1px solid var(--gt-border);
 		background: var(--gt-white);
 	}
@@ -447,13 +389,18 @@ const seoDescription =
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: var(--gt-space-8);
-		padding: var(--gt-space-10) 0;
+		padding: 3rem 0;
 		border-bottom: 1px solid var(--gt-border);
 	}
 
 	.gt-tec__split p {
 		max-width: 36rem;
 		color: var(--gt-gray-800);
+	}
+
+	.gt-tec__adn {
+		padding: var(--gt-space-8) 0;
+		border-bottom: 1px solid var(--gt-border);
 	}
 
 	.gt-tec__adn-list {

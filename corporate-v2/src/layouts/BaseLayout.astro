@@ -2,6 +2,7 @@
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { copy, site } from '../config/site';
+import { contact } from '../data/contact';
 import '../styles/base.css';
 
 interface Props {
@@ -17,7 +18,29 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).toString().replace(/\/$/, '') || site.url;
-const robots = noindex ? 'noindex, nofollow' : 'index, follow';
+const robots = noindex || !site.indexable ? 'noindex, nofollow' : 'index, follow';
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: site.name,
+		url: site.url,
+		email: contact.email,
+		address: {
+			'@type': 'PostalAddress',
+			addressLocality: contact.baseCity,
+			addressRegion: contact.baseProvince,
+			addressCountry: 'EC',
+		},
+	},
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: site.name,
+		url: site.url,
+		inLanguage: site.lang,
+	},
+];
 ---
 
 <!doctype html>
@@ -35,10 +58,15 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow';
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 		<!-- og:image omitted — OG_IMAGE_PENDING (no authorized asset; do not use production placeholder) -->
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta name="theme-color" content="#E84C3D" />
 		<meta name="generator" content={Astro.generator} />
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
+		<slot name="head" />
 	</head>
 	<body>
 		<a class="skip-link" href="#contenido">Saltar al contenido</a>

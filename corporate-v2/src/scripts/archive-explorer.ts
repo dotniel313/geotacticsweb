@@ -28,20 +28,54 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	const lightbox = root.querySelector<HTMLDialogElement>('[data-lightbox]');
 	const lbImg = lightbox?.querySelector<HTMLImageElement>('[data-lb-img]');
 	const lbCap = lightbox?.querySelector<HTMLElement>('[data-lb-cap]');
+	const lbClose = lightbox?.querySelector<HTMLButtonElement>('[data-lb-close]');
 	const ctxCode = root.querySelector('[data-ctx-code]');
 	const ctxTitle = root.querySelector('[data-ctx-title]');
 	const ctxDesc = root.querySelector('[data-ctx-desc]');
 	const back = root.querySelector<HTMLButtonElement>('[data-back]');
+	const segmentLayer = root.querySelector<HTMLElement>('[data-timeline-segments]');
 
 	let selected: FamilyId | null = null;
 	let openFamily: FamilyId | null = null;
 	let hintTimer = 0;
 	let lbIndex = 0;
 	let lbSet: { src: string; alt: string; caption?: string }[] = [];
+	let lbTrigger: HTMLElement | null = null;
 
 	const rec = (slug: string) => payload.records.find((r) => r.slug === slug);
 	const fam = (id: FamilyId) => payload.families.find((f) => f.id === id);
 	const finePointer = () => window.matchMedia('(pointer: fine) and (hover: hover) and (min-width: 1025px)').matches;
+
+	const syncTimelineSegments = () => {
+		if (!rail || !segmentLayer || window.matchMedia('(max-width: 720px)').matches) return;
+		segmentLayer.replaceChildren();
+		const visible = milestones.filter((el) => !el.hidden);
+		if (visible.length < 2) return;
+		const railRect = rail.getBoundingClientRect();
+		const points = visible
+			.map((el) => el.querySelector<HTMLElement>('.gt-hit__node'))
+			.filter((node): node is HTMLElement => Boolean(node))
+			.map((node) => {
+				const rect = node.getBoundingClientRect();
+				return {
+					x: rect.left - railRect.left + rail.scrollLeft + rect.width / 2,
+					y: rect.top - railRect.top + rail.scrollTop + rect.height / 2,
+				};
+			});
+		for (let i = 0; i < points.length - 1; i += 1) {
+			const a = points[i];
+			const b = points[i + 1];
+			const dx = b.x - a.x;
+			const dy = b.y - a.y;
+			const segment = document.createElement('span');
+			segment.className = 'gt-ax__segment';
+			segment.style.left = `${a.x}px`;
+			segment.style.top = `${a.y - 1}px`;
+			segment.style.width = `${Math.hypot(dx, dy)}px`;
+			segment.style.transform = `rotate(${Math.atan2(dy, dx)}rad)`;
+			segmentLayer.append(segment);
+		}
+	};
 
 	const showHint = (text: string) => {
 		if (!hint) return;
@@ -101,6 +135,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		milestones.forEach((el) => el.classList.remove('is-last'));
 		const visible = milestones.filter((el) => !el.hidden);
 		visible.at(-1)?.classList.add('is-last');
+		requestAnimationFrame(() => requestAnimationFrame(syncTimelineSegments));
 	};
 
 	const highlightHit = (slug: string | null) => {
@@ -111,7 +146,8 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		if (!slug) return;
 		const el = milestones.find((m) => m.dataset.record === slug && !m.hidden);
 		requestAnimationFrame(() => {
-			el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+			const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
 		});
 	};
 
@@ -142,6 +178,7 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		writeUrl(id, hit);
 		highlightHit(hit);
 		back?.focus();
+		requestAnimationFrame(() => requestAnimationFrame(syncTimelineSegments));
 	};
 
 	const leaveFamily = () => {
@@ -229,15 +266,23 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 
 	back?.addEventListener('click', leaveFamily);
 
-	const openLb = (assets: { src: string; alt: string; caption?: string }[], index: number) => {
+	const openLb = (
+		assets: { src: string; alt: string; caption?: string }[],
+		index: number,
+		trigger: HTMLElement | null = null,
+	) => {
 		if (!lightbox || !lbImg || !assets.length) return;
 		lbSet = assets;
 		lbIndex = index;
+		if (trigger) lbTrigger = trigger;
 		const a = assets[index];
 		lbImg.src = a.src;
 		lbImg.alt = a.alt;
 		if (lbCap) lbCap.textContent = a.caption ?? '';
-		if (!lightbox.open) lightbox.showModal();
+		if (!lightbox.open) {
+			lightbox.showModal();
+			requestAnimationFrame(() => lbClose?.focus());
+		}
 	};
 
 	const stepLb = (dir: number) => {
@@ -250,7 +295,9 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		el.addEventListener('keydown', (e) => {
 			if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
 			e.preventDefault();
-			const vis = milestones.filter((x) => !x.hidden);
+			const vis = rail
+				? [...rail.querySelectorAll<HTMLElement>('[data-record]:not([hidden])')]
+				: milestones.filter((x) => !x.hidden);
 			const i = vis.indexOf(el);
 			vis[i + (e.key === 'ArrowRight' ? 1 : -1)]?.focus();
 		});
@@ -260,13 +307,29 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 				e.stopPropagation();
 				const r = rec(el.dataset.record!);
 				if (!r?.assets.length) return;
-				openLb(r.assets, i);
+				openLb(r.assets, i, img);
 			});
 		});
 	});
 
+	lbClose?.addEventListener('click', () => lightbox?.close());
+	lightbox?.addEventListener('click', (e) => {
+		if (e.target !== lightbox) return;
+		const rect = lightbox.getBoundingClientRect();
+		const inside =
+			e.clientX >= rect.left &&
+			e.clientX <= rect.right &&
+			e.clientY >= rect.top &&
+			e.clientY <= rect.bottom;
+		if (!inside) lightbox.close();
+	});
 	lightbox?.querySelector('[data-lb-prev]')?.addEventListener('click', () => stepLb(-1));
 	lightbox?.querySelector('[data-lb-next]')?.addEventListener('click', () => stepLb(1));
+	lightbox?.addEventListener('close', () => {
+		const trigger = lbTrigger;
+		lbTrigger = null;
+		requestAnimationFrame(() => trigger?.focus());
+	});
 	lightbox?.addEventListener('keydown', (e) => {
 		if (e.key === 'ArrowLeft') stepLb(-1);
 		if (e.key === 'ArrowRight') stepLb(1);
@@ -276,9 +339,12 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 		rail.addEventListener('keydown', (e) => {
 			if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
 			if ((e.target as HTMLElement).closest('[data-record]')) return;
-			rail.scrollBy({ left: e.key === 'ArrowRight' ? 280 : -280, behavior: 'smooth' });
+			const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			rail.scrollBy({ left: e.key === 'ArrowRight' ? 280 : -280, behavior: reduced ? 'auto' : 'smooth' });
 		});
 	}
+
+	window.addEventListener('resize', syncTimelineSegments);
 
 	document.addEventListener('keydown', (e) => {
 		if (e.key === 'Escape' && openFamily && lightbox && !lightbox.open) leaveFamily();

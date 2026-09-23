@@ -1,0 +1,56 @@
+name: Corporate 2.0 QA
+
+on:
+  push:
+    branches:
+      - fix/3.8-integrated-qa
+  pull_request:
+    paths:
+      - 'corporate-v2/**'
+      - '.github/workflows/corporate-v2-qa.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: corporate-v2
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: corporate-v2/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Astro check
+        run: npm run check
+
+      - name: Build
+        run: npm run build
+
+      - name: Internal links
+        run: npm run check:links
+
+      - name: Prepublication SEO
+        run: npm run check:prepublish
+
+      - name: Package verified cPanel release
+        run: |
+          cd dist
+          zip -q -r ../geotactics-cpanel-release.zip .
+
+      - name: Upload cPanel release
+        uses: actions/upload-artifact@v4
+        with:
+          name: geotactics-cpanel-release
+          path: corporate-v2/geotactics-cpanel-release.zip
+          if-no-files-found: error
+          retention-days: 14

@@ -40,10 +40,7 @@ const ctaFor = (kind: RecordKind) => {
 		<div class="gt-ax__entry-head">
 			<p class="gt-ax__micro">GT / ARCHIVO</p>
 			<h1>Archivo</h1>
-			<p class="gt-ax__lead">Seis familias de problema. El umbral abre la cronología de cada una.</p>
-			<p class="gt-ax__terr">
-				<a href="/territorio">Territorio</a>
-			</p>
+			<p class="gt-ax__lead">Seis familias para recorrer la trayectoria de GeoTactics.</p>
 		</div>
 
 		<div class="gt-ax__board">
@@ -76,7 +73,6 @@ const ctaFor = (kind: RecordKind) => {
 			</ul>
 
 			<button type="button" class="gt-zone" data-zone aria-label="Leer archivos">
-				<span class="gt-zone__k">Umbral</span>
 				<span class="gt-zone__t">Leer archivos</span>
 			</button>
 		</div>
@@ -92,6 +88,7 @@ const ctaFor = (kind: RecordKind) => {
 			</aside>
 			<div class="gt-ax__rail-wrap">
 				<div class="gt-ax__rail" data-rail tabindex="0" aria-label="Cronología de la familia">
+					<div class="gt-ax__segments" data-timeline-segments aria-hidden="true"></div>
 					{
 						records.map((r) => {
 							const fan = r.assets.slice(0, 3);
@@ -103,12 +100,7 @@ const ctaFor = (kind: RecordKind) => {
 									hidden
 									aria-label={`${r.title}, ${r.yearLabel}`}
 								>
-									<p class="gt-hit__year">{r.yearLabel}</p>
-									<div class="gt-hit__axis" aria-hidden="true">
-										<span class="gt-hit__node" />
-										<span class="gt-hit__wire" />
-									</div>
-									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan>
+									<div class={`gt-fan gt-fan--n${fan.length}`} data-fan data-fan-count={fan.length}>
 										{
 											fan.length === 0 ? (
 												<div class="gt-fan__empty" aria-hidden="true">
@@ -123,6 +115,10 @@ const ctaFor = (kind: RecordKind) => {
 											)
 										}
 									</div>
+									<div class="gt-hit__axis" aria-hidden="true">
+										<span class="gt-hit__node" />
+									</div>
+									<p class="gt-hit__year">{r.yearLabel}</p>
 									<p class="gt-hit__kind">{kindLabel[r.kind]}</p>
 									<h3>{r.title}</h3>
 									<p class="gt-hit__st">{statusLabels[r.status]}</p>
@@ -146,14 +142,14 @@ const ctaFor = (kind: RecordKind) => {
 		</div>
 	</div>
 
-	<dialog class="gt-lb" data-lightbox aria-label="Fotografía">
-		<button type="button" class="gt-lb__close" data-lb-close onclick="this.closest('dialog').close()">
+	<dialog class="gt-lb" data-lightbox aria-label="Fotografía" aria-describedby="gt-lb-caption">
+		<button type="button" class="gt-lb__close" data-lb-close>
 			Cerrar
 		</button>
 		<button type="button" class="gt-lb__nav" data-lb-prev aria-label="Anterior">←</button>
 		<figure>
 			<img data-lb-img alt="" />
-			<figcaption data-lb-cap></figcaption>
+			<figcaption id="gt-lb-caption" data-lb-cap></figcaption>
 		</figure>
 		<button type="button" class="gt-lb__nav" data-lb-next aria-label="Siguiente">→</button>
 	</dialog>
@@ -286,6 +282,26 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-ax__files li {
 		min-width: 0;
+		position: relative;
+	}
+	@media (min-width: 1025px) {
+		.gt-ax__files {
+			display: block;
+			position: relative;
+			min-height: 25rem;
+		}
+		.gt-ax__files li {
+			position: absolute;
+			width: clamp(10.5rem, 29%, 14.5rem);
+		}
+		.gt-ax__files li:nth-child(1) { left: 1%; top: 8%; transform: rotate(-2.4deg); z-index: 2; }
+		.gt-ax__files li:nth-child(2) { left: 34%; top: 0%; transform: rotate(1.7deg); z-index: 1; }
+		.gt-ax__files li:nth-child(3) { left: 67%; top: 12%; transform: rotate(-1.1deg); z-index: 3; }
+		.gt-ax__files li:nth-child(4) { left: 7%; top: 51%; transform: rotate(1.4deg); z-index: 1; }
+		.gt-ax__files li:nth-child(5) { left: 40%; top: 45%; transform: rotate(-2deg); z-index: 2; }
+		.gt-ax__files li:nth-child(6) { left: 70%; top: 54%; transform: rotate(2.1deg); z-index: 1; }
+		.gt-ax__files li:hover,
+		.gt-ax__files li:focus-within { z-index: 8; }
 	}
 
 	.gt-file {
@@ -431,7 +447,7 @@ const ctaFor = (kind: RecordKind) => {
 
 	.gt-ax__stage {
 		display: grid;
-		grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+		grid-template-columns: minmax(18rem, 22rem) minmax(0, 1fr);
 		min-height: calc(100dvh - var(--gt-header-h));
 	}
 
@@ -445,8 +461,11 @@ const ctaFor = (kind: RecordKind) => {
 		align-self: stretch;
 		min-height: calc(100dvh - var(--gt-header-h));
 		overflow: auto;
-		padding: var(--gt-space-6) var(--gt-space-5);
+		padding: clamp(3.5rem, 9vh, 7rem) clamp(2rem, 4vw, 3.5rem);
 		border-right: 1px solid var(--gt-border);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		background: var(--gt-white);
 	}
 
@@ -489,24 +508,42 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-ax__rail {
+		--gt-axis-y: 0px;
 		display: flex;
-		align-items: stretch;
+		align-items: center;
 		overflow-x: auto;
 		overflow-y: hidden;
 		scroll-snap-type: x proximity;
-		padding: var(--gt-space-10) var(--gt-space-6) calc(var(--gt-space-10) + env(safe-area-inset-bottom, 0px));
+		gap: clamp(4.5rem, 7vw, 7rem);
+		padding: clamp(5rem, 10vh, 8rem) clamp(3rem, 5vw, 5rem) calc(clamp(5rem, 10vh, 8rem) + env(safe-area-inset-bottom, 0px));
 		overscroll-behavior-x: contain;
 		position: relative;
 		min-height: 100%;
+	}
+
+	.gt-ax__segments {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		pointer-events: none;
+	}
+
+	:global(.gt-ax__segment) {
+		position: absolute;
+		height: 2px;
+		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		transform-origin: 0 50%;
 	}
 
 	.gt-hit {
 		display: flex;
 		flex-direction: column;
 		align-items: stretch;
-		flex: 0 0 min(19rem, 78vw);
-		scroll-snap-align: start;
-		padding: 0 2.75rem 0 0;
+		align-self: center;
+		flex: 0 0 min(28rem, 82vw);
+		height: clamp(34rem, 62vh, 39rem);
+		scroll-snap-align: center;
+		padding: 0;
 		position: relative;
 		background: transparent;
 		border: 0;
@@ -525,19 +562,21 @@ const ctaFor = (kind: RecordKind) => {
 		color: var(--gt-coral);
 		letter-spacing: 0.16em;
 		margin: 0 0 0.35rem;
-		font-size: 0.72rem;
+		font-size: 0.82rem;
+		font-weight: 800;
 	}
 
 	.gt-hit__axis {
 		position: relative;
 		width: 100%;
 		height: 1.15rem;
-		margin: 0 0 1.1rem;
+		margin: 0 0 0.85rem;
 		overflow: visible;
 	}
 
 	.gt-hit__node {
 		position: absolute;
+		box-sizing: border-box;
 		top: 50%;
 		left: 0;
 		width: 0.72rem;
@@ -549,36 +588,20 @@ const ctaFor = (kind: RecordKind) => {
 		transform: translateY(-50%);
 	}
 
-	.gt-hit__wire {
-		position: absolute;
-		left: 0.36rem;
-		right: -2.75rem;
-		top: 50%;
-		height: 2px;
-		background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
-		transform: translateY(-50%);
-		z-index: 1;
-		pointer-events: none;
-	}
-
-	.gt-hit.is-last .gt-hit__wire {
-		right: auto;
-		width: 0;
-		display: none;
-	}
 
 	.gt-fan {
 		position: relative;
-		width: min(12.5rem, 100%);
-		height: 8.6rem;
-		margin: 0 0 1rem;
+		flex: 0 0 15rem;
+		width: min(23rem, 100%);
+		height: 17rem;
+		margin: 0 0 0.25rem;
 	}
 
 	.gt-fan__empty,
 	.gt-fan__shot,
 	.gt-fan__shot img {
-		width: 88%;
-		height: 8.4rem;
+		width: 92%;
+		height: 16rem;
 		object-fit: cover;
 	}
 
@@ -607,17 +630,29 @@ const ctaFor = (kind: RecordKind) => {
 		box-shadow: 0 8px 18px color-mix(in srgb, var(--gt-gray-950) 12%, transparent);
 		background: var(--gt-gray-100);
 		transform-origin: bottom center;
-		transition: transform var(--gt-motion) var(--gt-ease);
+		transition:
+			transform 380ms cubic-bezier(0.16, 0.8, 0.24, 1),
+			box-shadow 380ms cubic-bezier(0.16, 0.8, 0.24, 1);
+		will-change: transform;
 	}
 
-	.gt-fan--n2 .gt-fan__shot:nth-child(1),
+	.gt-fan--n1 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-0.6deg);
+		z-index: 3;
+	}
+
+	.gt-fan--n2 .gt-fan__shot:nth-child(1) {
+		transform: rotate(-3deg) translateX(-5px) scale(0.97);
+		z-index: 1;
+	}
+
 	.gt-fan--n3 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-5deg) translateX(-8px) scale(0.92);
+		transform: rotate(-4deg) translateX(-7px) scale(0.94);
 		z-index: 1;
 	}
 
 	.gt-fan--n3 .gt-fan__shot:nth-child(2) {
-		transform: rotate(5deg) translateX(10px) scale(0.95);
+		transform: rotate(4deg) translateX(8px) scale(0.96);
 		z-index: 2;
 	}
 
@@ -627,19 +662,36 @@ const ctaFor = (kind: RecordKind) => {
 		z-index: 3;
 	}
 
+	.gt-hit:hover .gt-fan--n1 .gt-fan__shot:nth-child(1),
+	.gt-hit:focus-within .gt-fan--n1 .gt-fan__shot:nth-child(1) {
+		transform: translateY(-7px) rotate(-1.2deg) scale(1.015);
+		box-shadow: 0 14px 26px color-mix(in srgb, var(--gt-gray-950) 16%, transparent);
+	}
+
 	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(1),
 	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-14deg) translateX(-28px) scale(0.9);
+		transform: rotate(-12deg) translateX(-34px) translateY(3px) scale(0.92);
 	}
 
 	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(2),
 	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(2) {
-		transform: rotate(14deg) translateX(28px) scale(0.9);
+		transform: rotate(11deg) translateX(34px) translateY(-2px) scale(0.94);
 	}
 
 	.gt-hit:hover .gt-fan--n2 .gt-fan__shot:nth-child(1),
 	.gt-hit:focus-within .gt-fan--n2 .gt-fan__shot:nth-child(1) {
-		transform: rotate(-10deg) translateX(-18px);
+		transform: rotate(-9deg) translateX(-26px) translateY(2px) scale(0.95);
+	}
+
+	.gt-hit:hover .gt-fan--n2 .gt-fan__shot:nth-child(2),
+	.gt-hit:focus-within .gt-fan--n2 .gt-fan__shot:nth-child(2) {
+		transform: rotate(7deg) translateX(24px) translateY(-5px) scale(0.99);
+	}
+
+	.gt-hit:hover .gt-fan--n3 .gt-fan__shot:nth-child(3),
+	.gt-hit:focus-within .gt-fan--n3 .gt-fan__shot:nth-child(3) {
+		transform: translateY(-9px) scale(1.015);
+		box-shadow: 0 15px 28px color-mix(in srgb, var(--gt-gray-950) 18%, transparent);
 	}
 
 	.gt-hit__kind {
@@ -648,7 +700,7 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-hit h3 {
-		font-size: 1.05rem;
+		font-size: 1.42rem;
 		margin: 0 0 0.3rem;
 		text-transform: uppercase;
 		letter-spacing: 0.02em;
@@ -660,10 +712,11 @@ const ctaFor = (kind: RecordKind) => {
 	}
 
 	.gt-hit__sum {
-		font-size: 0.82rem;
+		font-size: 0.96rem;
+		line-height: 1.62;
 		color: var(--gt-text-muted);
 		display: -webkit-box;
-		-webkit-line-clamp: 3;
+		-webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 		margin: 0 0 0.55rem;
@@ -728,6 +781,12 @@ const ctaFor = (kind: RecordKind) => {
 		right: 0.5rem;
 	}
 
+	.gt-lb__close:focus-visible,
+	.gt-lb__nav:focus-visible {
+		outline: 2px solid var(--gt-coral);
+		outline-offset: 2px;
+	}
+
 	.gt-lb__nav {
 		top: 50%;
 	}
@@ -774,6 +833,9 @@ const ctaFor = (kind: RecordKind) => {
 		}
 
 		.gt-ax__ctx {
+			display: block;
+			min-height: 0;
+			padding: var(--gt-space-6) var(--gt-space-5);
 			border-right: 0;
 			border-bottom: 1px solid var(--gt-border);
 		}
@@ -800,6 +862,10 @@ const ctaFor = (kind: RecordKind) => {
 			padding: 0 0 2.75rem 1.6rem;
 		}
 
+		.gt-ax__segments {
+			display: none;
+		}
+
 		.gt-hit__axis {
 			position: absolute;
 			left: 0;
@@ -810,20 +876,21 @@ const ctaFor = (kind: RecordKind) => {
 			margin: 0;
 		}
 
+		.gt-hit__axis::after {
+			content: '';
+			position: absolute;
+			left: 0.3rem;
+			top: 0.36rem;
+			bottom: -2.75rem;
+			width: 2px;
+			background: color-mix(in srgb, var(--gt-gray-800) 42%, var(--gt-gray-200));
+		}
+
 		.gt-hit__node {
 			top: 0;
 			left: 0;
 			transform: none;
 		}
 
-		.gt-hit__wire {
-			left: 0.3rem;
-			right: auto;
-			top: 0.36rem;
-			bottom: -2.75rem;
-			width: 2px;
-			height: auto;
-			transform: none;
-		}
 	}
 </style>

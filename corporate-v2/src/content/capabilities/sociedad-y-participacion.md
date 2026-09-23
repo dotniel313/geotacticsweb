@@ -3,7 +3,7 @@ id: CAP-03
 slug: sociedad-y-participacion
 order: 3
 title: Sociedad y participación
-shortDescription: Problemas de participación, opinión y visibilidad ciudadana desde el territorio.
+shortDescription: Creamos formas de escuchar, registrar y comprender lo que las personas expresan y lo que ocurre en el territorio.
 microcode: FAM-03
 status: active
 seoTitle: Sociedad y participación | GeoTactics
@@ -12,6 +12,6 @@ cue: Ciudadanía + territorio
 visual: society
 ---
 
-La radio, la encuesta o el mapa no son el problema: son canales. El problema es hacer visibles necesidades, opiniones o incidencias desde el territorio.
+Escuchar a las personas también produce información valiosa. Creamos mecanismos para registrar lo que ocurre, ubicarlo en el territorio y convertir respuestas y reportes en una lectura más clara de la realidad.
 
-Materializaciones: MadaRadio, Termómetro Social. Predicción permanece como I+D+i histórico, sin copy partidista.
+MadaRadio y Termómetro Social materializan esta línea desde contextos distintos. Predicción forma parte de la exploración histórica que antecedió algunos de estos desarrollos.

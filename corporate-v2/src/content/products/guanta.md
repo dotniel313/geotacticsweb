@@ -14,8 +14,8 @@ homeOrder: 1
 capabilities:
   - operaciones-y-trazabilidad
 primaryFamily: operaciones-y-trazabilidad
-problem: "Control manual de despachos de materiales en una operación minera, con pérdida de trazabilidad e inconsistencias potenciales."
-howItWorks: "Mina → despachador registra salida (vehículo, hora, material, cantidad) → ticket QR → conductor → destino → lectura QR → confirmación del mismo viaje. WhatsApp puede participar en la entrega del ticket."
+problem: "Una operación de despacho y recepción de materiales necesita conocer qué salió, cuándo, cuánto, hacia dónde y cuándo fue recibido."
+howItWorks: "Despacho registra salida —vehículo, hora, material y cantidad— → genera ticket QR → el conductor traslada el material → destino registra el ticket → el viaje queda cerrado. El ticket puede compartirse digitalmente durante el flujo."
 purpose: "Trazabilidad digital punto a punto para el despacho y recepción de materiales."
 gostRelation: "Fundamento ontológico GOST."
 assetStatus: missing
