@@ -5,6 +5,7 @@ date: 2026-09-22
 type: actualizacion
 summary: "GeoTactics prepara para el 25 de septiembre de 2026 el lanzamiento de una nueva versión de su sitio corporativo, reconstruida para mostrar con más claridad nuestra historia, productos, casos, metodología y presencia territorial."
 location: "Ecuador"
+heroAsset: "launch-web-3"
 gallery: []
 documents: []
 relatedProducts:
