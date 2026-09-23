@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.url).toString().replace(/\/$/, '') || site.url;
-const robots = noindex ? 'noindex, nofollow' : 'index, follow';
+const robots = noindex || !site.indexable ? 'noindex, nofollow' : 'index, follow';
 const structuredData = [
 	{
 		'@context': 'https://schema.org',
