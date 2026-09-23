@@ -313,6 +313,16 @@ export function initArchive(root: HTMLElement, payload: ArchivePayload) {
 	});
 
 	lbClose?.addEventListener('click', () => lightbox?.close());
+	lightbox?.addEventListener('click', (e) => {
+		if (e.target !== lightbox) return;
+		const rect = lightbox.getBoundingClientRect();
+		const inside =
+			e.clientX >= rect.left &&
+			e.clientX <= rect.right &&
+			e.clientY >= rect.top &&
+			e.clientY <= rect.bottom;
+		if (!inside) lightbox.close();
+	});
 	lightbox?.querySelector('[data-lb-prev]')?.addEventListener('click', () => stepLb(-1));
 	lightbox?.querySelector('[data-lb-next]')?.addEventListener('click', () => stepLb(1));
 	lightbox?.addEventListener('close', () => {
