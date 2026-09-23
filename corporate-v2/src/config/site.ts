@@ -9,8 +9,8 @@ export const site = {
 	version: '3.8.0-beta.1',
 	locale: 'es_EC',
 	lang: 'es',
-	/** Alpha: do not index accidental deploys. */
-	indexable: false,
+	/** Public release: only deploy this build to the approved production document root. */
+	indexable: true,
 	originLine: 'Nueva Loja · Sucumbíos · Amazonía ecuatoriana',
 	coordinates: '0.091, −76.89',
 	anchor2017: 'Primera materialización documentada · 2017',
