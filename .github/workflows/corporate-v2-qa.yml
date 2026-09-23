@@ -38,3 +38,6 @@ jobs:
 
       - name: Internal links
         run: npm run check:links
+
+      - name: Prepublication SEO
+        run: npm run check:prepublish
