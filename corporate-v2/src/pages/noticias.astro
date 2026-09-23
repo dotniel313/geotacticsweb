@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { conversarHref, copy } from '../config/site';
 import { newsTypeLabels } from '../data/news';
 import TerritorialGrid from '../components/TerritorialGrid.astro';
 import launchLogo from '../assets/brand/derived/geotactics-full-light.png';
@@ -64,9 +63,6 @@ const entries = (await getCollection('news'))
 			)
 		}
 
-		<footer class="gt-nw__cta gt-container--wide">
-			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
-		</footer>
 	</article>
 </BaseLayout>
 
@@ -173,9 +169,6 @@ const entries = (await getCollection('news'))
 		margin-bottom: 0.35rem;
 	}
 
-	.gt-nw__cta {
-		padding-top: var(--gt-space-6);
-	}
 
 	@media (max-width: 720px) {
 		.gt-nw__card:has(.gt-nw__thumb) {
