@@ -73,8 +73,16 @@ const captureNote =
 					{
 						rec && rec.assets.length > 0 ? (
 							<div class="gt-pd__fan">
-								{rec.assets.slice(0, 3).map((a) => (
-									<img src={a.thumb ?? a.src} alt={a.alt} width="640" height="400" />
+								{rec.assets.slice(0, 3).map((a, index) => (
+									<img
+										src={a.thumb ?? a.src}
+										alt={a.alt}
+										width="640"
+										height="400"
+										loading={index === 0 ? 'eager' : 'lazy'}
+										decoding="async"
+										fetchpriority={index === 0 ? 'high' : 'auto'}
+									/>
 								))}
 							</div>
 						) : (
