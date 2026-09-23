@@ -1,7 +1,9 @@
 import { readdir, readFile, access } from 'node:fs/promises';
 import { join, extname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const dist = new URL('../dist/', import.meta.url);
+const distUrl = new URL('../dist/', import.meta.url);
+const dist = fileURLToPath(distUrl);
 
 async function walk(dir) {
 	const entries = await readdir(dir, { withFileTypes: true });
@@ -46,17 +48,17 @@ for (const file of htmlFiles) {
 
 		const relative = pathname === '/' ? '' : pathname.slice(1);
 		const candidates = pathname === '/'
-			? [join(dist.pathname, 'index.html')]
+			? [join(dist, 'index.html')]
 			: [
-				join(dist.pathname, relative, 'index.html'),
-				join(dist.pathname, `${relative}.html`),
+				join(dist, relative, 'index.html'),
+				join(dist, `${relative}.html`),
 			];
 
 		if (!(await Promise.any(candidates.map(async (candidate) => {
 			if (await exists(candidate)) return true;
 			throw new Error('missing');
 		})).catch(() => false))) {
-			failures.push({ source: file.replace(dist.pathname, ''), href: raw });
+			failures.push({ source: file.replace(dist, ''), href: raw });
 		}
 	}
 }
