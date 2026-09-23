@@ -260,6 +260,12 @@ const archiveHref = rec ? `/archivo?familia=${rec.primaryFamily}&hito=${rec.slug
 				<a href="/casos">← Volver a casos</a>
 				<span aria-hidden="true"> · </span>
 				<a href={archiveHref}>Ver este hito en Archivo</a>
+				{coordinates.length > 0 ? (
+					<>
+						<span aria-hidden="true"> · </span>
+						<a href="/territorio">Ver operación territorial</a>
+					</>
+				) : null}
 			</nav>
 			<a class="gt-cta" href={conversarHref}>{copy.ctaPrimary}</a>
 		</footer>
