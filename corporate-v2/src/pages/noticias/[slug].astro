@@ -52,7 +52,7 @@ const d = entry.data;
 <style>
 	.gt-nd {
 		padding: var(--gt-space-10) 0 var(--gt-space-12);
-		max-width: 40rem;
+		max-width: 48rem;
 	}
 
 	.gt-nd__micro {
@@ -109,5 +109,52 @@ const d = entry.data;
 
 	.gt-nd__body {
 		margin-bottom: var(--gt-space-8);
+		max-width: 46rem;
+	}
+
+	/* Editorial paragraph rhythm.
+	   The global reset removes default margins, so rendered Markdown needs
+	   explicit spacing to preserve readable paragraphs and section breaks. */
+	.gt-nd__body :global(p) {
+		margin: 0 0 1.15rem;
+		line-height: 1.72;
+	}
+
+	.gt-nd__body :global(h2) {
+		margin: 2.5rem 0 0.85rem;
+		font-size: var(--gt-fs-lg);
+		line-height: 1.15;
+	}
+
+	.gt-nd__body :global(h3) {
+		margin: 2rem 0 0.7rem;
+		font-size: 1.08rem;
+		line-height: 1.25;
+	}
+
+	.gt-nd__body :global(h2 + p),
+	.gt-nd__body :global(h3 + p) {
+		margin-top: 0;
+	}
+
+	.gt-nd__body :global(ul),
+	.gt-nd__body :global(ol) {
+		margin: 0 0 1.25rem;
+		padding-left: 1.25rem;
+	}
+
+	.gt-nd__body :global(li + li) {
+		margin-top: 0.45rem;
+	}
+
+	.gt-nd__body :global(blockquote) {
+		margin: 1.75rem 0;
+		padding-left: 1rem;
+		border-left: 2px solid var(--gt-coral);
+	}
+
+	.gt-nd__body :global(blockquote p:last-child),
+	.gt-nd__body :global(p:last-child) {
+		margin-bottom: 0;
 	}
 </style>
