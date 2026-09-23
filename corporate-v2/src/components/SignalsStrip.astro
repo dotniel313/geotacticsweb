@@ -7,91 +7,47 @@ const published = (await getCollection('news'))
 	.slice(0, 4);
 
 const empty = published.length === 0;
-const total = String(published.length).padStart(2, '0');
-
 const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 'short', year: 'numeric' });
 ---
 
-<div class:list={['gt-signals', empty && 'gt-signals--empty']} aria-label="GeoTactics Signals" data-signals>
-	<div class="gt-signals__inner gt-container--wide">
-		{
-			empty ? (
+<div class:list={['gt-signals', empty && 'gt-signals--empty']} aria-label="GeoTactics Signals">
+	{
+		empty ? (
+			<div class="gt-signals__inner gt-container--wide">
 				<p class="gt-signals__empty">
 					<span class="gt-signals__id">GEOTACTICS / SIGNALS</span>
 					<span class="gt-signals__title">Archivo en construcción. No hay entradas publicables.</span>
-					<a class="gt-signals__more" href="/noticias">
-						Noticias
-					</a>
+					<a class="gt-signals__more" href="/noticias">Noticias</a>
 				</p>
-			) : (
-				published.map((entry, i) => (
-					<a
-						class="gt-signals__link"
-						href={`/noticias/${entry.data.slug}`}
-						data-signal-item
-						hidden={i !== 0}
-						aria-hidden={i !== 0}
-					>
-						<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
-						<span class="gt-signals__title">{entry.data.title}</span>
-						<span class="gt-signals__meta">
-							<time datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
-							<span class="gt-signals__count">
-								{String(i + 1).padStart(2, '0')}/{total}
-							</span>
-							<span aria-hidden="true">→</span>
-						</span>
-					</a>
-				))
-			)
-		}
-		{
-			published.length > 1 && (
-				<div class="gt-signals__controls">
-					<button type="button" data-signal-prev aria-label="Entrada anterior">
-						‹
-					</button>
-					<button type="button" data-signal-next aria-label="Entrada siguiente">
-						›
-					</button>
+			</div>
+		) : (
+			<div class="gt-signals__viewport">
+				<div class="gt-signals__track">
+					<div class="gt-signals__group">
+						{published.map((entry, i) => (
+							<a class="gt-signals__item" href={`/noticias/${entry.data.slug}`}>
+								<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
+								<span class="gt-signals__title">{entry.data.title}</span>
+								<time datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
+								<span class="gt-signals__arrow" aria-hidden="true">→</span>
+							</a>
+						))}
+					</div>
+					<div class="gt-signals__group" aria-hidden="true">
+						{published.map((entry, i) => (
+							<a class="gt-signals__item" href={`/noticias/${entry.data.slug}`} tabindex="-1">
+								<span class="gt-signals__id">SIGNALS / {String(i + 1).padStart(3, '0')}</span>
+								<span class="gt-signals__title">{entry.data.title}</span>
+								<time>{fmt(entry.data.date)}</time>
+								<span class="gt-signals__arrow">→</span>
+							</a>
+						))}
+					</div>
 				</div>
-			)
-		}
-	</div>
+			</div>
+		)
+	}
 </div>
-
-{
-	published.length > 1 && (
-		<script>
-			const root = document.querySelector('[data-signals]');
-			if (root) {
-				const slides = [...root.querySelectorAll<HTMLElement>('[data-signal-item]')];
-				let i = 0;
-				const show = (n: number) => {
-					i = (n + slides.length) % slides.length;
-					slides.forEach((el, idx) => {
-						const on = idx === i;
-						el.hidden = !on;
-						el.setAttribute('aria-hidden', String(!on));
-					});
-				};
-				root.querySelector('[data-signal-prev]')?.addEventListener('click', () => show(i - 1));
-				root.querySelector('[data-signal-next]')?.addEventListener('click', () => show(i + 1));
-				root.addEventListener('keydown', (event) => {
-					if (!(event instanceof KeyboardEvent)) return;
-					if (event.key === 'ArrowLeft') {
-						event.preventDefault();
-						show(i - 1);
-					}
-					if (event.key === 'ArrowRight') {
-						event.preventDefault();
-						show(i + 1);
-					}
-				});
-			}
-		</script>
-	)
-}
 
 <style>
 	.gt-signals {
@@ -103,48 +59,84 @@ const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 
 		min-height: var(--gt-signals-h);
 		display: flex;
 		align-items: center;
+		overflow: hidden;
 	}
 
 	.gt-signals__inner {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		align-items: center;
-		gap: var(--gt-space-3);
 		width: 100%;
-		min-height: var(--gt-signals-h);
-		min-width: 0;
 	}
 
-	.gt-signals__empty,
-	.gt-signals__link {
+	.gt-signals__empty {
 		display: grid;
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: var(--gt-space-4);
 		align-items: center;
 		min-height: var(--gt-signals-h);
-		min-width: 0;
 		margin: 0;
 		color: var(--gt-white);
 		font-size: 0.82rem;
 		font-weight: 600;
 	}
 
-	.gt-signals__link {
+	.gt-signals__viewport {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.gt-signals__track {
+		display: flex;
+		width: max-content;
+		min-width: 100%;
+		animation: gt-signals-marquee 34s linear infinite;
+		will-change: transform;
+	}
+
+	.gt-signals__group {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+	}
+
+	.gt-signals__item {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.9rem;
+		min-height: var(--gt-signals-h);
+		padding: 0 2rem;
+		color: var(--gt-white);
 		text-decoration: none;
+		white-space: nowrap;
+		border-right: 1px solid color-mix(in srgb, white 28%, transparent);
+		font-size: 0.82rem;
+	}
+
+	.gt-signals__item:focus-visible {
+		outline: 2px solid var(--gt-white);
+		outline-offset: -4px;
 	}
 
 	.gt-signals__id {
 		letter-spacing: 0.14em;
 		font-size: 0.68rem;
-		white-space: nowrap;
+		font-weight: 700;
+		opacity: 0.9;
 	}
 
 	.gt-signals__title {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		border-bottom: 1px dotted color-mix(in srgb, white 45%, transparent);
-		font-weight: 500;
+		font-weight: 600;
+		border-bottom: 1px dotted color-mix(in srgb, white 50%, transparent);
+	}
+
+	.gt-signals__item time,
+	.gt-signals__arrow {
+		font-size: 0.74rem;
+		font-variant-numeric: tabular-nums;
+		opacity: 0.88;
+	}
+
+	.gt-signals:hover .gt-signals__track,
+	.gt-signals:focus-within .gt-signals__track {
+		animation-play-state: paused;
 	}
 
 	.gt-signals__more {
@@ -153,49 +145,36 @@ const fmt = (d: Date) => d.toLocaleDateString('es-EC', { day: '2-digit', month: 
 		font-size: 0.75rem;
 	}
 
-	.gt-signals__meta {
-		display: flex;
-		gap: 0.75rem;
-		align-items: center;
-		white-space: nowrap;
-		font-variant-numeric: tabular-nums;
-		font-size: 0.75rem;
-		font-weight: 500;
+	@keyframes gt-signals-marquee {
+		from { transform: translateX(0); }
+		to { transform: translateX(-50%); }
 	}
 
-	.gt-signals__controls {
-		display: flex;
-		gap: 0.25rem;
-	}
-
-	.gt-signals__controls button {
-		width: var(--gt-touch);
-		height: var(--gt-touch);
-		border: 1px solid color-mix(in srgb, white 45%, transparent);
-		background: transparent;
-		color: white;
-		font-size: 1.1rem;
-	}
-
-	@media (min-width: 721px) {
-		.gt-signals__controls {
+	@media (prefers-reduced-motion: reduce) {
+		.gt-signals__track {
+			animation: none;
+			overflow-x: auto;
+			max-width: 100vw;
+		}
+		.gt-signals__group[aria-hidden='true'] {
 			display: none;
 		}
 	}
 
 	@media (max-width: 720px) {
-		.gt-signals__empty,
-		.gt-signals__link {
+		.gt-signals__item {
+			padding-inline: 1.25rem;
+			gap: 0.65rem;
+		}
+		.gt-signals__item time {
+			display: none;
+		}
+		.gt-signals__empty {
 			grid-template-columns: 1fr auto;
 			gap: 0.4rem;
 		}
-
-		.gt-signals__id {
+		.gt-signals__empty .gt-signals__id {
 			grid-column: 1 / -1;
-		}
-
-		.gt-signals__meta time {
-			display: none;
 		}
 	}
 </style>
